@@ -16,7 +16,7 @@ function Main() {
             <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedInIcon/></a>
           </div>
           <h1>Cédric Djohozin</h1>
-          <p>Ingénieur Biomédical • Électronique • IA • Systèmes médicaux</p>
+          <p>Technicien supérieur en Maintenance Biomédicale et Hospitalière • Électronique embarqué • IA • Systèmes médicaux</p>
 
           <div className="mobile_social_icons">
             <a href="https://github.com/djohozinc-ship-it" target="_blank" rel="noreferrer" aria-label="GitHub"><GitHubIcon/></a>
