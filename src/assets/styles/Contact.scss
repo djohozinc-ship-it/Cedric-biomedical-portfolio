@@ -93,3 +93,37 @@ form {
   -webkit-text-fill-color: #777 !important;
   opacity: 1 !important;
 }
+
+.contact-form .MuiTextField-root {
+  color: #050f0b !important;
+}
+
+.contact-form .MuiInputBase-root {
+  color: #050f0b !important;
+  background-color: #ffffff !important;
+}
+
+.contact-form .MuiInputBase-input {
+  color: #050f0b !important;
+  -webkit-text-fill-color: #050f0b !important;
+  opacity: 1 !important;
+}
+
+.contact-form .MuiInputBase-input:focus {
+  color: #050f0b !important;
+  -webkit-text-fill-color: #050f0b !important;
+}
+
+.contact-form .MuiInputBase-input::placeholder {
+  color: #666666 !important;
+  -webkit-text-fill-color: #666666 !important;
+  opacity: 1 !important;
+}
+
+.contact-form .MuiInputLabel-root {
+  color: #050f0b !important;
+}
+
+.contact-form .MuiInputLabel-root.Mui-focused {
+  color: #5000ca !important;
+}
