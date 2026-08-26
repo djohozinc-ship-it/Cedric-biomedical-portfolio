@@ -46,3 +46,28 @@ form {
   width: 100% !important;
   margin-bottom: 15px !important;
 }
+
+.contact-form .MuiInputBase-input {
+  color: #050f0b !important;
+  caret-color: #050f0b !important;
+}
+
+.contact-form .MuiInputLabel-root {
+  color: #050f0b !important;
+}
+
+.contact-form .MuiInputLabel-root.Mui-focused {
+  color: #5000ca !important;
+}
+
+.contact-form .MuiOutlinedInput-notchedOutline {
+  border-color: #777 !important;
+}
+
+.contact-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #5000ca !important;
+}
+
+.contact-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #5000ca !important;
+}
