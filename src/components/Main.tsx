@@ -8,7 +8,10 @@ function Main() {
     <div className="container">
       <div className="about-section">
         <div className="image-wrapper">
-          <img src="https://my-aws-assets.s3.us-west-2.amazonaws.com/portfolio-img/avatar_circle.jpeg" alt="Cédric Djohozin" />
+          <img
+            src={`${process.env.PUBLIC_URL}/images/cedric.png`}
+            alt="Cédric Djohozin"
+          />
         </div>
         <div className="content">
           <div className="social_icons">
