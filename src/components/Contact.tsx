@@ -100,6 +100,15 @@ function Contact() {
                 helperText={
                   nameError ? 'Please enter your name' : ''
                 }
+                sx={{
+                  '& .MuiInputBase-input': {
+                    color: '#050f0b',
+                    WebkitTextFillColor: '#050f0b',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#050f0b',
+                  },
+                }}
               />
 
               <TextField
@@ -114,6 +123,15 @@ function Contact() {
                 helperText={
                   emailError ? 'Please enter your email' : ''
                 }
+                sx={{
+                  '& .MuiInputBase-input': {
+                    color: '#050f0b',
+                    WebkitTextFillColor: '#050f0b',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#050f0b',
+                  },
+                }}
               />
 
             </div>
@@ -132,6 +150,15 @@ function Contact() {
               helperText={
                 messageError ? 'Please enter your message' : ''
               }
+              sx={{
+                  '& .MuiInputBase-input': {
+                    color: '#050f0b',
+                    WebkitTextFillColor: '#050f0b',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#050f0b',
+                  },
+                }}
             />
 
             <Button
