@@ -41,9 +41,12 @@ const BiomedicalCity: React.FC = () => {
 
   useEffect(() => {
     let dead = false; let raf = 0; let renderer: any;
+    const mount = mountRef.current;
+    if (!mount) return;
+
     loadThree().then(() => {
-      if (dead || !mountRef.current) return;
-      const T = THREE, mount = mountRef.current;
+      if (dead) return;
+      const T = THREE;
       const scene = new T.Scene(); scene.background = new T.Color(0x02070d); scene.fog = new T.FogExp2(0x06141d, 0.018);
       const camera = new T.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 180);
       renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -57,41 +60,32 @@ const BiomedicalCity: React.FC = () => {
       const box=(g:any,x:number,y:number,z:number,sx:number,sy:number,sz:number,m:any)=>{const o=new T.Mesh(new T.BoxGeometry(sx,sy,sz),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;g.add(o);return o;};
       const cyl=(g:any,x:number,y:number,z:number,r:number,h:number,m:any)=>{const o=new T.Mesh(new T.CylinderGeometry(r,r,h,20),m);o.position.set(x,y,z);o.castShadow=true;g.add(o);return o;};
 
-      // Modern hospital exterior and approach.
       box(groups.hospital,0,-.3,0,42,.5,34,M(0x07121a,.1,.82)); box(groups.hospital,0,5,-7,26,10,7,dark); box(groups.hospital,-11,3,-1.8,4,6.2,10,blue); box(groups.hospital,11,3,-1.8,4,6.2,10,blue);
       box(groups.hospital,0,4.6,-3.25,9.2,9.2,.3,glass); box(groups.hospital,0,9.9,-3.25,9.6,.12,.12,cyan);
       for(let y=2.1;y<9;y+=1.6) for(let x=-9;x<=9;x+=3) box(groups.hospital,x,y,-3.08,1.4,.82,.07,glass);
       for(let z=8;z>=-20;z-=3.5) box(groups.hospital,-13.2,2.5,z,.06,5,.06,cyan);
 
-      // Patient model: simple, readable and deliberately non-photorealistic.
       box(groups.patient,0,1.65,0,.72,1.45,.42,white); cyl(groups.patient,0,2.65,0,.31,.5,white);
       const armL=cyl(groups.patient,-.48,1.62,0,.11,1.15,white), armR=cyl(groups.patient,.48,1.62,0,.11,1.15,white); armL.rotation.z=-.12; armR.rotation.z=.12;
       cyl(groups.patient,-.22,.45,0,.11,1.45,white); cyl(groups.patient,.22,.45,0,.11,1.45,white); groups.patient.scale.set(.8,.8,.8);
 
-      // Entry doors.
       box(groups.entry,-2,3,0,3.8,6,1.2,dark); box(groups.entry,2,3,0,3.8,6,1.2,dark);
       const doorL=box(groups.entry,-1.05,2.6,.15,1.8,4.8,.12,glass), doorR=box(groups.entry,1.05,2.6,.15,1.8,4.8,.12,glass); box(groups.entry,0,5.2,.15,5.8,.12,.12,cyan);
 
-      // Check-in station.
       box(groups.checkin,0,1.5,0,2.2,3,.65,dark); box(groups.checkin,0,2.35,-.36,1.55,1.15,.08,M(0x102d3a,.2,.2,0x28cfff,1.4)); box(groups.checkin,0,.55,-.39,1.25,.08,.08,cyan);
 
-      // Corridor with perspective geometry.
       box(groups.corridor,-5.2,2.4,-7,.35,5,24,dark); box(groups.corridor,5.2,2.4,-7,.35,5,24,dark); box(groups.corridor,0,-.05,-7,10.4,.12,24,M(0x0b2029,.2,.55));
       for(let z=3;z>=-18;z-=4) box(groups.corridor,0,.03,z,.05,.04,1.6,cyan);
       for(let z=1;z>=-17;z-=4){box(groups.corridor,-5,2.5,z,.08,4,2.2,glass);box(groups.corridor,5,2.5,z,.08,4,2.2,glass);}
 
-      // Examination bed + overhead sensor ring.
       box(groups.exam,0,.82,0,5.8,.3,2.1,blue); box(groups.exam,0,1.18,-.35,5.2,.2,1.8,white); box(groups.exam,-2.45,2,0,.16,2.1,.16,dark); box(groups.exam,2.45,2,0,.16,2.1,.16,dark); box(groups.exam,0,3.05,0,.18,.18,.18,cyan);
       const sensorRing=new T.Mesh(new T.TorusGeometry(2.25,.045,12,64),cyan); sensorRing.position.set(0,3.05,0); sensorRing.rotation.x=Math.PI/2; groups.exam.add(sensorRing); groups.exam.position.z=-1;
 
-      // Patient monitor + live ECG.
       box(groups.monitor,0,2.9,-2.2,3.8,2.5,.25,dark); box(groups.monitor,0,2.9,-2.36,3.45,2.1,.06,M(0x07161d,.2,.2,0x28dfff,.8));
       const ecg:any[]=[]; for(let i=0;i<48;i++) ecg.push(box(groups.monitor,-1.5+i*.064,3,-2.42,.05,.035,.025,cyan)); groups.monitor.position.set(4.2,0,-1);
 
-      // Analysis core.
       const r1=new T.Mesh(new T.TorusGeometry(2.3,.05,12,64),cyan), r2=new T.Mesh(new T.TorusGeometry(1.45,.035,12,64),cyan); r1.position.set(0,3,0);r2.position.set(0,3,0);r2.rotation.x=Math.PI/2;groups.analysis.add(r1,r2);cyl(groups.analysis,0,3,0,.55,1.1,M(0x173d4d,.4,.15,0x29dfff,2));groups.analysis.position.z=-3;
 
-      // Real 3D articulated robotic arm.
       cyl(groups.robot,0,.45,0,.8,.9,dark); const j1=new T.Group();j1.position.set(0,.9,0);groups.robot.add(j1);cyl(j1,0,1.1,0,.42,2.2,white);const j2=new T.Group();j2.position.set(0,2.15,0);j1.add(j2);cyl(j2,0,1.1,0,.34,2.1,white);const wrist=new T.Group();wrist.position.set(0,2.1,0);j2.add(wrist);cyl(wrist,0,.55,0,.24,1,white);box(wrist,0,1.05,-.12,.32,.55,.32,cyan);groups.robot.position.set(3.8,0,-1.4);
 
       const visible=(names:string[])=>Object.entries(groups).forEach(([k,g])=>g.visible=names.includes(k));
@@ -106,17 +100,27 @@ const BiomedicalCity: React.FC = () => {
         renderer.render(scene,camera);raf=requestAnimationFrame(animate);};
       const resize=()=>{camera.aspect=mount.clientWidth/mount.clientHeight;camera.updateProjectionMatrix();renderer.setSize(mount.clientWidth,mount.clientHeight);};window.addEventListener('resize',resize);animate();
       (mount as any).__cleanup=()=>{window.removeEventListener('resize',resize);cancelAnimationFrame(raf);renderer.dispose();};
-    }).catch(()=>{if(mountRef.current)mountRef.current.dataset.error='three';});
-    return()=>{dead=true;cancelAnimationFrame(raf);const m=mountRef.current as any;if(m?.__cleanup)m.__cleanup();};
+    }).catch(()=>{mount.dataset.error='three';});
+    return()=>{dead=true;cancelAnimationFrame(raf);const cleanup=(mount as any).__cleanup;if(cleanup)cleanup();};
   },[]);
 
   const jump=(i:number)=>{timeline.current=scenes.slice(0,i).reduce((s,x)=>s+x.duration,0);setSceneIndex(i);};
   const toggle=()=>{paused.current=!paused.current;setIsPaused(paused.current);};
   const current=scenes[sceneIndex];
+
   return <section className="biomedical-city" id="city" aria-label="Biomedical City — A Patient's Journey">
-    <div className="city-3d" ref={mountRef} aria-label="Real-time 3D biomedical city scene"/><div className="city-vignette"/>
-    <div className="city-hud"><div className="city-kicker">BIOMEDICAL CITY • A PATIENT'S JOURNEY • 2035</div><h2>Biomedical City</h2><div className="city-story"><span className="city-scene-number">{String(sceneIndex+1).padStart(2,'0')}</span><div><strong>{current.title}</strong><p>{current.subtitle}</p></div></div><p className="city-description">A continuous 3D journey: arrival, examination, biosignals, intelligent analysis, robotics, then human care.</p><div className="city-progress">{scenes.map((s,i)=><button key={s.title} className={i===sceneIndex?'active':''} onClick={()=>jump(i)} aria-label={`Show scene ${i+1}: ${s.title}`}/>)}</div><button className="city-play" onClick={toggle}>{isPaused?'▶ RESUME JOURNEY':'Ⅱ PAUSE JOURNEY'}</button></div>
-    <div className="city-label">REAL-TIME 3D • PATIENT → SENSOR → SIGNAL → DATA → INTELLIGENCE → ROBOT → CARE</div>
+    <div ref={mountRef} className="biomedical-city-canvas" />
+    <div className="city-vignette" />
+    <div className="city-hud">
+      <div className="city-kicker">BIOMEDICAL CITY • A PATIENT'S JOURNEY • 2035</div>
+      <h2>Biomedical City</h2>
+      <div className="city-story"><span className="city-scene-number">{String(sceneIndex+1).padStart(2,'0')}</span><div><strong>{current.title}</strong><p>{current.subtitle}</p></div></div>
+      <p className="city-description">A continuous patient journey: arrival, examination, biosignals, intelligent analysis, robotics, then human care.</p>
+      <div className="city-progress" aria-label="Journey scenes">{scenes.map((item,index)=><button key={item.title} className={index===sceneIndex?'active':''} onClick={()=>jump(index)} aria-label={`Show scene ${index+1}: ${item.title}`} />)}</div>
+      <button className="city-play" onClick={toggle} aria-label={isPaused?'Resume journey':'Pause journey'}><span>{isPaused?'▶':'Ⅱ'}</span> {isPaused?'RESUME JOURNEY':'PAUSE JOURNEY'}</button>
+    </div>
+    <div className="city-label">PATIENT → SENSOR → SIGNAL → DATA → INTELLIGENCE → ROBOT → CARE</div>
   </section>;
 };
+
 export default BiomedicalCity;
