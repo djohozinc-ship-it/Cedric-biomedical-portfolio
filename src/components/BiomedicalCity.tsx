@@ -358,13 +358,6 @@ const BiomedicalCity: React.FC = () => {
           1.5
         );
 
-      /*
-       * IMPORTANT:
-       * The previous yellow material was never used.
-       * It has intentionally been removed so CI/ESLint
-       * does not fail with no-unused-vars.
-       */
-
       const skin =
         material(
           0xc88d73,
@@ -1608,7 +1601,7 @@ const BiomedicalCity: React.FC = () => {
       );
 
       /* =========================================================
-         CAMERA
+         CAMERA SYSTEM
       ========================================================= */
 
       const clock =
@@ -2454,7 +2447,14 @@ const BiomedicalCity: React.FC = () => {
         }
 
         /* =====================================================
-           PATIENT ARRIVAL
+           RESET COMMON PATIENT STATE
+        ===================================================== */
+
+        bodyRoot.rotation.x = 0;
+        bodyRoot.rotation.y = 0;
+
+        /* =====================================================
+           ARRIVAL
         ===================================================== */
 
         if (idx === 0) {
@@ -2619,19 +2619,49 @@ const BiomedicalCity: React.FC = () => {
         }
 
         /* =====================================================
-           EXAMINATION + BIOSIGNALS + AI + ROBOT
+           EXAMINATION
         ===================================================== */
 
         if (
-          idx >= 3 &&
-          idx <= 6
+          idx === 3
         ) {
-          /*
-           * Patient is placed horizontally on the examination
-           * bed. The entire body remains controlled by the
-           * patient root.
-           */
+          patient.rotation.set(
+            0,
+            0,
+            -Math.PI / 2
+          );
 
+          patient.position.set(
+            -1.8 +
+              progress *
+                1.55,
+            1.52,
+            -0.68
+          );
+
+          head.rotation.z =
+            -0.035;
+
+          armL.rotation.z =
+            -0.06;
+
+          armR.rotation.z =
+            0.06;
+
+          drawVitals(
+            clock.elapsedTime
+          );
+        }
+
+        /* =====================================================
+           BIOSIGNALS
+           
+           CAMERA IS NOW ON THE LEFT SIDE.
+        ===================================================== */
+
+        if (
+          idx === 4
+        ) {
           patient.rotation.set(
             0,
             0,
@@ -2644,149 +2674,129 @@ const BiomedicalCity: React.FC = () => {
             -0.68
           );
 
-          head.rotation.set(
-            0,
-            0,
-            -0.035
+          drawVitals(
+            clock.elapsedTime
           );
 
-          armL.rotation.set(
+          const pulse =
+            1 +
+            Math.sin(
+              clock.elapsedTime *
+                5
+            ) *
+              0.06;
+
+          sensorGroup.scale.setScalar(
+            pulse
+          );
+        }
+
+        /* =====================================================
+           AI ANALYSIS
+           
+           CAMERA IS NOW ON THE LEFT SIDE AND FARTHER AWAY.
+        ===================================================== */
+
+        if (
+          idx === 5
+        ) {
+          patient.rotation.set(
             0,
             0,
-            -0.06
+            -Math.PI / 2
           );
 
-          armR.rotation.set(
-            0,
-            0,
-            0.06
+          patient.position.set(
+            -0.25,
+            1.52,
+            -0.68
           );
 
-          /* ===================================================
-             EXAMINATION
-          =================================================== */
+          drawAnalysis(
+            progress,
+            clock.elapsedTime
+          );
 
-          if (
-            idx === 3
-          ) {
-            patient.position.x =
-              -1.8 +
-              progress *
-                1.55;
+          sensorGroup.scale.setScalar(
+            1
+          );
+        }
 
-            patient.position.z =
-              -0.68;
+        /* =====================================================
+           ROBOTIC ASSIST
+        ===================================================== */
 
-            drawVitals(
-              clock.elapsedTime
+        if (
+          idx === 6
+        ) {
+          patient.rotation.set(
+            0,
+            0,
+            -Math.PI / 2
+          );
+
+          patient.position.set(
+            -0.25,
+            1.52,
+            -0.68
+          );
+
+          const approach =
+            0.72 +
+            0.28 *
+              Math.sin(
+                progress *
+                  Math.PI
+              );
+
+          robotRoot.position.set(
+            2.65 -
+              approach *
+                0.35,
+            0.95,
+            0.25
+          );
+
+          shoulder.rotation.z =
+            -0.55 -
+            0.18 *
+              Math.sin(
+                progress *
+                  Math.PI
+              );
+
+          elbow.rotation.z =
+            0.85 +
+            0.35 *
+              Math.sin(
+                progress *
+                  Math.PI
+              );
+
+          wrist.rotation.z =
+            -0.35;
+
+          tool.rotation.z =
+            0.08 *
+            Math.sin(
+              clock.elapsedTime *
+                3
             );
-          }
 
-          /* ===================================================
-             BIOSIGNALS
-          =================================================== */
+          target.position.set(
+            0.35,
+            1.48,
+            -0.72
+          );
 
-          if (
-            idx === 4
-          ) {
-            drawVitals(
-              clock.elapsedTime
-            );
-
-            const pulse =
-              1 +
+          target.scale.setScalar(
+            1 +
               Math.sin(
                 clock.elapsedTime *
                   5
               ) *
-                0.06;
-
-            sensorGroup.scale.setScalar(
-              pulse
-            );
-          }
-
-          /* ===================================================
-             AI ANALYSIS
-          =================================================== */
-
-          if (
-            idx === 5
-          ) {
-            drawAnalysis(
-              progress,
-              clock.elapsedTime
-            );
-
-            sensorGroup.scale.setScalar(
-              1
-            );
-          }
-
-          /* ===================================================
-             ROBOTIC ASSIST
-          =================================================== */
-
-          if (
-            idx === 6
-          ) {
-            const approach =
-              0.72 +
-              0.28 *
-                Math.sin(
-                  progress *
-                    Math.PI
-                );
-
-            robotRoot.position.set(
-              2.65 -
-                approach *
-                  0.35,
-              0.95,
-              0.25
-            );
-
-            shoulder.rotation.z =
-              -0.55 -
-              0.18 *
-                Math.sin(
-                  progress *
-                    Math.PI
-                );
-
-            elbow.rotation.z =
-              0.85 +
-              0.35 *
-                Math.sin(
-                  progress *
-                    Math.PI
-                );
-
-            wrist.rotation.z =
-              -0.35;
-
-            tool.rotation.z =
-              0.08 *
-              Math.sin(
-                clock.elapsedTime *
-                  3
-              );
-
-            target.position.set(
-              0.35,
-              1.48,
-              -0.72
-            );
-
-            target.scale.setScalar(
-              1 +
-                Math.sin(
-                  clock.elapsedTime *
-                    5
-                ) *
-                  0.15
-            );
-          }
+                0.15
+          );
         }
 
         /* =====================================================
@@ -2822,79 +2832,211 @@ const BiomedicalCity: React.FC = () => {
         }
 
         /* =====================================================
-           PATIENT STANDS UP
+           PATIENT STANDS UP — IMPROVED
+           
+           The old version simply rotated the whole patient
+           while translating him, which produced a floating/
+           sliding effect.
+           
+           New movement:
+           
+           0.00 → 0.18
+             Patient prepares to move.
+           
+           0.18 → 0.48
+             Upper body rises progressively.
+           
+           0.48 → 0.72
+             Legs come underneath the body.
+           
+           0.72 → 1.00
+             Patient stabilizes and walks slightly forward.
         ===================================================== */
 
         if (
           idx === 8
         ) {
-          const stand =
-            clamp(
-              (progress -
-                0.18) /
-                0.48
+          const prepare =
+            ease(
+              clamp(
+                progress /
+                  0.18
+              )
             );
 
-          const joy =
-            clamp(
-              (progress -
-                0.66) /
-                0.34
+          const rise =
+            ease(
+              clamp(
+                (progress -
+                  0.12) /
+                  0.42
+              )
             );
+
+          const legs =
+            ease(
+              clamp(
+                (progress -
+                  0.42) /
+                  0.30
+              )
+            );
+
+          const stable =
+            ease(
+              clamp(
+                (progress -
+                  0.70) /
+                  0.30
+              )
+            );
+
+          /*
+           * Start lying down.
+           */
+
+          const lyingRotation =
+            -Math.PI / 2;
+
+          /*
+           * Progressive rotation to standing.
+           * The rotation is centered around the pelvis,
+           * so the movement is much more coherent.
+           */
 
           patient.rotation.z =
             THREE.MathUtils.lerp(
-              -Math.PI / 2,
+              lyingRotation,
               0,
-              ease(stand)
+              rise
             );
 
-          patient.position.x =
-            -0.25;
+          /*
+           * During the first part, the patient slightly
+           * gathers himself before standing.
+           */
 
-          patient.position.y =
+          const preparationOffset =
+            (1 - prepare) *
+            0.02;
+
+          /*
+           * The pelvis rises first, then settles.
+           */
+
+          const pelvisHeight =
             THREE.MathUtils.lerp(
               1.52,
+              0.82,
+              rise
+            );
+
+          /*
+           * Final standing height.
+           */
+
+          const finalHeight =
+            THREE.MathUtils.lerp(
+              pelvisHeight,
               0.35,
-              ease(stand)
+              legs
+            );
+
+          patient.position.y =
+            finalHeight +
+            preparationOffset;
+
+          /*
+           * Move from lying position toward the floor/
+           * standing position.
+           */
+
+          patient.position.x =
+            THREE.MathUtils.lerp(
+              -0.25,
+              -0.05,
+              legs
             );
 
           patient.position.z =
             THREE.MathUtils.lerp(
               -0.68,
-              1.0,
-              ease(stand)
+              0.72,
+              legs
             );
 
-          armL.rotation.z =
-            -joy * 1.15;
+          /*
+           * Small torso compensation while standing.
+           * This prevents the body from looking rigid.
+           */
 
-          armR.rotation.z =
-            joy * 1.15;
+          bodyRoot.rotation.x =
+            THREE.MathUtils.lerp(
+              0.05,
+              0,
+              stable
+            );
 
-          const bounce =
-            joy > 0
-              ? Math.abs(
-                  Math.sin(
-                    (progress -
-                      0.66) *
-                      Math.PI *
-                      5
-                  )
-                ) *
-                0.28
-              : 0;
-
-          patient.position.y +=
-            bounce;
-
-          patient.rotation.y =
+          bodyRoot.rotation.y =
             Math.sin(
               clock.elapsedTime *
-                8
+                2.2
             ) *
-            joy *
-            0.06;
+            0.025 *
+            stable;
+
+          /*
+           * Arms initially remain close to the body,
+           * then relax naturally.
+           */
+
+          armL.rotation.z =
+            THREE.MathUtils.lerp(
+              -0.06,
+              -0.14,
+              stable
+            );
+
+          armR.rotation.z =
+            THREE.MathUtils.lerp(
+              0.06,
+              0.14,
+              stable
+            );
+
+          /*
+           * Small final stabilization movement.
+           */
+
+          const stabilization =
+            Math.sin(
+              clock.elapsedTime *
+                4
+            ) *
+            0.025 *
+            stable;
+
+          patient.position.x +=
+            stabilization;
+
+          /*
+           * Once standing, the patient makes a small
+           * forward movement, like a real person preparing
+           * to leave the examination area.
+           */
+
+          const forward =
+            ease(
+              clamp(
+                (progress -
+                  0.82) /
+                  0.18
+              )
+            );
+
+          patient.position.z +=
+            forward *
+            0.35;
         }
 
         /* =====================================================
@@ -2925,24 +3067,16 @@ const BiomedicalCity: React.FC = () => {
 
         /* =====================================================
            CAMERA POSITIONS
-           
-           BIOSIGNALS + AI ANALYSIS HAVE BEEN WIDENED.
-           
-           The camera is deliberately farther away and slightly
-           higher so that:
-           
-           - head remains visible
-           - torso remains visible
-           - legs remain visible
-           - feet remain visible
-           - examination bed remains readable
-           - monitor / AI screen remains visible
         ===================================================== */
 
         let fp: V3;
         let tp: V3;
         let fl: V3;
         let tl: V3;
+
+        /* =====================================================
+           ARRIVAL CAMERA
+        ===================================================== */
 
         if (
           idx === 0
@@ -2970,7 +3104,13 @@ const BiomedicalCity: React.FC = () => {
             2.5,
             -4,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           ENTRY CAMERA
+        ===================================================== */
+
+        else if (
           idx === 1
         ) {
           fp = [
@@ -2996,7 +3136,13 @@ const BiomedicalCity: React.FC = () => {
             2.4,
             0,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           CHECK-IN CAMERA
+        ===================================================== */
+
+        else if (
           idx === 2
         ) {
           fp = [
@@ -3022,7 +3168,13 @@ const BiomedicalCity: React.FC = () => {
             2.0,
             -0.5,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           EXAMINATION CAMERA
+        ===================================================== */
+
+        else if (
           idx === 3
         ) {
           fp = [
@@ -3048,89 +3200,104 @@ const BiomedicalCity: React.FC = () => {
             1.35,
             -0.7,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           BIOSIGNALS CAMERA — MOVED TO LEFT
+           
+           IMPORTANT:
+           x is now NEGATIVE.
+           
+           The camera is physically placed on the LEFT side
+           of the examination bed instead of the right.
+           
+           It is also farther away and higher.
+           
+           Result:
+           - complete patient
+           - head visible
+           - torso visible
+           - both legs visible
+           - feet visible
+           - sensor area visible
+           - monitor remains visible on the right
+        ===================================================== */
+
+        else if (
           idx === 4
         ) {
-          /*
-           * =====================================================
-           * BIOSIGNALS CAMERA — FIXED
-           * =====================================================
-           *
-           * Previous framing was too close and could crop the
-           * patient's legs/feet.
-           *
-           * The new camera:
-           *
-           * 1. moves farther away
-           * 2. moves higher
-           * 3. looks toward the middle of the patient
-           * 4. keeps the monitor on the right
-           *
-           * This gives a much wider medical-documentary shot.
-           */
-
           fp = [
-            12.5,
-            7.2,
+            -12.5,
+            7.4,
             11.8,
           ];
 
           tp = [
-            8.4,
-            5.2,
-            8.2,
-          ];
-
-          fl = [
-            -0.15,
-            2.0,
-            0.0,
-          ];
-
-          tl = [
-            1.5,
-            2.15,
-            -0.8,
-          ];
-        } else if (
-          idx === 5
-        ) {
-          /*
-           * =====================================================
-           * AI ANALYSIS CAMERA — FIXED
-           * =====================================================
-           *
-           * Wider composition so the patient is not lost
-           * behind the AI display.
-           *
-           * The AI screen remains clearly visible while the
-           * examination scene still reads as a whole.
-           */
-
-          fp = [
-            13.5,
-            7.8,
-            12.5,
-          ];
-
-          tp = [
-            9.5,
-            5.3,
+            -8.0,
+            5.4,
             9.0,
           ];
 
           fl = [
-            -0.4,
-            2.25,
-            -0.3,
+            -0.2,
+            1.9,
+            -0.15,
+          ];
+
+          tl = [
+            0.9,
+            2.0,
+            -0.65,
+          ];
+        }
+
+        /* =====================================================
+           AI ANALYSIS CAMERA — MOVED TO LEFT
+           
+           The previous camera was on the right.
+           
+           New position:
+             x = -14.5
+           
+           The camera looks diagonally across the room.
+           
+           This makes the patient appear in the foreground
+           while the AI screen remains clearly readable.
+        ===================================================== */
+
+        else if (
+          idx === 5
+        ) {
+          fp = [
+            -14.5,
+            8.2,
+            12.8,
+          ];
+
+          tp = [
+            -9.0,
+            5.8,
+            9.4,
+          ];
+
+          fl = [
+            -0.5,
+            2.1,
+            -0.35,
           ];
 
           tl = [
             0,
             3.0,
-            -3.9,
+            -4.0,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           ROBOT CAMERA
+        ===================================================== */
+
+        else if (
           idx === 6
         ) {
           fp = [
@@ -3156,7 +3323,13 @@ const BiomedicalCity: React.FC = () => {
             1.6,
             -0.6,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           RESULT CAMERA
+        ===================================================== */
+
+        else if (
           idx === 7
         ) {
           fp = [
@@ -3182,33 +3355,45 @@ const BiomedicalCity: React.FC = () => {
             1.5,
             -0.5,
           ];
-        } else if (
+        }
+
+        /* =====================================================
+           PATIENT STANDING CAMERA
+        ===================================================== */
+
+        else if (
           idx === 8
         ) {
           fp = [
-            7.5,
-            4.8,
-            7.5,
+            8.2,
+            5.4,
+            8.5,
           ];
 
           tp = [
-            6.8,
+            6.5,
             4.0,
-            6.8,
+            7.0,
           ];
 
           fl = [
             0,
-            1.5,
-            0.2,
+            1.45,
+            0.4,
           ];
 
           tl = [
             0,
-            1.6,
-            0.3,
+            1.55,
+            0.5,
           ];
-        } else {
+        }
+
+        /* =====================================================
+           SIGNATURE CAMERA
+        ===================================================== */
+
+        else {
           fp = [
             11,
             7,
