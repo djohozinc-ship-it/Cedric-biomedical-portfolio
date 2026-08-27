@@ -81,7 +81,6 @@ const BiomedicalCity: React.FC = () => {
       const shoe = M(0x11171b, 0.28, 0.72);
       const white = M(0xf4f5f1, 0.9, 0.02);
       const red = M(0xe15b62, 0.34, 0.2, 0xa51b22, 1.4);
-      const yellow = M(0xf1c85c, 0.34, 0.2, 0xb98518, 1.3);
       const glass = new THREE.MeshPhysicalMaterial({ color: 0x9ed5df, transparent: true, opacity: 0.34, roughness: 0.07, metalness: 0.08 });
 
       const box = (q: THREE.Object3D, p: V3, s: V3, mat: THREE.Material) => { const o = new THREE.Mesh(new THREE.BoxGeometry(...s), mat); o.position.set(...p); o.castShadow = true; o.receiveShadow = true; q.add(o); return o; };
@@ -115,7 +114,7 @@ const BiomedicalCity: React.FC = () => {
 
       // Patient: complete human silhouette with face, hair, hands, legs and shoes.
       const patientBody = new THREE.Group(); g.patient.add(patientBody);
-      const head = sphere(patientBody, [0, 3.02, 0], 0.36, skin);
+      sphere(patientBody, [0, 3.02, 0], 0.36, skin);
       sphere(patientBody, [0, 3.27, -0.02], 0.31, dark); // hair
       sphere(patientBody, [-0.12, 3.04, -0.33], 0.035, dark); sphere(patientBody, [0.12, 3.04, -0.33], 0.035, dark);
       cyl(patientBody, [0, 2.62, 0], 0.12, 0.22, skin);
