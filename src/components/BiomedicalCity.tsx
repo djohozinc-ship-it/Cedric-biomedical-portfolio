@@ -1,13 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './BiomedicalCity.scss';
 
-type Point = { x: number; y: number };
+type Stage = {
+  title: string;
+  subtitle: string;
+};
+
+const stages: Stage[] = [
+  { title: 'ELECTRONICS', subtitle: 'A signal begins in hardware.' },
+  { title: 'SENSORS', subtitle: 'The body becomes measurable data.' },
+  { title: 'EMBEDDED SYSTEMS', subtitle: 'A controller turns measurements into information.' },
+  { title: 'AI & DATA', subtitle: 'Algorithms transform information into insight.' },
+  { title: 'MEDICAL ROBOTICS', subtitle: 'Engineering becomes action for healthcare.' },
+];
 
 const BiomedicalCity: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [speed, setSpeed] = useState(0);
-  const [auto, setAuto] = useState(true);
-  const [nearCenter, setNearCenter] = useState(false);
+  const [stageIndex, setStageIndex] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -17,159 +26,208 @@ const BiomedicalCity: React.FC = () => {
 
     let frame = 0;
     let running = true;
-    let car = { x: 0, z: 0, lane: 0, t: 0 };
-    const keys: Record<string, boolean> = {};
-    const buildings = Array.from({ length: 26 }, (_, i) => ({
-      side: i % 2 ? 1 : -1,
-      z: 90 + i * 55,
-      h: 35 + ((i * 29) % 80),
-      w: 35 + ((i * 17) % 35),
-    }));
+    let start = performance.now();
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = canvas.clientWidth * dpr;
-      canvas.height = canvas.clientHeight * dpr;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(canvas.clientWidth * dpr);
+      canvas.height = Math.floor(canvas.clientHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    resize();
-    window.addEventListener('resize', resize);
 
-    const down = (e: KeyboardEvent) => { keys[e.key.toLowerCase()] = true; };
-    const up = (e: KeyboardEvent) => { keys[e.key.toLowerCase()] = false; };
-    window.addEventListener('keydown', down);
-    window.addEventListener('keyup', up);
-
-    const project = (x: number, z: number, y = 0): Point & { scale: number } => {
-      const horizon = canvas.clientHeight * 0.43;
-      const depth = Math.max(40, z + 120);
-      const scale = 260 / depth;
-      return {
-        x: canvas.clientWidth / 2 + (x - car.x) * scale,
-        y: horizon + y * scale + 120 * scale,
-        scale,
-      };
+    const roundedRect = (x: number, y: number, w: number, h: number, r: number) => {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, r);
     };
 
-    const drawBuilding = (b: typeof buildings[number]) => {
-      const p = project(b.side * 82, b.z);
-      const w = b.w * p.scale;
-      const h = b.h * p.scale;
-      ctx.fillStyle = 'rgba(8, 28, 45, .94)';
-      ctx.fillRect(p.x - w / 2, p.y - h, w, h);
-      ctx.strokeStyle = 'rgba(55, 220, 255, .35)';
-      ctx.strokeRect(p.x - w / 2, p.y - h, w, h);
-      for (let y = p.y - h + 10 * p.scale; y < p.y - 5; y += 15 * p.scale) {
-        ctx.fillStyle = 'rgba(91, 225, 255, .35)';
-        ctx.fillRect(p.x - w / 2 + 7 * p.scale, y, Math.max(2, 5 * p.scale), Math.max(2, 4 * p.scale));
+    const drawPulse = (x: number, y: number, width: number, phase: number) => {
+      ctx.beginPath();
+      for (let i = 0; i <= width; i += 2) {
+        const t = i / width;
+        const yy = y + Math.sin(t * Math.PI * 8 + phase) * (4 + Math.sin(t * Math.PI) * 10);
+        if (i === 0) ctx.moveTo(x + i, yy);
+        else ctx.lineTo(x + i, yy);
       }
+      ctx.stroke();
     };
 
-    const draw = () => {
+    const draw = (now: number) => {
       if (!running) return;
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
+      const elapsed = (now - start) / 1000;
       ctx.clearRect(0, 0, w, h);
 
       const sky = ctx.createLinearGradient(0, 0, 0, h);
-      sky.addColorStop(0, '#030b17');
-      sky.addColorStop(0.55, '#071b2b');
+      sky.addColorStop(0, '#030914');
+      sky.addColorStop(0.58, '#071b2a');
       sky.addColorStop(1, '#02070d');
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, w, h);
 
-      ctx.fillStyle = 'rgba(52, 215, 255, .08)';
-      for (let i = 0; i < 70; i++) {
-        const x = (i * 83) % w;
-        const y = (i * 47) % (h * .42);
-        ctx.fillRect(x, y, 1.5, 1.5);
+      // Subtle laboratory/city background.
+      ctx.strokeStyle = 'rgba(85, 220, 255, .07)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 42) {
+        ctx.beginPath(); ctx.moveTo(x, h * .42); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = h * .42; y < h; y += 42) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
       }
 
-      // road
-      const horizon = h * .43;
-      ctx.fillStyle = '#071018';
-      ctx.beginPath();
-      ctx.moveTo(w * .49, horizon);
-      ctx.lineTo(w * .51, horizon);
-      ctx.lineTo(w * .96, h);
-      ctx.lineTo(w * .04, h);
-      ctx.closePath();
-      ctx.fill();
+      const cx = w * 0.58;
+      const cy = h * 0.56;
+      const scale = Math.min(w / 1100, h / 650);
 
-      ctx.strokeStyle = 'rgba(52, 220, 255, .5)';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(w*.49, horizon); ctx.lineTo(w*.03, h); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(w*.51, horizon); ctx.lineTo(w*.97, h); ctx.stroke();
-
-      buildings.forEach(drawBuilding);
-
-      for (let i = 0; i < 9; i++) {
-        const z = 30 + i * 75 + ((car.z * 1.2) % 75);
-        const p = project(0, z);
-        const len = Math.max(4, 22 * p.scale);
-        ctx.strokeStyle = 'rgba(220, 250, 255, .75)';
-        ctx.lineWidth = Math.max(1, 3 * p.scale);
-        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, p.y + len); ctx.stroke();
-      }
-
-      // vehicle
-      const cx = w / 2;
-      const cy = h * .78;
+      // Central biomedical workstation.
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.shadowBlur = 24;
-      ctx.shadowColor = '#29dfff';
-      ctx.fillStyle = '#142d42';
-      ctx.beginPath(); ctx.roundRect(-38, -12, 76, 30, 10); ctx.fill();
-      ctx.fillStyle = '#68eaff';
-      ctx.fillRect(-22, -20, 44, 12);
-      ctx.fillStyle = '#061018';
-      ctx.fillRect(-17, -17, 34, 8);
-      ctx.fillStyle = '#baf7ff';
-      ctx.fillRect(-31, 6, 12, 4); ctx.fillRect(19, 6, 12, 4);
+      ctx.scale(scale, scale);
+
+      // Floor platform.
+      ctx.fillStyle = 'rgba(20, 43, 58, .72)';
+      ctx.beginPath();
+      ctx.ellipse(0, 125, 390, 48, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(84, 225, 255, .22)';
+      ctx.stroke();
+
+      // Main monitor.
+      ctx.fillStyle = '#0b1c2b';
+      roundedRect(-190, -165, 380, 230, 16); ctx.fill();
+      ctx.strokeStyle = 'rgba(93, 225, 255, .42)'; ctx.stroke();
+      ctx.fillStyle = '#020b12';
+      roundedRect(-168, -143, 336, 170, 8); ctx.fill();
+
+      // ECG/data visualization on monitor.
+      ctx.strokeStyle = '#6cecff';
+      ctx.lineWidth = 2;
+      drawPulse(-145, -57, 290, elapsed * 5);
+      ctx.strokeStyle = 'rgba(108, 236, 255, .18)';
+      ctx.lineWidth = 1;
+      for (let y = -115; y <= 5; y += 30) {
+        ctx.beginPath(); ctx.moveTo(-150, y); ctx.lineTo(150, y); ctx.stroke();
+      }
+
+      // Workstation stand.
+      ctx.fillStyle = '#122b3d';
+      ctx.fillRect(-12, 65, 24, 55);
+      ctx.fillRect(-70, 118, 140, 9);
+
+      // Circuit board on the left.
+      ctx.fillStyle = '#0b2b2b';
+      roundedRect(-365, 10, 125, 78, 8); ctx.fill();
+      ctx.strokeStyle = 'rgba(82, 232, 191, .55)'; ctx.stroke();
+      ctx.fillStyle = '#3dd6b0';
+      ctx.fillRect(-335, 30, 24, 24);
+      ctx.fillRect(-293, 30, 42, 8);
+      ctx.fillRect(-293, 47, 26, 8);
+      ctx.strokeStyle = 'rgba(88, 235, 194, .5)';
+      ctx.beginPath(); ctx.moveTo(-355, 68); ctx.lineTo(-320, 68); ctx.lineTo(-305, 56); ctx.lineTo(-255, 56); ctx.stroke();
+
+      // Sensor module on the right.
+      ctx.fillStyle = '#152a38';
+      roundedRect(240, 10, 125, 78, 8); ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, .2)'; ctx.stroke();
+      ctx.fillStyle = '#d9f7ff';
+      ctx.beginPath(); ctx.arc(275, 49, 17, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#183847';
+      ctx.beginPath(); ctx.arc(275, 49, 7, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#66e8ff';
+      ctx.fillRect(305, 30, 38, 6); ctx.fillRect(305, 47, 27, 6); ctx.fillRect(305, 64, 45, 6);
+
+      // Medical robotic arm.
+      ctx.strokeStyle = 'rgba(215, 239, 246, .9)';
+      ctx.lineWidth = 15;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(305, 115);
+      ctx.lineTo(335, 52);
+      ctx.lineTo(290, -12);
+      ctx.lineTo(330, -72);
+      ctx.stroke();
+      ctx.fillStyle = '#193445';
+      [[305,115],[335,52],[290,-12],[330,-72]].forEach(([x,y]) => { ctx.beginPath(); ctx.arc(x,y,12,0,Math.PI*2); ctx.fill(); });
+      ctx.fillStyle = '#73eaff';
+      ctx.fillRect(322, -91, 18, 34);
+      ctx.fillRect(338, -89, 18, 28);
+
+      // Moving data particles connect the system.
+      const particle = (Math.sin(elapsed * 2.2) + 1) / 2;
+      const px = -360 + particle * 720;
+      ctx.fillStyle = '#72edff';
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = '#72edff';
+      ctx.beginPath(); ctx.arc(px, -105, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+
       ctx.restore();
 
-      const target = auto ? 42 : (keys.w || keys.arrowup ? 60 : 0);
-      car.t += .012;
-      car.z += target * .012;
-      if (keys.a || keys.arrowleft) car.x -= 1.2;
-      if (keys.d || keys.arrowright) car.x += 1.2;
-      if (auto) car.x = Math.sin(car.t) * 10;
-      car.x *= .985;
-      car.z %= 1100;
+      // Stage markers.
+      const lineY = h * 0.88;
+      const left = w * 0.22;
+      const right = w * 0.9;
+      ctx.strokeStyle = 'rgba(109, 227, 255, .18)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(left, lineY); ctx.lineTo(right, lineY); ctx.stroke();
+      stages.forEach((_, i) => {
+        const x = left + ((right - left) * i) / (stages.length - 1);
+        ctx.fillStyle = i === stageIndex ? '#72edff' : 'rgba(180, 225, 235, .35)';
+        ctx.beginPath(); ctx.arc(x, lineY, i === stageIndex ? 5 : 3, 0, Math.PI * 2); ctx.fill();
+      });
 
-      const near = Math.abs(car.x - 82) < 45 && car.z > 300 && car.z < 520;
-      setNearCenter(near);
-      setSpeed(Math.round(target));
       frame = requestAnimationFrame(draw);
     };
-    draw();
+
+    resize();
+    window.addEventListener('resize', resize);
+    frame = requestAnimationFrame(draw);
+
+    const timer = window.setInterval(() => {
+      setStageIndex(v => (v + 1) % stages.length);
+    }, 3600);
 
     return () => {
       running = false;
       cancelAnimationFrame(frame);
+      window.clearInterval(timer);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('keydown', down);
-      window.removeEventListener('keyup', up);
     };
-  }, [auto]);
+  }, [stageIndex]);
+
+  const stage = stages[stageIndex];
 
   return (
     <section className="biomedical-city" id="city">
-      <canvas ref={canvasRef} aria-label="Cédric Biomedical City" />
+      <canvas ref={canvasRef} aria-label="Animated biomedical engineering laboratory" />
       <div className="city-vignette" />
       <div className="city-hud">
         <div className="city-kicker">BIOMEDICAL ENGINEERING • 2026</div>
-        <h2>Cédric Biomedical City</h2>
-        <p>Explore a living digital city built around biomedical engineering, AI and connected healthcare.</p>
-        <div className="city-actions">
-          <button onClick={() => setAuto(v => !v)}>{auto ? 'MANUAL DRIVE' : 'AUTO DRIVE'}</button>
-          <span className="city-speed">{speed} km/h</span>
+        <h2>Biomedical City</h2>
+        <div className="city-story">
+          <span className="city-stage-number">0{stageIndex + 1}</span>
+          <div>
+            <strong>{stage.title}</strong>
+            <p>{stage.subtitle}</p>
+          </div>
         </div>
-        <div className="city-controls">WASD / ↑ ↓ ← → &nbsp; • &nbsp; mobile-friendly</div>
-        {nearCenter && <div className="city-card"><strong>BIOMEDICAL ENGINEERING CENTER</strong><br/>Intelligent medical systems • electronics • AI • maintenance</div>}
+        <p className="city-description">
+          From electronics and sensors to intelligent systems and medical robotics —
+          follow the chain from a physical signal to a healthcare solution.
+        </p>
+        <div className="city-progress">
+          {stages.map((item, i) => (
+            <button
+              key={item.title}
+              className={i === stageIndex ? 'active' : ''}
+              onClick={() => setStageIndex(i)}
+              aria-label={`Show ${item.title}`}
+            />
+          ))}
+        </div>
+        <div className="city-controls">A living engineering system • click the points to explore</div>
       </div>
-      <div className="city-label">DRIVE THROUGH MY WORK →</div>
+      <div className="city-label">SIGNAL → DATA → INTELLIGENCE → CARE</div>
     </section>
   );
 };
