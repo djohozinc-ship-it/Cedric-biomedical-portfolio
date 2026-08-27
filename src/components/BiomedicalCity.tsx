@@ -170,7 +170,6 @@ const BiomedicalCity: React.FC = () => {
       // Patient monitor with animated traces drawn directly into a canvas.
       box(groups.monitor, [3.8, 2.7, -1.9], [3.0, 4.6, 0.45], dark);
       const vitalScreen = makeScreen(1100, 850); vitalScreen.mesh.position.set(3.8, 2.85, -2.15); vitalScreen.mesh.scale.set(0.95, 0.95, 0.95); groups.monitor.add(vitalScreen.mesh);
-      const cyl(groups.monitor, [3.8, 0.9, -1.9], 0.12, 2.2, steel);
       cyl(groups.monitor, [3.8, 0.25, -1.9], 0.65, 0.18, dark);
       clearScreen(vitalScreen, 'PATIENT VITALS');
 
