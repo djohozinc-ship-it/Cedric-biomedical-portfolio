@@ -1,398 +1,122 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './BiomedicalCity.scss';
 
-type Scene = { title: string; subtitle: string; duration: number };
+declare const THREE: any;
 
+type Scene = { title: string; subtitle: string; duration: number };
 const scenes: Scene[] = [
-  { title: 'ARRIVAL', subtitle: 'The patient arrives at the future hospital.', duration: 3000 },
-  { title: 'ENTRY', subtitle: 'The doors open and welcome the patient inside.', duration: 3000 },
-  { title: 'CHECK-IN', subtitle: 'An intelligent station completes the check-in.', duration: 3000 },
-  { title: 'CORRIDOR', subtitle: 'The patient is guided toward the examination room.', duration: 3000 },
-  { title: 'EXAMINATION', subtitle: 'Sensors position themselves around the patient.', duration: 4000 },
+  { title: 'ARRIVAL', subtitle: 'The patient approaches the future hospital.', duration: 3000 },
+  { title: 'ENTRY', subtitle: 'Automatic doors welcome the patient.', duration: 3000 },
+  { title: 'CHECK-IN', subtitle: 'An intelligent station prepares the patient.', duration: 3000 },
+  { title: 'CORRIDOR', subtitle: 'The patient is guided to the examination room.', duration: 3000 },
+  { title: 'EXAMINATION', subtitle: 'Medical sensors position around the patient.', duration: 4000 },
   { title: 'BIOSIGNALS', subtitle: 'ECG, SpO₂ and temperature become live signals.', duration: 3000 },
   { title: 'ANALYSIS', subtitle: 'The system transforms signals into clinical information.', duration: 3000 },
   { title: 'ROBOTICS', subtitle: 'A medical robotic arm assists with precision.', duration: 3000 },
-  { title: 'CARE', subtitle: 'Technology brings the care team back to the patient.', duration: 3000 },
+  { title: 'CARE', subtitle: 'Technology brings the journey back to the patient.', duration: 3000 },
   { title: 'SIGNATURE', subtitle: 'Engineering technology for better healthcare.', duration: 2000 },
 ];
+const totalDuration = scenes.reduce((s, x) => s + x.duration, 0);
+const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+const ease = (v: number) => v * v * (3 - 2 * v);
 
-const totalDuration = scenes.reduce((sum, scene) => sum + scene.duration, 0);
-
-const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const ease = (value: number) => value * value * (3 - 2 * value);
+function loadThree() {
+  return new Promise<void>((resolve, reject) => {
+    if (typeof THREE !== 'undefined') return resolve();
+    const old = document.querySelector('script[data-biomedical-three]');
+    if (old) { old.addEventListener('load', () => resolve()); old.addEventListener('error', reject); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.min.js';
+    s.async = true; s.dataset.biomedicalThree = 'true'; s.onload = () => resolve(); s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
 
 const BiomedicalCity: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mountRef = useRef<HTMLDivElement>(null);
+  const timeline = useRef(0);
+  const paused = useRef(false);
   const [sceneIndex, setSceneIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const sceneIndexRef = useRef(0);
-  const pausedRef = useRef(false);
-  const timelineRef = useRef(0);
-  const lastFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !ctx) return;
+    let dead = false; let raf = 0; let renderer: any;
+    loadThree().then(() => {
+      if (dead || !mountRef.current) return;
+      const T = THREE, mount = mountRef.current;
+      const scene = new T.Scene(); scene.background = new T.Color(0x02070d); scene.fog = new T.FogExp2(0x06141d, 0.018);
+      const camera = new T.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 180);
+      renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75)); renderer.setSize(mount.clientWidth, mount.clientHeight); renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap; renderer.outputColorSpace = T.SRGBColorSpace; mount.appendChild(renderer.domElement);
+      scene.add(new T.HemisphereLight(0xbdefff, 0x071018, 2));
+      const key = new T.DirectionalLight(0xd9f7ff, 3); key.position.set(8, 18, 10); key.castShadow = true; scene.add(key);
+      const glowLight = new T.PointLight(0x55ddff, 16, 42); glowLight.position.set(-10, 7, 2); scene.add(glowLight);
+      const groups: Record<string, any> = {}; ['hospital','patient','entry','checkin','corridor','exam','monitor','analysis','robot'].forEach(k => { groups[k] = new T.Group(); scene.add(groups[k]); });
+      const M = (c: number, metal=0.2, rough=0.45, e=0, ei=0) => new T.MeshStandardMaterial({ color:c, metalness:metal, roughness:rough, emissive:e, emissiveIntensity:ei });
+      const dark=M(0x081820,.55,.32), blue=M(0x124258,.45,.35), white=M(0xdce9eb,.55,.3), cyan=M(0x55e6ff,.2,.2,0x2bdfff,2.3), glass=new T.MeshPhysicalMaterial({color:0x1a4557,transparent:true,opacity:.36,roughness:.08,metalness:.1});
+      const box=(g:any,x:number,y:number,z:number,sx:number,sy:number,sz:number,m:any)=>{const o=new T.Mesh(new T.BoxGeometry(sx,sy,sz),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;g.add(o);return o;};
+      const cyl=(g:any,x:number,y:number,z:number,r:number,h:number,m:any)=>{const o=new T.Mesh(new T.CylinderGeometry(r,r,h,20),m);o.position.set(x,y,z);o.castShadow=true;g.add(o);return o;};
 
-    let raf = 0;
-    let alive = true;
+      // Modern hospital exterior and approach.
+      box(groups.hospital,0,-.3,0,42,.5,34,M(0x07121a,.1,.82)); box(groups.hospital,0,5,-7,26,10,7,dark); box(groups.hospital,-11,3,-1.8,4,6.2,10,blue); box(groups.hospital,11,3,-1.8,4,6.2,10,blue);
+      box(groups.hospital,0,4.6,-3.25,9.2,9.2,.3,glass); box(groups.hospital,0,9.9,-3.25,9.6,.12,.12,cyan);
+      for(let y=2.1;y<9;y+=1.6) for(let x=-9;x<=9;x+=3) box(groups.hospital,x,y,-3.08,1.4,.82,.07,glass);
+      for(let z=8;z>=-20;z-=3.5) box(groups.hospital,-13.2,2.5,z,.06,5,.06,cyan);
 
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(canvas.clientWidth * dpr);
-      canvas.height = Math.floor(canvas.clientHeight * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
+      // Patient model: simple, readable and deliberately non-photorealistic.
+      box(groups.patient,0,1.65,0,.72,1.45,.42,white); cyl(groups.patient,0,2.65,0,.31,.5,white);
+      const armL=cyl(groups.patient,-.48,1.62,0,.11,1.15,white), armR=cyl(groups.patient,.48,1.62,0,.11,1.15,white); armL.rotation.z=-.12; armR.rotation.z=.12;
+      cyl(groups.patient,-.22,.45,0,.11,1.45,white); cyl(groups.patient,.22,.45,0,.11,1.45,white); groups.patient.scale.set(.8,.8,.8);
 
-    const roundedRect = (x: number, y: number, w: number, h: number, r: number) => {
-      ctx.beginPath();
-      ctx.roundRect(x, y, w, h, r);
-    };
+      // Entry doors.
+      box(groups.entry,-2,3,0,3.8,6,1.2,dark); box(groups.entry,2,3,0,3.8,6,1.2,dark);
+      const doorL=box(groups.entry,-1.05,2.6,.15,1.8,4.8,.12,glass), doorR=box(groups.entry,1.05,2.6,.15,1.8,4.8,.12,glass); box(groups.entry,0,5.2,.15,5.8,.12,.12,cyan);
 
-    const glow = (x: number, y: number, radius: number, alpha = 0.22) => {
-      const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-      gradient.addColorStop(0, `rgba(92,224,255,${alpha})`);
-      gradient.addColorStop(1, 'rgba(92,224,255,0)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
-    };
+      // Check-in station.
+      box(groups.checkin,0,1.5,0,2.2,3,.65,dark); box(groups.checkin,0,2.35,-.36,1.55,1.15,.08,M(0x102d3a,.2,.2,0x28cfff,1.4)); box(groups.checkin,0,.55,-.39,1.25,.08,.08,cyan);
 
-    const text = (value: string, x: number, y: number, size: number, color: string, weight = '400', align: CanvasTextAlign = 'left') => {
-      ctx.font = `${weight} ${size}px system-ui, -apple-system, sans-serif`;
-      ctx.fillStyle = color;
-      ctx.textAlign = align;
-      ctx.fillText(value, x, y);
-    };
+      // Corridor with perspective geometry.
+      box(groups.corridor,-5.2,2.4,-7,.35,5,24,dark); box(groups.corridor,5.2,2.4,-7,.35,5,24,dark); box(groups.corridor,0,-.05,-7,10.4,.12,24,M(0x0b2029,.2,.55));
+      for(let z=3;z>=-18;z-=4) box(groups.corridor,0,.03,z,.05,.04,1.6,cyan);
+      for(let z=1;z>=-17;z-=4){box(groups.corridor,-5,2.5,z,.08,4,2.2,glass);box(groups.corridor,5,2.5,z,.08,4,2.2,glass);}
 
-    const person = (x: number, y: number, scale: number, walk = 0, seated = false) => {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.scale(scale, scale);
-      ctx.strokeStyle = '#dcecef';
-      ctx.fillStyle = '#dcecef';
-      ctx.lineWidth = 4;
-      ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.arc(0, -58, 11, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(0, -45); ctx.lineTo(0, seated ? -5 : 12); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, -30); ctx.lineTo(-20 + walk, -10); ctx.moveTo(0, -30); ctx.lineTo(20 - walk, -10); ctx.stroke();
-      if (seated) {
-        ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(28, 8); ctx.lineTo(40, 35); ctx.moveTo(0, -5); ctx.lineTo(-22, 16); ctx.stroke();
-      } else {
-        ctx.beginPath(); ctx.moveTo(0, 12); ctx.lineTo(-15 - walk, 55); ctx.moveTo(0, 12); ctx.lineTo(15 + walk, 55); ctx.stroke();
-      }
-      ctx.restore();
-    };
+      // Examination bed + overhead sensor ring.
+      box(groups.exam,0,.82,0,5.8,.3,2.1,blue); box(groups.exam,0,1.18,-.35,5.2,.2,1.8,white); box(groups.exam,-2.45,2,0,.16,2.1,.16,dark); box(groups.exam,2.45,2,0,.16,2.1,.16,dark); box(groups.exam,0,3.05,0,.18,.18,.18,cyan);
+      const sensorRing=new T.Mesh(new T.TorusGeometry(2.25,.045,12,64),cyan); sensorRing.position.set(0,3.05,0); sensorRing.rotation.x=Math.PI/2; groups.exam.add(sensorRing); groups.exam.position.z=-1;
 
-    const hospital = (w: number, h: number, camera: number) => {
-      ctx.save();
-      ctx.translate(-camera * w * 0.05, 0);
-      ctx.fillStyle = '#0b202c';
-      ctx.fillRect(w * 0.31, h * 0.17, w * 0.62, h * 0.61);
-      ctx.fillStyle = '#102e3d';
-      ctx.fillRect(w * 0.04, h * 0.39, w * 0.34, h * 0.39);
-      ctx.strokeStyle = 'rgba(128,225,244,.18)';
-      ctx.lineWidth = 1;
-      for (let x = w * 0.35; x < w * 0.92; x += 76) {
-        ctx.beginPath(); ctx.moveTo(x, h * 0.18); ctx.lineTo(x, h * 0.77); ctx.stroke();
-      }
-      for (let y = h * 0.28; y < h * 0.75; y += 82) {
-        ctx.beginPath(); ctx.moveTo(w * 0.33, y); ctx.lineTo(w * 0.92, y); ctx.stroke();
-      }
-      ctx.fillStyle = '#06121a';
-      ctx.fillRect(w * 0.46, h * 0.48, w * 0.18, h * 0.30);
-      ctx.strokeStyle = 'rgba(101,231,255,.38)';
-      ctx.strokeRect(w * 0.46, h * 0.48, w * 0.18, h * 0.30);
-      ctx.fillStyle = 'rgba(76,210,239,.07)';
-      ctx.fillRect(w * 0.34, h * 0.20, w * 0.52, h * 0.05);
-      ctx.restore();
-    };
+      // Patient monitor + live ECG.
+      box(groups.monitor,0,2.9,-2.2,3.8,2.5,.25,dark); box(groups.monitor,0,2.9,-2.36,3.45,2.1,.06,M(0x07161d,.2,.2,0x28dfff,.8));
+      const ecg:any[]=[]; for(let i=0;i<48;i++) ecg.push(box(groups.monitor,-1.5+i*.064,3,-2.42,.05,.035,.025,cyan)); groups.monitor.position.set(4.2,0,-1);
 
-    const doors = (w: number, h: number, opening: number) => {
-      const cx = w * 0.58;
-      const top = h * 0.29;
-      const bottom = h * 0.79;
-      const half = w * 0.105;
-      const gap = half * opening;
-      ctx.fillStyle = '#07141d';
-      ctx.fillRect(cx - half, top, half - gap, bottom - top);
-      ctx.fillRect(cx + gap, top, half - gap, bottom - top);
-      ctx.strokeStyle = 'rgba(103,231,255,.45)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(cx - half, top, half - gap, bottom - top);
-      ctx.strokeRect(cx + gap, top, half - gap, bottom - top);
-      glow(cx, h * 0.52, w * 0.18, 0.13 + opening * 0.08);
-      text('AUTOMATIC ENTRY', cx, top - 16, 11, '#73eaff', '600', 'center');
-    };
+      // Analysis core.
+      const r1=new T.Mesh(new T.TorusGeometry(2.3,.05,12,64),cyan), r2=new T.Mesh(new T.TorusGeometry(1.45,.035,12,64),cyan); r1.position.set(0,3,0);r2.position.set(0,3,0);r2.rotation.x=Math.PI/2;groups.analysis.add(r1,r2);cyl(groups.analysis,0,3,0,.55,1.1,M(0x173d4d,.4,.15,0x29dfff,2));groups.analysis.position.z=-3;
 
-    const checkIn = (x: number, y: number, pulse: number) => {
-      ctx.fillStyle = '#0a1c27';
-      roundedRect(x, y, 190, 260, 18); ctx.fill();
-      ctx.strokeStyle = 'rgba(104,230,255,.45)'; ctx.stroke();
-      ctx.fillStyle = '#102c3b';
-      roundedRect(x + 18, y + 22, 154, 130, 10); ctx.fill();
-      text('WELCOME', x + 30, y + 50, 12, '#70e9ff', '700');
-      text('PATIENT CHECK-IN', x + 30, y + 73, 10, '#9bbac4');
-      ctx.strokeStyle = 'rgba(104,230,255,.7)';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(x + 30, y + 102); ctx.lineTo(x + 125 + Math.sin(pulse) * 15, y + 102); ctx.stroke();
-      text('ID VERIFIED', x + 30, y + 132, 10, '#bfeaf2', '600');
-      ctx.fillStyle = '#0e3342'; roundedRect(x + 18, y + 172, 154, 62, 10); ctx.fill();
-      text('VITALS READY', x + 30, y + 198, 10, '#73eaff', '600');
-      text('SpO₂  98%   HR  78', x + 30, y + 218, 9, '#a9c7cf');
-    };
+      // Real 3D articulated robotic arm.
+      cyl(groups.robot,0,.45,0,.8,.9,dark); const j1=new T.Group();j1.position.set(0,.9,0);groups.robot.add(j1);cyl(j1,0,1.1,0,.42,2.2,white);const j2=new T.Group();j2.position.set(0,2.15,0);j1.add(j2);cyl(j2,0,1.1,0,.34,2.1,white);const wrist=new T.Group();wrist.position.set(0,2.1,0);j2.add(wrist);cyl(wrist,0,.55,0,.24,1,white);box(wrist,0,1.05,-.12,.32,.55,.32,cyan);groups.robot.position.set(3.8,0,-1.4);
 
-    const corridor = (w: number, h: number, camera: number) => {
-      const vanishingX = w * (0.59 + camera * 0.02);
-      const vanishingY = h * 0.40;
-      ctx.fillStyle = '#071923';
-      ctx.beginPath(); ctx.moveTo(0, h); ctx.lineTo(w * 0.40, h * 0.44); ctx.lineTo(w * 0.72, h * 0.44); ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = 'rgba(107,225,246,.20)';
-      ctx.lineWidth = 2;
-      for (let i = 0; i < 7; i++) {
-        ctx.beginPath(); ctx.moveTo(w * (i / 7), h); ctx.lineTo(vanishingX, vanishingY); ctx.stroke();
-      }
-      for (let i = 0; i < 5; i++) {
-        const yy = h * (0.49 + i * 0.10);
-        ctx.beginPath(); ctx.moveTo(w * 0.12, yy); ctx.lineTo(w * 0.88, yy); ctx.stroke();
-      }
-      for (let i = 0; i < 4; i++) {
-        const x = w * (0.20 + i * 0.20);
-        ctx.fillStyle = '#0d2936';
-        ctx.fillRect(x, h * 0.28, w * 0.11, h * 0.18);
-      }
-      glow(vanishingX, vanishingY, w * 0.20, 0.10);
-    };
+      const visible=(names:string[])=>Object.entries(groups).forEach(([k,g])=>g.visible=names.includes(k));
+      const target=new T.Vector3(), from=new T.Vector3(), to=new T.Vector3();
+      const cameraMove=(p:number,a:number[],b:number[],ta:number[],tb:number[])=>{camera.position.lerpVectors(from.set(...a),to.set(...b),p);target.set(...ta).lerp(new T.Vector3(...tb),p);camera.lookAt(target);};
+      const clock=new T.Clock();
+      const animate=()=>{if(dead)return;const dt=Math.min(clock.getDelta(),.05);if(!paused.current)timeline.current=(timeline.current+dt*1000)%totalDuration;let cur=timeline.current,idx=0;while(idx<scenes.length-1&&cur>=scenes[idx].duration){cur-=scenes[idx].duration;idx++;}const p=ease(clamp(cur/scenes[idx].duration,0,1));setSceneIndex(v=>v===idx?v:idx);
+        visible(idx===0?['hospital','patient']:idx===1?['entry','patient']:idx===2?['checkin','patient']:idx===3?['corridor','patient']:idx<=5?['exam','patient','monitor']:idx===6?['analysis','monitor']:idx===7?['robot','patient']:idx===8?['exam','patient']:['hospital','patient']);
+        groups.patient.position.x=idx<=3?-4+p*7:0;groups.patient.position.z=idx===0?3.8-p*5:idx===3?4-p*7:idx>=4&&idx<=5?0:3.8;groups.patient.position.y=idx===4||idx===5?1.1:0;groups.patient.rotation.z=idx===4||idx===5?Math.PI/2:0;
+        doorL.position.x=-1.05-p*1.15;doorR.position.x=1.05+p*1.15;sensorRing.rotation.z=clock.elapsedTime*.45;r1.rotation.y=clock.elapsedTime*.7;r2.rotation.z=-clock.elapsedTime*.9;j1.rotation.z=Math.sin(clock.elapsedTime*1.2)*.28;j2.rotation.z=Math.sin(clock.elapsedTime*1.6+1)*.35;wrist.rotation.y=Math.sin(clock.elapsedTime*2.2)*.45;ecg.forEach((m:any,i:number)=>m.position.y=3+Math.sin(i*.5+clock.elapsedTime*8)*.06+(i%13===4?-.35:0));
+        if(idx===0)cameraMove(p,[15,9,22],[8,7,14],[0,3,-3],[0,3,0]);else if(idx===1)cameraMove(p,[8,4,13],[3.8,3.3,7],[0,2,0],[0,2,0]);else if(idx===2)cameraMove(p,[7,4.5,8],[5.5,3.3,6],[0,1.5,0],[0,1.7,0]);else if(idx===3)cameraMove(p,[8,3.8,8],[0,3,10],[0,1.5,-5],[0,2,-5]);else if(idx===4)cameraMove(p,[9,5,9],[6,3.5,6],[0,1.2,0],[0,1.4,0]);else if(idx===5)cameraMove(p,[7,3.5,7],[5,3.1,4],[1,2,-1],[4.2,2.8,-1]);else if(idx===6)cameraMove(p,[7,4.2,6],[4,3.2,4],[0,3,-3],[0,3,-3]);else if(idx===7)cameraMove(p,[9,5,8],[7,4.2,5],[3.8,2,-1],[3.8,2,-1]);else if(idx===8)cameraMove(p,[6,4,7],[4,3.2,5],[0,1.5,0],[0,1.5,0]);else cameraMove(p,[13,9,16],[17,10,21],[0,3,-3],[0,3,-3]);
+        renderer.render(scene,camera);raf=requestAnimationFrame(animate);};
+      const resize=()=>{camera.aspect=mount.clientWidth/mount.clientHeight;camera.updateProjectionMatrix();renderer.setSize(mount.clientWidth,mount.clientHeight);};window.addEventListener('resize',resize);animate();
+      (mount as any).__cleanup=()=>{window.removeEventListener('resize',resize);cancelAnimationFrame(raf);renderer.dispose();};
+    }).catch(()=>{if(mountRef.current)mountRef.current.dataset.error='three';});
+    return()=>{dead=true;cancelAnimationFrame(raf);const m=mountRef.current as any;if(m?.__cleanup)m.__cleanup();};
+  },[]);
 
-    const examBed = (w: number, h: number) => {
-      ctx.fillStyle = '#183441';
-      roundedRect(w * 0.43, h * 0.61, w * 0.30, 32, 8); ctx.fill();
-      ctx.fillStyle = '#d2e6ea';
-      roundedRect(w * 0.47, h * 0.57, w * 0.20, 50, 8); ctx.fill();
-      ctx.fillStyle = '#0b202c'; ctx.fillRect(w * 0.68, h * 0.62, 8, h * 0.14);
-      ctx.fillStyle = '#102b38'; ctx.fillRect(w * 0.42, h * 0.75, 10, h * 0.07); ctx.fillRect(w * 0.71, h * 0.75, 10, h * 0.07);
-    };
-
-    const sensor = (x: number, y: number, r: number, active: number) => {
-      ctx.strokeStyle = `rgba(111,232,255,${0.30 + active * 0.45})`;
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(x, y, r * 0.45, 0, Math.PI * 2); ctx.stroke();
-      glow(x, y, r * 1.8, 0.08 + active * 0.10);
-    };
-
-    const monitor = (x: number, y: number, w: number, h: number, time: number, detailed = true) => {
-      ctx.fillStyle = '#06131b'; roundedRect(x, y, w, h, 14); ctx.fill();
-      ctx.strokeStyle = 'rgba(111,230,255,.42)'; ctx.lineWidth = 1.5; ctx.stroke();
-      if (detailed) {
-        text('PATIENT MONITOR', x + 18, y + 25, 9, '#6feaff', '700');
-        ctx.strokeStyle = '#73eaff'; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(x + 18, y + 62);
-        for (let i = 0; i < w - 36; i += 3) {
-          const spike = i % 72 < 5 ? -18 : 0;
-          ctx.lineTo(x + 18 + i, y + 62 + Math.sin(i * 0.14 + time * 5) * 6 + spike);
-        }
-        ctx.stroke();
-        text('ECG', x + 18, y + h - 18, 9, '#a6c7ce');
-        text('98%', x + w * 0.50, y + h - 18, 9, '#a6c7ce');
-        text('SpO₂', x + w * 0.68, y + h - 18, 9, '#a6c7ce');
-      }
-    };
-
-    const robotArm = (x: number, y: number, scale: number, time: number) => {
-      const a = Math.sin(time * 1.6) * 0.28;
-      ctx.save(); ctx.translate(x, y); ctx.scale(scale, scale);
-      ctx.strokeStyle = '#d6e5e8'; ctx.lineWidth = 17; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(0, 130); ctx.lineTo(-12, 58); ctx.lineTo(32, -4); ctx.lineTo(18 + a * 45, -70); ctx.stroke();
-      ctx.fillStyle = '#0b2532';
-      [[0,130],[-12,58],[32,-4],[18+a*45,-70]].forEach(([jx, jy]) => { ctx.beginPath(); ctx.arc(jx, jy, 13, 0, Math.PI * 2); ctx.fill(); });
-      ctx.fillStyle = '#6feaff'; ctx.fillRect(10 + a * 45, -94, 15, 32);
-      ctx.restore();
-    };
-
-    const drawScene = (scene: number, local: number, w: number, h: number, nowSeconds: number) => {
-      const p = clamp(local / scenes[scene].duration, 0, 1);
-      const e = ease(p);
-      const camera = scene === 0 ? e : scene === 1 ? 1 - e : Math.sin(nowSeconds * 0.22) * 0.35;
-
-      const bg = ctx.createLinearGradient(0, 0, 0, h);
-      bg.addColorStop(0, '#020811'); bg.addColorStop(0.55, '#08202d'); bg.addColorStop(1, '#02070c');
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-
-      for (let i = 0; i < 12; i++) {
-        const x = (i * 173 + nowSeconds * 7) % (w + 80) - 40;
-        const y = h * (0.08 + (i % 6) * 0.14);
-        ctx.fillStyle = 'rgba(128,225,244,.08)'; ctx.fillRect(x, y, 2, 2);
-      }
-
-      if (scene <= 1) hospital(w, h, camera);
-
-      if (scene === 0) {
-        const px = w * (0.08 + e * 0.30);
-        person(px, h * 0.73, 0.88, Math.sin(nowSeconds * 9) * 5);
-        text('2035 • FUTURE HOSPITAL', w * 0.07, h * 0.26, 11, '#73eaff', '700');
-        text('A PATIENT ARRIVES', w * 0.07, h * 0.31, 30, '#e9fbff', '700');
-        text('The journey begins at the main entrance.', w * 0.07, h * 0.36, 13, '#a8c4cc');
-        glow(px, h * 0.66, 110, 0.08);
-      } else if (scene === 1) {
-        const opening = e;
-        doors(w, h, opening);
-        person(w * (0.47 + e * 0.11), h * 0.73, 0.88, Math.sin(nowSeconds * 8) * 4);
-        text('ENTRY', w * 0.08, h * 0.28, 11, '#73eaff', '700');
-        text('A seamless welcome.', w * 0.08, h * 0.34, 28, '#e9fbff', '700');
-      } else if (scene === 2) {
-        hospital(w, h, 0);
-        checkIn(w * 0.29, h * 0.27, nowSeconds);
-        person(w * 0.68, h * 0.72, 0.86, Math.sin(nowSeconds * 3) * 2);
-        text('CHECK-IN', w * 0.08, h * 0.28, 11, '#73eaff', '700');
-        text('The hospital identifies and prepares.', w * 0.08, h * 0.34, 25, '#e9fbff', '700');
-      } else if (scene === 3) {
-        corridor(w, h, e);
-        const px = w * (0.16 + e * 0.47);
-        person(px, h * 0.73, 0.82, Math.sin(nowSeconds * 8) * 4);
-        text('CORRIDOR • GUIDED ROUTE', w * 0.08, h * 0.26, 11, '#73eaff', '700');
-        text('Patient → Examination Room 03', w * 0.08, h * 0.32, 25, '#e9fbff', '700');
-        text('The environment guides the next step.', w * 0.08, h * 0.37, 12, '#a8c4cc');
-      } else if (scene === 4) {
-        examBed(w, h);
-        person(w * 0.56, h * 0.60, 0.72, 0, true);
-        const active = Math.sin(nowSeconds * 4) * 0.5 + 0.5;
-        sensor(w * 0.56, h * 0.42, 28, active);
-        sensor(w * 0.45, h * 0.57, 18, active);
-        sensor(w * 0.68, h * 0.57, 18, active);
-        monitor(w * 0.72, h * 0.27, w * 0.20, h * 0.22, nowSeconds);
-        text('EXAMINATION', w * 0.08, h * 0.25, 11, '#73eaff', '700');
-        text('Sensors position around the patient.', w * 0.08, h * 0.31, 24, '#e9fbff', '700');
-      } else if (scene === 5) {
-        monitor(w * 0.44, h * 0.22, w * 0.42, h * 0.40, nowSeconds);
-        person(w * 0.27, h * 0.72, 0.78);
-        const pulse = Math.sin(nowSeconds * 6) * 0.5 + 0.5;
-        glow(w * 0.64, h * 0.42, 150, 0.06 + pulse * 0.07);
-        text('LIVE BIOSIGNALS', w * 0.08, h * 0.26, 11, '#73eaff', '700');
-        text('ECG • SpO₂ • TEMPERATURE', w * 0.08, h * 0.32, 24, '#e9fbff', '700');
-        text('Signals move from the patient to the clinical system.', w * 0.08, h * 0.38, 12, '#a8c4cc');
-      } else if (scene === 6) {
-        monitor(w * 0.46, h * 0.22, w * 0.39, h * 0.39, nowSeconds);
-        ctx.strokeStyle = 'rgba(111,232,255,.45)'; ctx.lineWidth = 2;
-        for (let i = 0; i < 4; i++) {
-          const yy = h * (0.70 + i * 0.035);
-          ctx.beginPath(); ctx.moveTo(w * 0.48, yy); ctx.lineTo(w * (0.58 + e * 0.24), yy); ctx.stroke();
-        }
-        glow(w * 0.70, h * 0.42, 180, 0.11);
-        text('INTELLIGENT ANALYSIS', w * 0.08, h * 0.26, 11, '#73eaff', '700');
-        text('Signal → information → clinical insight', w * 0.08, h * 0.32, 24, '#e9fbff', '700');
-        text('The system compares, interprets and prepares the next action.', w * 0.08, h * 0.38, 12, '#a8c4cc');
-      } else if (scene === 7) {
-        robotArm(w * 0.62, h * 0.36, 0.80, nowSeconds);
-        person(w * 0.78, h * 0.70, 0.70);
-        ctx.fillStyle = '#102c38'; roundedRect(w * 0.50, h * 0.69, w * 0.30, 14, 7); ctx.fill();
-        text('ROBOTIC ASSISTANCE', w * 0.08, h * 0.26, 11, '#73eaff', '700');
-        text('Precision supports human care.', w * 0.08, h * 0.32, 25, '#e9fbff', '700');
-        text('CONTROL • PRECISION • SAFETY', w * 0.08, h * 0.38, 11, '#a8c4cc', '600');
-      } else if (scene === 8) {
-        person(w * (0.48 + e * 0.05), h * 0.70, 0.86);
-        const heartScale = 1 + Math.sin(nowSeconds * 5) * 0.04;
-        ctx.save(); ctx.translate(w * 0.49, h * 0.50); ctx.scale(heartScale, heartScale);
-        ctx.fillStyle = '#72eaff'; ctx.beginPath();
-        ctx.moveTo(0, 25); ctx.bezierCurveTo(-52, -8, -40, -43, -14, -39); ctx.bezierCurveTo(0, -36, 0, -20, 0, -20); ctx.bezierCurveTo(0, -20, 0, -36, 14, -39); ctx.bezierCurveTo(40, -43, 52, -8, 0, 25); ctx.fill(); ctx.restore();
-        glow(w * 0.49, h * 0.49, 100, 0.12);
-        text('CARE', w * 0.08, h * 0.26, 11, '#73eaff', '700');
-        text('The technology returns to the patient.', w * 0.08, h * 0.32, 25, '#e9fbff', '700');
-        text('The system has one purpose: better healthcare.', w * 0.08, h * 0.38, 12, '#a8c4cc');
-      } else {
-        const zoom = 1 - e * 0.18;
-        ctx.save(); ctx.translate(w * 0.50, h * 0.52); ctx.scale(zoom, zoom); ctx.translate(-w * 0.50, -h * 0.52);
-        hospital(w, h, 0);
-        person(w * 0.50, h * 0.73, 0.72);
-        glow(w * 0.50, h * 0.50, 190, 0.12);
-        ctx.restore();
-        const alpha = clamp(e * 1.8, 0, 1);
-        ctx.fillStyle = `rgba(2,8,14,${alpha * 0.48})`; ctx.fillRect(0, 0, w, h);
-        text('BIOMEDICAL CITY', w * 0.50, h * 0.40, 12, '#73eaff', '700', 'center');
-        text('ENGINEERING TECHNOLOGY FOR BETTER HEALTHCARE', w * 0.50, h * 0.48, 22, '#e9fbff', '700', 'center');
-      }
-
-      const progress = clamp((timelineRef.current / totalDuration), 0, 1);
-      ctx.fillStyle = 'rgba(120,220,240,.14)'; ctx.fillRect(w * 0.08, h * 0.90, w * 0.84, 2);
-      ctx.fillStyle = '#73eaff'; ctx.fillRect(w * 0.08, h * 0.90, w * 0.84 * progress, 2);
-    };
-
-    const draw = (now: number) => {
-      if (!alive) return;
-      if (lastFrameRef.current === null) lastFrameRef.current = now;
-      const delta = Math.min(now - lastFrameRef.current, 50);
-      lastFrameRef.current = now;
-
-      if (!pausedRef.current) {
-        timelineRef.current += delta;
-        if (timelineRef.current >= totalDuration) timelineRef.current = 0;
-      }
-
-      let cursor = timelineRef.current;
-      let index = 0;
-      while (index < scenes.length - 1 && cursor >= scenes[index].duration) {
-        cursor -= scenes[index].duration;
-        index += 1;
-      }
-      if (sceneIndexRef.current !== index) {
-        sceneIndexRef.current = index;
-        setSceneIndex(index);
-      }
-
-      drawScene(index, cursor, canvas.clientWidth, canvas.clientHeight, now / 1000);
-      raf = requestAnimationFrame(draw);
-    };
-
-    resize();
-    window.addEventListener('resize', resize);
-    raf = requestAnimationFrame(draw);
-    return () => {
-      alive = false;
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  const jumpToScene = (index: number) => {
-    const safeIndex = clamp(index, 0, scenes.length - 1);
-    timelineRef.current = scenes.slice(0, safeIndex).reduce((sum, scene) => sum + scene.duration, 0);
-    sceneIndexRef.current = safeIndex;
-    setSceneIndex(safeIndex);
-  };
-
-  const togglePause = () => {
-    pausedRef.current = !pausedRef.current;
-    setIsPaused(pausedRef.current);
-  };
-
-  const scene = scenes[sceneIndex];
-
-  return (
-    <section className="biomedical-city" id="city" aria-label="Biomedical City — A Patient's Journey">
-      <canvas ref={canvasRef} aria-label="Cinematic biomedical patient journey animation" />
-      <div className="city-vignette" />
-
-      <div className="city-hud">
-        <div className="city-kicker">BIOMEDICAL CITY • A PATIENT'S JOURNEY • 2035</div>
-        <h2>Biomedical City</h2>
-        <div className="city-story">
-          <span className="city-scene-number">{String(sceneIndex + 1).padStart(2, '0')}</span>
-          <div><strong>{scene.title}</strong><p>{scene.subtitle}</p></div>
-        </div>
-        <p className="city-description">A continuous patient journey: arrival, examination, biosignals, intelligent analysis, robotics, then human care.</p>
-        <div className="city-progress" aria-label="Journey scenes">
-          {scenes.map((item, index) => (
-            <button key={item.title} className={index === sceneIndex ? 'active' : ''} onClick={() => jumpToScene(index)} aria-label={`Show scene ${index + 1}: ${item.title}`} />
-          ))}
-        </div>
-        <button className="city-play" onClick={togglePause} aria-label={isPaused ? 'Resume journey' : 'Pause journey'}>
-          <span>{isPaused ? '▶' : 'Ⅱ'}</span> {isPaused ? 'RESUME JOURNEY' : 'PAUSE JOURNEY'}
-        </button>
-      </div>
-
-      <div className="city-label">PATIENT → SENSOR → SIGNAL → DATA → INTELLIGENCE → ROBOT → CARE</div>
-    </section>
-  );
+  const jump=(i:number)=>{timeline.current=scenes.slice(0,i).reduce((s,x)=>s+x.duration,0);setSceneIndex(i);};
+  const toggle=()=>{paused.current=!paused.current;setIsPaused(paused.current);};
+  const current=scenes[sceneIndex];
+  return <section className="biomedical-city" id="city" aria-label="Biomedical City — A Patient's Journey">
+    <div className="city-3d" ref={mountRef} aria-label="Real-time 3D biomedical city scene"/><div className="city-vignette"/>
+    <div className="city-hud"><div className="city-kicker">BIOMEDICAL CITY • A PATIENT'S JOURNEY • 2035</div><h2>Biomedical City</h2><div className="city-story"><span className="city-scene-number">{String(sceneIndex+1).padStart(2,'0')}</span><div><strong>{current.title}</strong><p>{current.subtitle}</p></div></div><p className="city-description">A continuous 3D journey: arrival, examination, biosignals, intelligent analysis, robotics, then human care.</p><div className="city-progress">{scenes.map((s,i)=><button key={s.title} className={i===sceneIndex?'active':''} onClick={()=>jump(i)} aria-label={`Show scene ${i+1}: ${s.title}`}/>)}</div><button className="city-play" onClick={toggle}>{isPaused?'▶ RESUME JOURNEY':'Ⅱ PAUSE JOURNEY'}</button></div>
+    <div className="city-label">REAL-TIME 3D • PATIENT → SENSOR → SIGNAL → DATA → INTELLIGENCE → ROBOT → CARE</div>
+  </section>;
 };
-
 export default BiomedicalCity;
