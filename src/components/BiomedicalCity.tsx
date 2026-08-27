@@ -68,23 +68,43 @@ const totalDuration = scenes.reduce(
   0
 );
 
-const clamp = (value: number, min = 0, max = 1) =>
-  Math.max(min, Math.min(max, value));
+const clamp = (
+  value: number,
+  min = 0,
+  max = 1
+) =>
+  Math.max(
+    min,
+    Math.min(max, value)
+  );
 
-const ease = (value: number) =>
+const ease = (
+  value: number
+) =>
   value * value * (3 - 2 * value);
 
 const BiomedicalCity: React.FC = () => {
-  const mountRef = useRef<HTMLDivElement>(null);
-  const timeline = useRef(0);
-  const paused = useRef(false);
+  const mountRef =
+    useRef<HTMLDivElement>(null);
 
-  const [sceneIndex, setSceneIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [error, setError] = useState(false);
+  const timeline =
+    useRef(0);
+
+  const paused =
+    useRef(false);
+
+  const [sceneIndex, setSceneIndex] =
+    useState(0);
+
+  const [isPaused, setIsPaused] =
+    useState(false);
+
+  const [error, setError] =
+    useState(false);
 
   useEffect(() => {
-    const mount = mountRef.current;
+    const mount =
+      mountRef.current;
 
     if (!mount) {
       return;
@@ -98,40 +118,57 @@ const BiomedicalCity: React.FC = () => {
          THREE.JS SCENE
       ========================================================= */
 
-      const scene = new THREE.Scene();
+      const scene =
+        new THREE.Scene();
 
-      scene.background = new THREE.Color(0x071116);
+      scene.background =
+        new THREE.Color(
+          0x071116
+        );
 
-      scene.fog = new THREE.Fog(
-        0x071116,
-        34,
-        110
-      );
+      scene.fog =
+        new THREE.Fog(
+          0x071116,
+          34,
+          110
+        );
 
-      const camera = new THREE.PerspectiveCamera(
-        42,
-        1,
-        0.1,
-        160
-      );
+      const camera =
+        new THREE.PerspectiveCamera(
+          42,
+          1,
+          0.1,
+          160
+        );
 
-      const renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        powerPreference: 'high-performance',
-      });
+      const renderer =
+        new THREE.WebGLRenderer({
+          antialias: true,
+          powerPreference:
+            'high-performance',
+        });
 
       renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio || 1, 1.5)
+        Math.min(
+          window.devicePixelRatio || 1,
+          1.5
+        )
       );
 
-      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.outputColorSpace =
+        THREE.SRGBColorSpace;
 
-      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.enabled =
+        true;
+
       renderer.shadowMap.type =
         THREE.PCFSoftShadowMap;
 
       mount.innerHTML = '';
-      mount.appendChild(renderer.domElement);
+
+      mount.appendChild(
+        renderer.domElement
+      );
 
       /* =========================================================
          LIGHTING
@@ -145,22 +182,34 @@ const BiomedicalCity: React.FC = () => {
         )
       );
 
-      const key = new THREE.DirectionalLight(
-        0xffffff,
-        3.2
+      const key =
+        new THREE.DirectionalLight(
+          0xffffff,
+          3.2
+        );
+
+      key.position.set(
+        12,
+        18,
+        14
       );
 
-      key.position.set(12, 18, 14);
-      key.castShadow = true;
-      key.shadow.mapSize.set(1024, 1024);
+      key.castShadow =
+        true;
+
+      key.shadow.mapSize.set(
+        1024,
+        1024
+      );
 
       scene.add(key);
 
-      const cyanLight = new THREE.PointLight(
-        0x39dfff,
-        16,
-        50
-      );
+      const cyanLight =
+        new THREE.PointLight(
+          0x39dfff,
+          16,
+          50
+        );
 
       cyanLight.position.set(
         -8,
@@ -168,13 +217,16 @@ const BiomedicalCity: React.FC = () => {
         10
       );
 
-      scene.add(cyanLight);
-
-      const greenLight = new THREE.PointLight(
-        0x42e59a,
-        9,
-        30
+      scene.add(
+        cyanLight
       );
+
+      const greenLight =
+        new THREE.PointLight(
+          0x42e59a,
+          9,
+          30
+        );
 
       greenLight.position.set(
         8,
@@ -182,13 +234,19 @@ const BiomedicalCity: React.FC = () => {
         -5
       );
 
-      scene.add(greenLight);
+      scene.add(
+        greenLight
+      );
 
       /* =========================================================
          GROUPS
       ========================================================= */
 
-      const groups: Record<string, THREE.Group> = {};
+      const groups:
+        Record<
+          string,
+          THREE.Group
+        > = {};
 
       [
         'hospital',
@@ -200,10 +258,16 @@ const BiomedicalCity: React.FC = () => {
         'analysis',
         'robot',
         'result',
-      ].forEach((name) => {
-        groups[name] = new THREE.Group();
-        scene.add(groups[name]);
-      });
+      ].forEach(
+        (name) => {
+          groups[name] =
+            new THREE.Group();
+
+          scene.add(
+            groups[name]
+          );
+        }
+      );
 
       /* =========================================================
          MATERIALS
@@ -221,92 +285,113 @@ const BiomedicalCity: React.FC = () => {
           roughness,
           metalness,
           emissive,
-          emissiveIntensity: intensity,
+          emissiveIntensity:
+            intensity,
         });
 
-      const floor = material(
-        0x465257,
-        0.88,
-        0.04
-      );
+      const floor =
+        material(
+          0x465257,
+          0.88,
+          0.04
+        );
 
-      const wall = material(
-        0xd9dedc,
-        0.84,
-        0.02
-      );
+      const wall =
+        material(
+          0xd9dedc,
+          0.84,
+          0.02
+        );
 
-      const dark = material(
-        0x101b20,
-        0.3,
-        0.8
-      );
+      const dark =
+        material(
+          0x101b20,
+          0.3,
+          0.8
+        );
 
-      const steel = material(
-        0xb9c5c7,
-        0.2,
-        0.9
-      );
+      const steel =
+        material(
+          0xb9c5c7,
+          0.2,
+          0.9
+        );
 
-      const blue = material(
-        0x2b6278,
-        0.38,
-        0.4
-      );
+      const blue =
+        material(
+          0x2b6278,
+          0.38,
+          0.4
+        );
 
-      const white = material(
-        0xf3f5f0,
-        0.88,
-        0.03
-      );
+      const white =
+        material(
+          0xf3f5f0,
+          0.88,
+          0.03
+        );
 
-      const cyan = material(
-        0x40ddff,
-        0.22,
-        0.18,
-        0x17b9df,
-        2.8
-      );
+      const cyan =
+        material(
+          0x40ddff,
+          0.22,
+          0.18,
+          0x17b9df,
+          2.8
+        );
 
-      const green = material(
-        0x45e49a,
-        0.3,
-        0.18,
-        0x149e5d,
-        2.2
-      );
+      const green =
+        material(
+          0x45e49a,
+          0.3,
+          0.18,
+          0x149e5d,
+          2.2
+        );
 
-      const red = material(
-        0xe45b63,
-        0.34,
-        0.2,
-        0x8d1821,
-        1.5
-      );
+      const red =
+        material(
+          0xe45b63,
+          0.34,
+          0.2,
+          0x8d1821,
+          1.5
+        );
 
-      const skin = material(
-        0xc88d73,
-        0.72,
-        0.02
-      );
+      /*
+       * IMPORTANT:
+       * The previous yellow material was never used.
+       * It has intentionally been removed so CI/ESLint
+       * does not fail with no-unused-vars.
+       */
 
-      const shirt = material(
-        0x3974a7,
-        0.58,
-        0.08
-      );
+      const skin =
+        material(
+          0xc88d73,
+          0.72,
+          0.02
+        );
 
-      const pants = material(
-        0x263238,
-        0.72,
-        0.14
-      );
+      const shirt =
+        material(
+          0x3974a7,
+          0.58,
+          0.08
+        );
 
-      const shoe = material(
-        0x10171a,
-        0.28,
-        0.78
-      );
+      const pants =
+        material(
+          0x263238,
+          0.72,
+          0.14
+        );
+
+      const shoe =
+        material(
+          0x10171a,
+          0.28,
+          0.78
+        );
 
       const glass =
         new THREE.MeshPhysicalMaterial({
@@ -327,19 +412,23 @@ const BiomedicalCity: React.FC = () => {
         size: V3,
         materialValue: THREE.Material
       ) => {
-        const object = new THREE.Mesh(
-          new THREE.BoxGeometry(
-            ...size
-          ),
-          materialValue
-        );
+        const object =
+          new THREE.Mesh(
+            new THREE.BoxGeometry(
+              ...size
+            ),
+            materialValue
+          );
 
         object.position.set(
           ...position
         );
 
-        object.castShadow = true;
-        object.receiveShadow = true;
+        object.castShadow =
+          true;
+
+        object.receiveShadow =
+          true;
 
         parent.add(object);
 
@@ -353,22 +442,26 @@ const BiomedicalCity: React.FC = () => {
         height: number,
         materialValue: THREE.Material
       ) => {
-        const object = new THREE.Mesh(
-          new THREE.CylinderGeometry(
-            radius,
-            radius,
-            height,
-            24
-          ),
-          materialValue
-        );
+        const object =
+          new THREE.Mesh(
+            new THREE.CylinderGeometry(
+              radius,
+              radius,
+              height,
+              24
+            ),
+            materialValue
+          );
 
         object.position.set(
           ...position
         );
 
-        object.castShadow = true;
-        object.receiveShadow = true;
+        object.castShadow =
+          true;
+
+        object.receiveShadow =
+          true;
 
         parent.add(object);
 
@@ -381,21 +474,25 @@ const BiomedicalCity: React.FC = () => {
         radius: number,
         materialValue: THREE.Material
       ) => {
-        const object = new THREE.Mesh(
-          new THREE.SphereGeometry(
-            radius,
-            24,
-            18
-          ),
-          materialValue
-        );
+        const object =
+          new THREE.Mesh(
+            new THREE.SphereGeometry(
+              radius,
+              24,
+              18
+            ),
+            materialValue
+          );
 
         object.position.set(
           ...position
         );
 
-        object.castShadow = true;
-        object.receiveShadow = true;
+        object.castShadow =
+          true;
+
+        object.receiveShadow =
+          true;
 
         parent.add(object);
 
@@ -411,27 +508,35 @@ const BiomedicalCity: React.FC = () => {
         height: number
       ) => {
         const canvas =
-          document.createElement('canvas');
+          document.createElement(
+            'canvas'
+          );
 
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width =
+          width;
+
+        canvas.height =
+          height;
 
         const texture =
-          new THREE.CanvasTexture(canvas);
+          new THREE.CanvasTexture(
+            canvas
+          );
 
         texture.colorSpace =
           THREE.SRGBColorSpace;
 
-        const mesh = new THREE.Mesh(
-          new THREE.PlaneGeometry(
-            width / 220,
-            height / 220
-          ),
-          new THREE.MeshBasicMaterial({
-            map: texture,
-            transparent: false,
-          })
-        );
+        const mesh =
+          new THREE.Mesh(
+            new THREE.PlaneGeometry(
+              width / 220,
+              height / 220
+            ),
+            new THREE.MeshBasicMaterial({
+              map: texture,
+              transparent: false,
+            })
+          );
 
         return {
           canvas,
@@ -447,13 +552,26 @@ const BiomedicalCity: React.FC = () => {
         y: number,
         size: number,
         color: string,
-        align: CanvasTextAlign = 'left'
+        align: CanvasTextAlign =
+          'left'
       ) => {
-        ctx.fillStyle = color;
-        ctx.font = `700 ${size}px Arial`;
-        ctx.textAlign = align;
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, x, y);
+        ctx.fillStyle =
+          color;
+
+        ctx.font =
+          `700 ${size}px Arial`;
+
+        ctx.textAlign =
+          align;
+
+        ctx.textBaseline =
+          'middle';
+
+        ctx.fillText(
+          text,
+          x,
+          y
+        );
       };
 
       const clearScreen = (
@@ -464,13 +582,17 @@ const BiomedicalCity: React.FC = () => {
         title: string
       ) => {
         const ctx =
-          screen.canvas.getContext('2d');
+          screen.canvas.getContext(
+            '2d'
+          );
 
         if (!ctx) {
           return;
         }
 
-        ctx.fillStyle = '#06151c';
+        ctx.fillStyle =
+          '#06151c';
+
         ctx.fillRect(
           0,
           0,
@@ -478,14 +600,19 @@ const BiomedicalCity: React.FC = () => {
           screen.canvas.height
         );
 
-        ctx.strokeStyle = '#1f5260';
-        ctx.lineWidth = 8;
+        ctx.strokeStyle =
+          '#1f5260';
+
+        ctx.lineWidth =
+          8;
 
         ctx.strokeRect(
           8,
           8,
-          screen.canvas.width - 16,
-          screen.canvas.height - 16
+          screen.canvas.width -
+            16,
+          screen.canvas.height -
+            16
         );
 
         write(
@@ -497,7 +624,8 @@ const BiomedicalCity: React.FC = () => {
           '#59e6ff'
         );
 
-        screen.texture.needsUpdate = true;
+        screen.texture.needsUpdate =
+          true;
       };
 
       /* =========================================================
@@ -604,19 +732,21 @@ const BiomedicalCity: React.FC = () => {
         dark
       );
 
-      const doorL = box(
-        groups.entry,
-        [-1.35, 2.65, 0.3],
-        [2.35, 5.15, 0.1],
-        glass
-      );
+      const doorL =
+        box(
+          groups.entry,
+          [-1.35, 2.65, 0.3],
+          [2.35, 5.15, 0.1],
+          glass
+        );
 
-      const doorR = box(
-        groups.entry,
-        [1.35, 2.65, 0.3],
-        [2.35, 5.15, 0.1],
-        glass
-      );
+      const doorR =
+        box(
+          groups.entry,
+          [1.35, 2.65, 0.3],
+          [2.35, 5.15, 0.1],
+          glass
+        );
 
       box(
         groups.entry,
@@ -644,7 +774,10 @@ const BiomedicalCity: React.FC = () => {
       );
 
       const kioskScreen =
-        makeScreen(900, 600);
+        makeScreen(
+          900,
+          600
+        );
 
       kioskScreen.mesh.position.set(
         0,
@@ -694,12 +827,13 @@ const BiomedicalCity: React.FC = () => {
         scanRing
       );
 
-      const scanPad = box(
-        groups.reception,
-        [0, 0.55, -0.85],
-        [0.9, 0.08, 0.6],
-        cyan
-      );
+      const scanPad =
+        box(
+          groups.reception,
+          [0, 0.55, -0.85],
+          [0.9, 0.08, 0.6],
+          cyan
+        );
 
       clearScreen(
         kioskScreen,
@@ -708,22 +842,6 @@ const BiomedicalCity: React.FC = () => {
 
       /* =========================================================
          PATIENT
-         
-         IMPORTANT:
-         The patient uses an anatomical hierarchy.
-         
-         patient
-           └── bodyRoot
-                ├── torso
-                │    ├── neck
-                │    │    └── head
-                │    ├── armL
-                │    └── armR
-                ├── legL
-                └── legR
-         
-         This makes the transition to the examination bed
-         much more coherent.
       ========================================================= */
 
       const patient =
@@ -732,9 +850,9 @@ const BiomedicalCity: React.FC = () => {
       const bodyRoot =
         new THREE.Group();
 
-      patient.add(bodyRoot);
-
-      /* Pelvis / lower body */
+      patient.add(
+        bodyRoot
+      );
 
       const pelvis =
         new THREE.Group();
@@ -745,7 +863,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      bodyRoot.add(pelvis);
+      bodyRoot.add(
+        pelvis
+      );
 
       box(
         pelvis,
@@ -753,8 +873,6 @@ const BiomedicalCity: React.FC = () => {
         [0.92, 0.58, 0.58],
         pants
       );
-
-      /* Torso */
 
       const torso =
         new THREE.Group();
@@ -765,7 +883,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      pelvis.add(torso);
+      pelvis.add(
+        torso
+      );
 
       box(
         torso,
@@ -773,8 +893,6 @@ const BiomedicalCity: React.FC = () => {
         [0.95, 1.35, 0.55],
         shirt
       );
-
-      /* Neck */
 
       const neck =
         new THREE.Group();
@@ -785,7 +903,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      torso.add(neck);
+      torso.add(
+        neck
+      );
 
       cyl(
         neck,
@@ -794,8 +914,6 @@ const BiomedicalCity: React.FC = () => {
         0.28,
         skin
       );
-
-      /* Head */
 
       const head =
         new THREE.Group();
@@ -806,7 +924,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      neck.add(head);
+      neck.add(
+        head
+      );
 
       sphere(
         head,
@@ -815,16 +935,12 @@ const BiomedicalCity: React.FC = () => {
         skin
       );
 
-      /* Hair */
-
       sphere(
         head,
         [0, 0.19, -0.02],
         0.34,
         dark
       );
-
-      /* Eyes */
 
       sphere(
         head,
@@ -840,8 +956,6 @@ const BiomedicalCity: React.FC = () => {
         dark
       );
 
-      /* Left arm */
-
       const armL =
         new THREE.Group();
 
@@ -851,7 +965,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      torso.add(armL);
+      torso.add(
+        armL
+      );
 
       box(
         armL,
@@ -866,8 +982,6 @@ const BiomedicalCity: React.FC = () => {
         0.12,
         skin
       );
-
-      /* Right arm */
 
       const armR =
         new THREE.Group();
@@ -878,7 +992,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      torso.add(armR);
+      torso.add(
+        armR
+      );
 
       box(
         armR,
@@ -894,8 +1010,6 @@ const BiomedicalCity: React.FC = () => {
         skin
       );
 
-      /* Left leg */
-
       const legL =
         new THREE.Group();
 
@@ -905,7 +1019,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      pelvis.add(legL);
+      pelvis.add(
+        legL
+      );
 
       box(
         legL,
@@ -921,8 +1037,6 @@ const BiomedicalCity: React.FC = () => {
         shoe
       );
 
-      /* Right leg */
-
       const legR =
         new THREE.Group();
 
@@ -932,7 +1046,9 @@ const BiomedicalCity: React.FC = () => {
         0
       );
 
-      pelvis.add(legR);
+      pelvis.add(
+        legR
+      );
 
       box(
         legR,
@@ -1000,16 +1116,12 @@ const BiomedicalCity: React.FC = () => {
         white
       );
 
-      /* Pillow */
-
       box(
         groups.exam,
         [0, 1.22, -1.55],
         [2.2, 0.22, 0.72],
         white
       );
-
-      /* Mattress head support */
 
       box(
         groups.exam,
@@ -1032,8 +1144,6 @@ const BiomedicalCity: React.FC = () => {
         steel
       );
 
-      /* Examination lamp */
-
       const lamp =
         new THREE.Mesh(
           new THREE.TorusGeometry(
@@ -1054,7 +1164,9 @@ const BiomedicalCity: React.FC = () => {
       lamp.rotation.x =
         Math.PI / 2;
 
-      groups.exam.add(lamp);
+      groups.exam.add(
+        lamp
+      );
 
       /* =========================================================
          PATIENT MONITOR
@@ -1068,7 +1180,10 @@ const BiomedicalCity: React.FC = () => {
       );
 
       const vitalScreen =
-        makeScreen(1100, 850);
+        makeScreen(
+          1100,
+          850
+        );
 
       vitalScreen.mesh.position.set(
         3.9,
@@ -1106,10 +1221,6 @@ const BiomedicalCity: React.FC = () => {
       const sensorGroup =
         new THREE.Group();
 
-      /*
-       * Sensors are positioned relative to the patient's
-       * examination position.
-       */
       sensorGroup.position.set(
         -0.55,
         1.42,
@@ -1120,17 +1231,19 @@ const BiomedicalCity: React.FC = () => {
         sensorGroup
       );
 
-      /* ECG electrodes */
-
-      const electrodePositions: V3[] = [
-        [-0.48, 0.08, -0.34],
-        [-0.16, 0.08, -0.36],
-        [0.16, 0.08, -0.36],
-        [0.48, 0.08, -0.34],
-      ];
+      const electrodePositions:
+        V3[] = [
+          [-0.48, 0.08, -0.34],
+          [-0.16, 0.08, -0.36],
+          [0.16, 0.08, -0.36],
+          [0.48, 0.08, -0.34],
+        ];
 
       electrodePositions.forEach(
-        (position, index) => {
+        (
+          position,
+          index
+        ) => {
           const electrode =
             new THREE.Mesh(
               new THREE.CylinderGeometry(
@@ -1157,8 +1270,6 @@ const BiomedicalCity: React.FC = () => {
         }
       );
 
-      /* Finger SpO2 probe */
-
       const fingerProbe =
         box(
           sensorGroup,
@@ -1166,8 +1277,6 @@ const BiomedicalCity: React.FC = () => {
           [0.22, 0.18, 0.15],
           red
         );
-
-      /* Temperature sensor */
 
       const tempProbe =
         box(
@@ -1177,23 +1286,25 @@ const BiomedicalCity: React.FC = () => {
           cyan
         );
 
-      fingerProbe.visible = true;
-      tempProbe.visible = true;
+      fingerProbe.visible =
+        true;
 
-      /* Visible cables */
+      tempProbe.visible =
+        true;
 
       const cableMat =
         new THREE.LineBasicMaterial({
           color: 0x43dfff,
         });
 
-      const cablePoints: V3[] = [
-        [-0.48, 0.08, -0.34],
-        [-1.0, -0.08, -0.25],
-        [-1.45, -0.25, -0.12],
-        [-1.95, -0.12, 0.02],
-        [-2.4, 0.05, 0.12],
-      ];
+      const cablePoints:
+        V3[] = [
+          [-0.48, 0.08, -0.34],
+          [-1.0, -0.08, -0.25],
+          [-1.45, -0.25, -0.12],
+          [-1.95, -0.12, 0.02],
+          [-2.4, 0.05, 0.12],
+        ];
 
       const cable =
         new THREE.Line(
@@ -1224,7 +1335,10 @@ const BiomedicalCity: React.FC = () => {
       );
 
       const aiScreen =
-        makeScreen(1400, 850);
+        makeScreen(
+          1400,
+          850
+        );
 
       aiScreen.mesh.position.set(
         0,
@@ -1557,10 +1671,14 @@ const BiomedicalCity: React.FC = () => {
       const show = (
         visible: string[]
       ) => {
-        Object.keys(groups).forEach(
+        Object.keys(
+          groups
+        ).forEach(
           (name) => {
             groups[name].visible =
-              visible.includes(name);
+              visible.includes(
+                name
+              );
           }
         );
       };
@@ -1581,10 +1699,14 @@ const BiomedicalCity: React.FC = () => {
           return;
         }
 
-        const width = 1100;
-        const height = 850;
+        const width =
+          1100;
 
-        ctx.fillStyle = '#06151c';
+        const height =
+          850;
+
+        ctx.fillStyle =
+          '#06151c';
 
         ctx.fillRect(
           0,
@@ -1601,8 +1723,6 @@ const BiomedicalCity: React.FC = () => {
           30,
           '#59e6ff'
         );
-
-        /* Top values */
 
         write(
           ctx,
@@ -1676,12 +1796,11 @@ const BiomedicalCity: React.FC = () => {
           '#55e8a2'
         );
 
-        /* ECG area */
-
         ctx.strokeStyle =
           '#1e4852';
 
-        ctx.lineWidth = 3;
+        ctx.lineWidth =
+          3;
 
         ctx.strokeRect(
           40,
@@ -1690,12 +1809,11 @@ const BiomedicalCity: React.FC = () => {
           530
         );
 
-        /* Grid */
-
         ctx.strokeStyle =
           'rgba(89,230,255,0.10)';
 
-        ctx.lineWidth = 1;
+        ctx.lineWidth =
+          1;
 
         for (
           let x = 55;
@@ -1703,14 +1821,17 @@ const BiomedicalCity: React.FC = () => {
           x += 50
         ) {
           ctx.beginPath();
+
           ctx.moveTo(
             x,
             230
           );
+
           ctx.lineTo(
             x,
             740
           );
+
           ctx.stroke();
         }
 
@@ -1720,25 +1841,27 @@ const BiomedicalCity: React.FC = () => {
           y += 50
         ) {
           ctx.beginPath();
+
           ctx.moveTo(
             45,
             y
           );
+
           ctx.lineTo(
             1055,
             y
           );
+
           ctx.stroke();
         }
-
-        /* ECG */
 
         ctx.beginPath();
 
         ctx.strokeStyle =
           '#55e8a2';
 
-        ctx.lineWidth = 5;
+        ctx.lineWidth =
+          5;
 
         for (
           let i = 0;
@@ -1746,7 +1869,8 @@ const BiomedicalCity: React.FC = () => {
           i++
         ) {
           const x =
-            55 + i * 4.55;
+            55 +
+            i * 4.55;
 
           const phase =
             i +
@@ -1780,7 +1904,8 @@ const BiomedicalCity: React.FC = () => {
           }
 
           const y =
-            365 + wave;
+            365 +
+            wave;
 
           if (i === 0) {
             ctx.moveTo(
@@ -1797,14 +1922,13 @@ const BiomedicalCity: React.FC = () => {
 
         ctx.stroke();
 
-        /* SpO2 trace */
-
         ctx.beginPath();
 
         ctx.strokeStyle =
           '#59e6ff';
 
-        ctx.lineWidth = 4;
+        ctx.lineWidth =
+          4;
 
         for (
           let i = 0;
@@ -1812,12 +1936,14 @@ const BiomedicalCity: React.FC = () => {
           i++
         ) {
           const x =
-            55 + i * 4.55;
+            55 +
+            i * 4.55;
 
           const y =
             535 +
             Math.sin(
-              (i + time * 4) *
+              (i +
+                time * 4) *
                 0.14
             ) *
               18;
@@ -1886,8 +2012,11 @@ const BiomedicalCity: React.FC = () => {
           return;
         }
 
-        const width = 1400;
-        const height = 850;
+        const width =
+          1400;
+
+        const height =
+          850;
 
         ctx.fillStyle =
           '#06151c';
@@ -1917,12 +2046,11 @@ const BiomedicalCity: React.FC = () => {
           '#7397a0'
         );
 
-        /* Input data panel */
-
         ctx.strokeStyle =
           '#1e4852';
 
-        ctx.lineWidth = 3;
+        ctx.lineWidth =
+          3;
 
         ctx.strokeRect(
           45,
@@ -1960,9 +2088,13 @@ const BiomedicalCity: React.FC = () => {
         ];
 
         rows.forEach(
-          (row, index) => {
+          (
+            row,
+            index
+          ) => {
             const threshold =
-              index * 0.15;
+              index *
+              0.15;
 
             if (
               progress >=
@@ -1970,7 +2102,8 @@ const BiomedicalCity: React.FC = () => {
             ) {
               const y =
                 260 +
-                index * 85;
+                index *
+                  85;
 
               ctx.fillStyle =
                 '#102a31';
@@ -2013,10 +2146,9 @@ const BiomedicalCity: React.FC = () => {
           }
         );
 
-        /* Assessment */
-
         if (
-          progress > 0.58
+          progress >
+          0.58
         ) {
           write(
             ctx,
@@ -2037,12 +2169,11 @@ const BiomedicalCity: React.FC = () => {
           );
         }
 
-        /* Right graph */
-
         ctx.strokeStyle =
           '#1e4852';
 
-        ctx.lineWidth = 3;
+        ctx.lineWidth =
+          3;
 
         ctx.strokeRect(
           620,
@@ -2060,12 +2191,11 @@ const BiomedicalCity: React.FC = () => {
           '#59e6ff'
         );
 
-        /* Grid */
-
         ctx.strokeStyle =
           'rgba(89,230,255,0.10)';
 
-        ctx.lineWidth = 1;
+        ctx.lineWidth =
+          1;
 
         for (
           let x = 640;
@@ -2107,14 +2237,13 @@ const BiomedicalCity: React.FC = () => {
           ctx.stroke();
         }
 
-        /* Animated signal */
-
         ctx.beginPath();
 
         ctx.strokeStyle =
           '#59e6ff';
 
-        ctx.lineWidth = 5;
+        ctx.lineWidth =
+          5;
 
         for (
           let i = 0;
@@ -2122,7 +2251,8 @@ const BiomedicalCity: React.FC = () => {
           i++
         ) {
           const x =
-            645 + i * 2.9;
+            645 +
+            i * 2.9;
 
           const phase =
             i +
@@ -2172,10 +2302,9 @@ const BiomedicalCity: React.FC = () => {
 
         ctx.stroke();
 
-        /* Final conclusion */
-
         if (
-          progress > 0.82
+          progress >
+          0.82
         ) {
           ctx.fillStyle =
             'rgba(69,228,154,0.12)';
@@ -2253,14 +2382,18 @@ const BiomedicalCity: React.FC = () => {
 
         while (
           idx <
-            scenes.length - 1 &&
+            scenes.length -
+              1 &&
           local >=
-            scenes[idx].duration
+            scenes[idx]
+              .duration
         ) {
           local -=
-            scenes[idx].duration;
+            scenes[idx]
+              .duration;
 
-          idx += 1;
+          idx +=
+            1;
         }
 
         const progress =
@@ -2288,17 +2421,24 @@ const BiomedicalCity: React.FC = () => {
             'hospital',
             'patient',
           ]);
-        } else if (idx === 1) {
+        } else if (
+          idx === 1
+        ) {
           show([
             'entry',
             'patient',
           ]);
-        } else if (idx === 2) {
+        } else if (
+          idx === 2
+        ) {
           show([
             'reception',
             'patient',
           ]);
-        } else if (idx >= 3 && idx <= 6) {
+        } else if (
+          idx >= 3 &&
+          idx <= 6
+        ) {
           show([
             'exam',
             'patient',
@@ -2319,9 +2459,11 @@ const BiomedicalCity: React.FC = () => {
 
         if (idx === 0) {
           patient.position.set(
-            -7 + progress * 5,
+            -7 +
+              progress * 5,
             0,
-            3 - progress * 3
+            3 -
+              progress * 3
           );
 
           patient.rotation.set(
@@ -2343,7 +2485,8 @@ const BiomedicalCity: React.FC = () => {
 
         if (idx === 1) {
           patient.position.set(
-            -2 + progress * 2,
+            -2 +
+              progress * 2,
             0,
             1.2
           );
@@ -2361,7 +2504,8 @@ const BiomedicalCity: React.FC = () => {
           );
 
           const doorDistance =
-            progress * 1.7;
+            progress *
+            1.7;
 
           doorL.position.x =
             -1.35 -
@@ -2397,15 +2541,24 @@ const BiomedicalCity: React.FC = () => {
 
           let state = 0;
 
-          if (progress >= 0.28) {
+          if (
+            progress >=
+            0.28
+          ) {
             state = 1;
           }
 
-          if (progress >= 0.55) {
+          if (
+            progress >=
+            0.55
+          ) {
             state = 2;
           }
 
-          if (progress >= 0.78) {
+          if (
+            progress >=
+            0.78
+          ) {
             state = 3;
           }
 
@@ -2426,7 +2579,8 @@ const BiomedicalCity: React.FC = () => {
             );
 
             if (
-              progress > 0.28
+              progress >
+              0.28
             ) {
               ctx.fillStyle =
                 '#55e8a2';
@@ -2451,21 +2605,21 @@ const BiomedicalCity: React.FC = () => {
           scanRing.scale.setScalar(
             1 +
               Math.sin(
-                clock.elapsedTime * 6
+                clock.elapsedTime *
+                  6
               ) *
                 0.12
           );
 
           scanPad.material =
-            progress > 0.55
+            progress >
+            0.55
               ? green
               : cyan;
         }
 
         /* =====================================================
            EXAMINATION + BIOSIGNALS + AI + ROBOT
-           
-           The patient is now physically aligned with the bed.
         ===================================================== */
 
         if (
@@ -2473,39 +2627,28 @@ const BiomedicalCity: React.FC = () => {
           idx <= 6
         ) {
           /*
-           * Patient root position.
-           *
-           * The patient is rotated around Z because the
-           * anatomical model is constructed vertically.
-           *
-           * This rotation puts the body horizontally on the
-           * examination mattress.
+           * Patient is placed horizontally on the examination
+           * bed. The entire body remains controlled by the
+           * patient root.
            */
+
           patient.rotation.set(
             0,
             0,
             -Math.PI / 2
           );
 
-          /*
-           * Position adjusted so the pelvis, torso and head
-           * remain on the mattress.
-           */
           patient.position.set(
             -0.25,
             1.52,
             -0.68
           );
 
-          /* Small natural head elevation */
-
           head.rotation.set(
             0,
             0,
             -0.035
           );
-
-          /* Arms resting along body */
 
           armL.rotation.set(
             0,
@@ -2519,14 +2662,17 @@ const BiomedicalCity: React.FC = () => {
             0.06
           );
 
-          /*
-           * During the EXAMINATION scene the patient is
-           * progressively moved onto the bed.
-           */
-          if (idx === 3) {
+          /* ===================================================
+             EXAMINATION
+          =================================================== */
+
+          if (
+            idx === 3
+          ) {
             patient.position.x =
               -1.8 +
-              progress * 1.55;
+              progress *
+                1.55;
 
             patient.position.z =
               -0.68;
@@ -2540,19 +2686,18 @@ const BiomedicalCity: React.FC = () => {
              BIOSIGNALS
           =================================================== */
 
-          if (idx === 4) {
+          if (
+            idx === 4
+          ) {
             drawVitals(
               clock.elapsedTime
             );
 
-            /*
-             * Make the sensor area subtly pulse so the viewer
-             * understands that measurements are active.
-             */
             const pulse =
               1 +
               Math.sin(
-                clock.elapsedTime * 5
+                clock.elapsedTime *
+                  5
               ) *
                 0.06;
 
@@ -2565,7 +2710,9 @@ const BiomedicalCity: React.FC = () => {
              AI ANALYSIS
           =================================================== */
 
-          if (idx === 5) {
+          if (
+            idx === 5
+          ) {
             drawAnalysis(
               progress,
               clock.elapsedTime
@@ -2580,7 +2727,9 @@ const BiomedicalCity: React.FC = () => {
              ROBOTIC ASSIST
           =================================================== */
 
-          if (idx === 6) {
+          if (
+            idx === 6
+          ) {
             const approach =
               0.72 +
               0.28 *
@@ -2591,7 +2740,8 @@ const BiomedicalCity: React.FC = () => {
 
             robotRoot.position.set(
               2.65 -
-                approach * 0.35,
+                approach *
+                  0.35,
               0.95,
               0.25
             );
@@ -2618,7 +2768,8 @@ const BiomedicalCity: React.FC = () => {
             tool.rotation.z =
               0.08 *
               Math.sin(
-                clock.elapsedTime * 3
+                clock.elapsedTime *
+                  3
               );
 
             target.position.set(
@@ -2630,7 +2781,8 @@ const BiomedicalCity: React.FC = () => {
             target.scale.setScalar(
               1 +
                 Math.sin(
-                  clock.elapsedTime * 5
+                  clock.elapsedTime *
+                    5
                 ) *
                   0.15
             );
@@ -2641,7 +2793,9 @@ const BiomedicalCity: React.FC = () => {
            RESULT
         ===================================================== */
 
-        if (idx === 7) {
+        if (
+          idx === 7
+        ) {
           patient.rotation.set(
             0,
             0,
@@ -2671,7 +2825,9 @@ const BiomedicalCity: React.FC = () => {
            PATIENT STANDS UP
         ===================================================== */
 
-        if (idx === 8) {
+        if (
+          idx === 8
+        ) {
           const stand =
             clamp(
               (progress -
@@ -2686,9 +2842,6 @@ const BiomedicalCity: React.FC = () => {
                 0.34
             );
 
-          /*
-           * Smoothly bring the patient back to vertical.
-           */
           patient.rotation.z =
             THREE.MathUtils.lerp(
               -Math.PI / 2,
@@ -2697,11 +2850,7 @@ const BiomedicalCity: React.FC = () => {
             );
 
           patient.position.x =
-            THREE.MathUtils.lerp(
-              -0.25,
-              -0.25,
-              ease(stand)
-            );
+            -0.25;
 
           patient.position.y =
             THREE.MathUtils.lerp(
@@ -2732,7 +2881,8 @@ const BiomedicalCity: React.FC = () => {
                       Math.PI *
                       5
                   )
-                ) * 0.28
+                ) *
+                0.28
               : 0;
 
           patient.position.y +=
@@ -2740,7 +2890,8 @@ const BiomedicalCity: React.FC = () => {
 
           patient.rotation.y =
             Math.sin(
-              clock.elapsedTime * 8
+              clock.elapsedTime *
+                8
             ) *
             joy *
             0.06;
@@ -2750,7 +2901,9 @@ const BiomedicalCity: React.FC = () => {
            SIGNATURE
         ===================================================== */
 
-        if (idx === 9) {
+        if (
+          idx === 9
+        ) {
           patient.rotation.set(
             0,
             0,
@@ -2772,6 +2925,18 @@ const BiomedicalCity: React.FC = () => {
 
         /* =====================================================
            CAMERA POSITIONS
+           
+           BIOSIGNALS + AI ANALYSIS HAVE BEEN WIDENED.
+           
+           The camera is deliberately farther away and slightly
+           higher so that:
+           
+           - head remains visible
+           - torso remains visible
+           - legs remain visible
+           - feet remain visible
+           - examination bed remains readable
+           - monitor / AI screen remains visible
         ===================================================== */
 
         let fp: V3;
@@ -2779,77 +2944,294 @@ const BiomedicalCity: React.FC = () => {
         let fl: V3;
         let tl: V3;
 
-        if (idx === 0) {
-          fp = [13, 8, 20];
-          tp = [8, 5.4, 12];
-          fl = [0, 2.4, -5];
-          tl = [0, 2.5, -4];
-        } else if (idx === 1) {
-          fp = [7, 4.8, 11];
-          tp = [4.5, 3.5, 6];
-          fl = [0, 2.4, 0];
-          tl = [0, 2.4, 0];
-        } else if (idx === 2) {
-          fp = [6.5, 4.0, 8];
-          tp = [5.5, 3.3, 5.5];
-          fl = [0, 1.9, -0.2];
-          tl = [0, 2.0, -0.5];
-        } else if (idx === 3) {
-          fp = [8.5, 5.0, 6.5];
-          tp = [6.2, 3.8, 5.0];
-          fl = [0, 1.35, -0.7];
-          tl = [0, 1.35, -0.7];
-        } else if (idx === 4) {
+        if (
+          idx === 0
+        ) {
+          fp = [
+            13,
+            8,
+            20,
+          ];
+
+          tp = [
+            8,
+            5.4,
+            12,
+          ];
+
+          fl = [
+            0,
+            2.4,
+            -5,
+          ];
+
+          tl = [
+            0,
+            2.5,
+            -4,
+          ];
+        } else if (
+          idx === 1
+        ) {
+          fp = [
+            7,
+            4.8,
+            11,
+          ];
+
+          tp = [
+            4.5,
+            3.5,
+            6,
+          ];
+
+          fl = [
+            0,
+            2.4,
+            0,
+          ];
+
+          tl = [
+            0,
+            2.4,
+            0,
+          ];
+        } else if (
+          idx === 2
+        ) {
+          fp = [
+            6.5,
+            4.0,
+            8,
+          ];
+
+          tp = [
+            5.5,
+            3.3,
+            5.5,
+          ];
+
+          fl = [
+            0,
+            1.9,
+            -0.2,
+          ];
+
+          tl = [
+            0,
+            2.0,
+            -0.5,
+          ];
+        } else if (
+          idx === 3
+        ) {
+          fp = [
+            8.5,
+            5.0,
+            6.5,
+          ];
+
+          tp = [
+            6.2,
+            3.8,
+            5.0,
+          ];
+
+          fl = [
+            0,
+            1.35,
+            -0.7,
+          ];
+
+          tl = [
+            0,
+            1.35,
+            -0.7,
+          ];
+        } else if (
+          idx === 4
+        ) {
           /*
-           * IMPORTANT:
-           * This is the BIOSIGNALS camera.
+           * =====================================================
+           * BIOSIGNALS CAMERA — FIXED
+           * =====================================================
            *
-           * It deliberately frames:
-           * - patient
-           * - ECG electrodes
-           * - cables
-           * - monitor
+           * Previous framing was too close and could crop the
+           * patient's legs/feet.
            *
-           * The monitor is no longer hidden outside the frame.
+           * The new camera:
+           *
+           * 1. moves farther away
+           * 2. moves higher
+           * 3. looks toward the middle of the patient
+           * 4. keeps the monitor on the right
+           *
+           * This gives a much wider medical-documentary shot.
            */
-          fp = [8.6, 4.3, 6.6];
-          tp = [5.8, 3.15, 3.8];
 
-          fl = [0.8, 1.45, -0.9];
-          tl = [2.9, 2.65, -1.85];
-        } else if (idx === 5) {
+          fp = [
+            12.5,
+            7.2,
+            11.8,
+          ];
+
+          tp = [
+            8.4,
+            5.2,
+            8.2,
+          ];
+
+          fl = [
+            -0.15,
+            2.0,
+            0.0,
+          ];
+
+          tl = [
+            1.5,
+            2.15,
+            -0.8,
+          ];
+        } else if (
+          idx === 5
+        ) {
           /*
-           * AI camera moves toward the analysis display.
+           * =====================================================
+           * AI ANALYSIS CAMERA — FIXED
+           * =====================================================
+           *
+           * Wider composition so the patient is not lost
+           * behind the AI display.
+           *
+           * The AI screen remains clearly visible while the
+           * examination scene still reads as a whole.
            */
-          fp = [7.6, 4.5, 7.2];
-          tp = [4.6, 3.4, 5.0];
 
-          fl = [0, 2.8, -3.4];
-          tl = [0, 3.0, -4.15];
-        } else if (idx === 6) {
-          fp = [10.5, 5.8, 8.5];
-          tp = [7.0, 4.0, 6.4];
+          fp = [
+            13.5,
+            7.8,
+            12.5,
+          ];
 
-          fl = [0.6, 1.6, -0.6];
-          tl = [0.6, 1.6, -0.6];
-        } else if (idx === 7) {
-          fp = [7.8, 4.6, 7.0];
-          tp = [6.8, 4.0, 6.4];
+          tp = [
+            9.5,
+            5.3,
+            9.0,
+          ];
 
-          fl = [0, 1.4, -0.5];
-          tl = [0, 1.5, -0.5];
-        } else if (idx === 8) {
-          fp = [7.5, 4.8, 7.5];
-          tp = [6.8, 4.0, 6.8];
+          fl = [
+            -0.4,
+            2.25,
+            -0.3,
+          ];
 
-          fl = [0, 1.5, 0.2];
-          tl = [0, 1.6, 0.3];
+          tl = [
+            0,
+            3.0,
+            -3.9,
+          ];
+        } else if (
+          idx === 6
+        ) {
+          fp = [
+            10.5,
+            5.8,
+            8.5,
+          ];
+
+          tp = [
+            7.0,
+            4.0,
+            6.4,
+          ];
+
+          fl = [
+            0.6,
+            1.6,
+            -0.6,
+          ];
+
+          tl = [
+            0.6,
+            1.6,
+            -0.6,
+          ];
+        } else if (
+          idx === 7
+        ) {
+          fp = [
+            7.8,
+            4.6,
+            7.0,
+          ];
+
+          tp = [
+            6.8,
+            4.0,
+            6.4,
+          ];
+
+          fl = [
+            0,
+            1.4,
+            -0.5,
+          ];
+
+          tl = [
+            0,
+            1.5,
+            -0.5,
+          ];
+        } else if (
+          idx === 8
+        ) {
+          fp = [
+            7.5,
+            4.8,
+            7.5,
+          ];
+
+          tp = [
+            6.8,
+            4.0,
+            6.8,
+          ];
+
+          fl = [
+            0,
+            1.5,
+            0.2,
+          ];
+
+          tl = [
+            0,
+            1.6,
+            0.3,
+          ];
         } else {
-          fp = [11, 7, 13];
-          tp = [15, 8, 18];
+          fp = [
+            11,
+            7,
+            13,
+          ];
 
-          fl = [0, 2.6, -4];
-          tl = [0, 2.8, -4];
+          tp = [
+            15,
+            8,
+            18,
+          ];
+
+          fl = [
+            0,
+            2.6,
+            -4,
+          ];
+
+          tl = [
+            0,
+            2.8,
+            -4,
+          ];
         }
 
         moveCamera(
@@ -2875,30 +3257,31 @@ const BiomedicalCity: React.FC = () => {
          RESIZE
       ========================================================= */
 
-      const resize = () => {
-        const width =
-          Math.max(
-            1,
-            mount.clientWidth
+      const resize =
+        () => {
+          const width =
+            Math.max(
+              1,
+              mount.clientWidth
+            );
+
+          const height =
+            Math.max(
+              1,
+              mount.clientHeight
+            );
+
+          camera.aspect =
+            width / height;
+
+          camera.updateProjectionMatrix();
+
+          renderer.setSize(
+            width,
+            height,
+            false
           );
-
-        const height =
-          Math.max(
-            1,
-            mount.clientHeight
-          );
-
-        camera.aspect =
-          width / height;
-
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(
-          width,
-          height,
-          false
-        );
-      };
+        };
 
       window.addEventListener(
         'resize',
@@ -2944,7 +3327,9 @@ const BiomedicalCity: React.FC = () => {
               )
             ) {
               mesh.material.forEach(
-                (materialValue) =>
+                (
+                  materialValue
+                ) =>
                   materialValue.dispose()
               );
             } else if (
@@ -2965,7 +3350,9 @@ const BiomedicalCity: React.FC = () => {
           );
         }
       };
-    } catch (exception) {
+    } catch (
+      exception
+    ) {
       console.error(
         'Biomedical City 3D initialization failed:',
         exception
@@ -2977,6 +3364,7 @@ const BiomedicalCity: React.FC = () => {
 
       return () => {
         dead = true;
+
         cancelAnimationFrame(
           raf
         );
@@ -2993,14 +3381,23 @@ const BiomedicalCity: React.FC = () => {
   ) => {
     timeline.current =
       scenes
-        .slice(0, index)
+        .slice(
+          0,
+          index
+        )
         .reduce(
-          (sum, item) =>
-            sum + item.duration,
+          (
+            sum,
+            item
+          ) =>
+            sum +
+            item.duration,
           0
         );
 
-    setSceneIndex(index);
+    setSceneIndex(
+      index
+    );
   };
 
   const toggle = () => {
@@ -3013,7 +3410,9 @@ const BiomedicalCity: React.FC = () => {
   };
 
   const current =
-    scenes[sceneIndex];
+    scenes[
+      sceneIndex
+    ];
 
   /* =========================================================
      UI
@@ -3053,7 +3452,10 @@ const BiomedicalCity: React.FC = () => {
           <span className="city-scene-number">
             {String(
               sceneIndex + 1
-            ).padStart(2, '0')}
+            ).padStart(
+              2,
+              '0'
+            )}
           </span>
 
           <div>
@@ -3074,7 +3476,9 @@ const BiomedicalCity: React.FC = () => {
               index
             ) => (
               <button
-                key={item.title}
+                key={
+                  item.title
+                }
                 className={
                   index ===
                   sceneIndex
@@ -3102,7 +3506,8 @@ const BiomedicalCity: React.FC = () => {
         </button>
       </div>
 
-      {sceneIndex === 9 && (
+      {sceneIndex ===
+        9 && (
         <div className="city-signature">
           <span>
             ENGINEERING TECHNOLOGY
