@@ -6,15 +6,15 @@ type Scene = { title: string; subtitle: string; duration: number };
 type V3 = [number, number, number];
 
 const scenes: Scene[] = [
-  { title: 'ARRIVAL', subtitle: 'The patient walks toward the smart hospital.', duration: 4200 },
-  { title: 'ENTRY', subtitle: 'Automatic glass doors open and the patient enters.', duration: 3800 },
-  { title: 'CHECK-IN', subtitle: 'Registration, scanning and identity verification.', duration: 5000 },
-  { title: 'EXAMINATION', subtitle: 'The patient lies down and the clinical sensors connect.', duration: 5200 },
-  { title: 'BIOSIGNALS', subtitle: 'ECG, SpO₂ and temperature are monitored live.', duration: 5200 },
+  { title: 'ARRIVAL', subtitle: 'The patient approaches the smart hospital.', duration: 4200 },
+  { title: 'ENTRY', subtitle: 'The automatic doors open and the patient enters.', duration: 3800 },
+  { title: 'CHECK-IN', subtitle: 'The patient is registered at the biometric station.', duration: 5000 },
+  { title: 'EXAMINATION', subtitle: 'The patient lies on the examination bed.', duration: 5200 },
+  { title: 'BIOSIGNALS', subtitle: 'Vital signs are monitored live.', duration: 5200 },
   { title: 'AI ANALYSIS', subtitle: 'Clinical data is analysed in real time.', duration: 5200 },
   { title: 'ROBOTIC ASSIST', subtitle: 'A medical robot assists the examination.', duration: 5200 },
-  { title: 'RESULT', subtitle: 'The results are reassuring: the patient is stable.', duration: 3600 },
-  { title: 'JOY', subtitle: 'The patient gets up and celebrates the good news.', duration: 4200 },
+  { title: 'RESULT', subtitle: 'The results are reassuring.', duration: 3000 },
+  { title: 'JOY', subtitle: 'The patient gets up and celebrates.', duration: 4500 },
   { title: 'SIGNATURE', subtitle: 'Engineering technology for better healthcare.', duration: 4200 }
 ];
 const totalDuration = scenes.reduce((sum, s) => sum + s.duration, 0);
@@ -34,11 +34,12 @@ const BiomedicalCity: React.FC = () => {
     if (!mount) return;
     let dead = false;
     let raf = 0;
+
     try {
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x061017);
-      scene.fog = new THREE.Fog(0x061017, 30, 105);
-      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 180);
+      scene.background = new THREE.Color(0x071116);
+      scene.fog = new THREE.Fog(0x071116, 34, 110);
+      const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 160);
       const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -46,63 +47,299 @@ const BiomedicalCity: React.FC = () => {
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       mount.innerHTML = '';
       mount.appendChild(renderer.domElement);
-      scene.add(new THREE.HemisphereLight(0xf4fbff, 0x17252c, 2.8));
-      const key = new THREE.DirectionalLight(0xffffff, 3.4); key.position.set(12, 18, 16); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); scene.add(key);
-      const cyanLight = new THREE.PointLight(0x3de0ff, 20, 55); cyanLight.position.set(-10, 8, 10); scene.add(cyanLight);
-      const greenLight = new THREE.PointLight(0x42e59a, 12, 35); greenLight.position.set(8, 4, -4); scene.add(greenLight);
-      const groupNames = ['hospital', 'entry', 'reception', 'patient', 'exam', 'monitor', 'analysis', 'robot', 'result'];
-      const g: Record<string, THREE.Group> = {}; groupNames.forEach((name) => { g[name] = new THREE.Group(); scene.add(g[name]); });
-      const mat = (color: number, roughness = 0.5, metalness = 0.15, emissive = 0, intensity = 0) => new THREE.MeshStandardMaterial({ color, roughness, metalness, emissive, emissiveIntensity: intensity });
-      const floor = mat(0x485459, 0.85, 0.05), wall = mat(0xd7dddb, 0.82, 0.02), dark = mat(0x101b20, 0.3, 0.78), steel = mat(0xb8c5c7, 0.2, 0.9), blue = mat(0x2b6175, 0.36, 0.38), cyan = mat(0x42ddff, 0.24, 0.2, 0x17b9df, 2.8), green = mat(0x45e49a, 0.3, 0.18, 0x149e5d, 2.2), red = mat(0xe45b63, 0.34, 0.2, 0x8d1821, 1.5), skin = mat(0xc88d73, 0.72, 0.02), shirt = mat(0x3974a7, 0.58, 0.08), pants = mat(0x263238, 0.72, 0.14), shoe = mat(0x10171a, 0.28, 0.78), white = mat(0xf3f5f0, 0.88, 0.03), screen = mat(0x031219, 0.1, 0.35, 0x08798c, 1.7);
-      const glass = new THREE.MeshPhysicalMaterial({ color: 0x9ed9e4, transparent: true, opacity: 0.3, roughness: 0.06, metalness: 0.1 });
-      const box = (parent: THREE.Object3D, position: V3, size: V3, material: THREE.Material) => { const o = new THREE.Mesh(new THREE.BoxGeometry(...size), material); o.position.set(...position); o.castShadow = true; o.receiveShadow = true; parent.add(o); return o; };
-      const cyl = (parent: THREE.Object3D, position: V3, radius: number, height: number, material: THREE.Material) => { const o = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, 24), material); o.position.set(...position); o.castShadow = true; o.receiveShadow = true; parent.add(o); return o; };
-      const sphere = (parent: THREE.Object3D, position: V3, radius: number, material: THREE.Material) => { const o = new THREE.Mesh(new THREE.SphereGeometry(radius, 24, 18), material); o.castShadow = true; o.receiveShadow = true; parent.add(o); return o; };
-      const text = (value: string, width = 760, height = 130, size = 28, color = '#55e8a2') => { const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); if (!ctx) throw new Error('Canvas text unavailable'); ctx.fillStyle = 'rgba(3,14,19,.96)'; ctx.fillRect(4, 4, width - 8, height - 8); ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.strokeRect(4, 4, width - 8, height - 8); ctx.fillStyle = color; ctx.font = `700 ${size}px Arial`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(value, width / 2, height / 2); const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true, depthTest: false })); sprite.scale.set(width / 130, height / 130, 1); return sprite; };
-      const addText = (parent: THREE.Object3D, value: string, position: V3, scale: V3, color = '#55e8a2', size = 28) => { const s = text(value, 820, 130, size, color); s.position.set(...position); s.scale.set(...scale); parent.add(s); return s; };
 
-      box(g.hospital, [0, -0.4, 0], [48, 0.6, 36], floor); box(g.hospital, [0, 5.1, -10], [31, 10.2, 7], wall); box(g.hospital, [-12, 3.1, -6], [4, 6.2, 11], blue); box(g.hospital, [12, 3.1, -6], [4, 6.2, 11], blue); for (let x = -9; x <= 9; x += 3) for (let y = 2; y <= 8; y += 2) box(g.hospital, [x, y, -6.45], [1.9, 1.25, 0.08], glass); box(g.hospital, [0, 2.7, -6.05], [7.3, 5.7, 0.4], dark); box(g.hospital, [0, 9.9, -6.5], [12, 0.16, 0.16], cyan); box(g.hospital, [0, 1.15, -2.6], [12, 0.18, 5.4], steel); addText(g.hospital, 'SMART MEDICAL CENTER  •  2035', [0, 7.5, -6.58], [4.2, 0.6, 1], '#57e6ff', 28);
+      scene.add(new THREE.HemisphereLight(0xf5fbff, 0x1a2529, 2.7));
+      const key = new THREE.DirectionalLight(0xffffff, 3.2);
+      key.position.set(12, 18, 14);
+      key.castShadow = true;
+      key.shadow.mapSize.set(1024, 1024);
+      scene.add(key);
+      const cyanLight = new THREE.PointLight(0x39dfff, 16, 50);
+      cyanLight.position.set(-8, 7, 10);
+      scene.add(cyanLight);
+      const greenLight = new THREE.PointLight(0x42e59a, 9, 30);
+      greenLight.position.set(8, 5, -5);
+      scene.add(greenLight);
 
-      const patientBody = new THREE.Group(); g.patient.add(patientBody); sphere(patientBody, [0, 3.18, 0], 0.38, skin); sphere(patientBody, [0, 3.43, -0.02], 0.32, dark); sphere(patientBody, [-0.13, 3.2, -0.35], 0.035, dark); sphere(patientBody, [0.13, 3.2, -0.35], 0.035, dark); cyl(patientBody, [0, 2.72, 0], 0.13, 0.25, skin); box(patientBody, [0, 2.02, 0], [0.82, 1.35, 0.48], shirt); const armL = new THREE.Group(); armL.position.set(-0.52, 2.52, 0); patientBody.add(armL); box(armL, [0, -0.45, 0], [0.2, 0.9, 0.2], skin); sphere(armL, [0, -0.95, 0], 0.12, skin); const armR = new THREE.Group(); armR.position.set(0.52, 2.52, 0); patientBody.add(armR); box(armR, [0, -0.45, 0], [0.2, 0.9, 0.2], skin); sphere(armR, [0, -0.95, 0], 0.12, skin); const legL = new THREE.Group(); legL.position.set(-0.23, 1.36, 0); patientBody.add(legL); box(legL, [0, -0.6, 0], [0.28, 1.15, 0.3], pants); box(legL, [0, -1.18, -0.1], [0.36, 0.22, 0.64], shoe); const legR = new THREE.Group(); legR.position.set(0.23, 1.36, 0); patientBody.add(legR); box(legR, [0, -0.6, 0], [0.28, 1.15, 0.3], pants); box(legR, [0, -1.18, -0.1], [0.36, 0.22, 0.64], shoe); g.patient.scale.setScalar(0.82);
+      const groups: Record<string, THREE.Group> = {};
+      ['hospital', 'entry', 'reception', 'exam', 'patient', 'monitor', 'analysis', 'robot', 'result'].forEach((name) => {
+        groups[name] = new THREE.Group();
+        scene.add(groups[name]);
+      });
 
-      box(g.entry, [-3.4, 3.15, -0.5], [2.5, 6.3, 1.7], dark); box(g.entry, [3.4, 3.15, -0.5], [2.5, 6.3, 1.7], dark); box(g.entry, [0, 5.95, -0.5], [7.2, 0.3, 1.7], dark); box(g.entry, [0, 2.6, -1.1], [5.8, 5.2, 0.16], glass); const doorL = box(g.entry, [-1.35, 2.65, 0.25], [2.35, 5.15, 0.1], glass); const doorR = box(g.entry, [1.35, 2.65, 0.25], [2.35, 5.15, 0.1], glass); box(g.entry, [0, 5.38, 0.3], [6.9, 0.12, 0.14], cyan); box(g.entry, [0, 0.08, 0.3], [6.9, 0.12, 2.5], steel); addText(g.entry, 'AUTOMATIC ENTRY  •  OPEN', [0, 6.45, 0.1], [3.5, 0.55, 1], '#57e6ff', 27);
+      const material = (color: number, roughness = 0.5, metalness = 0.15, emissive = 0, intensity = 0) => new THREE.MeshStandardMaterial({ color, roughness, metalness, emissive, emissiveIntensity: intensity });
+      const floor = material(0x465257, 0.88, 0.04);
+      const wall = material(0xd9dedc, 0.84, 0.02);
+      const dark = material(0x101b20, 0.3, 0.8);
+      const steel = material(0xb9c5c7, 0.2, 0.9);
+      const blue = material(0x2b6278, 0.38, 0.4);
+      const white = material(0xf3f5f0, 0.88, 0.03);
+      const cyan = material(0x40ddff, 0.22, 0.18, 0x17b9df, 2.8);
+      const green = material(0x45e49a, 0.3, 0.18, 0x149e5d, 2.2);
+      const red = material(0xe45b63, 0.34, 0.2, 0x8d1821, 1.5);
+      const skin = material(0xc88d73, 0.72, 0.02);
+      const shirt = material(0x3974a7, 0.58, 0.08);
+      const pants = material(0x263238, 0.72, 0.14);
+      const shoe = material(0x10171a, 0.28, 0.78);
+      const glass = new THREE.MeshPhysicalMaterial({ color: 0x9ed9e4, transparent: true, opacity: 0.28, roughness: 0.06, metalness: 0.1 });
 
-      box(g.reception, [0, 1.45, -0.15], [3.8, 3.0, 1.05], dark); box(g.reception, [0, 2.45, -0.72], [3.05, 1.8, 0.09], screen); box(g.reception, [0, 0.45, -0.25], [1.8, 0.35, 1.0], steel); cyl(g.reception, [0, 3.55, -0.18], 0.42, 0.18, steel); const scannerGlow = new THREE.Mesh(new THREE.TorusGeometry(0.29, 0.045, 12, 40), cyan); scannerGlow.position.set(0, 3.55, -0.28); scannerGlow.rotation.x = Math.PI / 2; g.reception.add(scannerGlow); const regStates = [addText(g.reception, 'PATIENT REGISTRATION', [0, 2.45, -0.82], [3.35, 0.58, 1], '#55e8a2', 25), addText(g.reception, 'SCANNING...', [0, 2.45, -0.82], [3.35, 0.58, 1], '#57e6ff', 28), addText(g.reception, 'IDENTITY DETECTED  ✓', [0, 2.45, -0.82], [3.4, 0.58, 1], '#55e8a2', 26), addText(g.reception, 'CHECK-IN COMPLETE  ✓', [0, 2.45, -0.82], [3.5, 0.58, 1], '#55e8a2', 26)]; const scanRing = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.05, 10, 40), cyan); scanRing.position.set(0, 1.18, -0.84); g.reception.add(scanRing); const scanBeam = box(g.reception, [0, 1.18, -0.9], [0.06, 1.2, 0.025], cyan); addText(g.reception, 'BIOMETRIC SCAN', [0, 0.35, -0.78], [2.5, 0.42, 1], '#dffaff', 20);
+      const box = (parent: THREE.Object3D, p: V3, s: V3, m: THREE.Material) => {
+        const o = new THREE.Mesh(new THREE.BoxGeometry(...s), m);
+        o.position.set(...p); o.castShadow = true; o.receiveShadow = true; parent.add(o); return o;
+      };
+      const cyl = (parent: THREE.Object3D, p: V3, r: number, h: number, m: THREE.Material) => {
+        const o = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 24), m);
+        o.position.set(...p); o.castShadow = true; o.receiveShadow = true; parent.add(o); return o;
+      };
+      const sphere = (parent: THREE.Object3D, p: V3, r: number, m: THREE.Material) => {
+        const o = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 18), m);
+        o.castShadow = true; o.receiveShadow = true; o.position.set(...p); parent.add(o); return o;
+      };
+      const makeScreen = (w: number, h: number) => {
+        const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+        const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
+        const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w / 220, h / 220), new THREE.MeshBasicMaterial({ map: texture, transparent: false }));
+        return { canvas, texture, mesh };
+      };
+      const write = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'left') => {
+        ctx.fillStyle = color; ctx.font = `700 ${size}px Arial`; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y);
+      };
+      const clearScreen = (screen: { canvas: HTMLCanvasElement; texture: THREE.CanvasTexture }, title: string) => {
+        const ctx = screen.canvas.getContext('2d'); if (!ctx) return;
+        ctx.fillStyle = '#06151c'; ctx.fillRect(0, 0, screen.canvas.width, screen.canvas.height);
+        ctx.strokeStyle = '#1f5260'; ctx.lineWidth = 8; ctx.strokeRect(8, 8, screen.canvas.width - 16, screen.canvas.height - 16);
+        write(ctx, title, 45, 48, 28, '#59e6ff'); screen.texture.needsUpdate = true;
+      };
 
-      box(g.exam, [0, 0.25, -1.2], [10.5, 0.35, 8], floor); box(g.exam, [0, 3.7, -5], [10.5, 7.4, 0.3], wall); box(g.exam, [-5, 3.5, -1], [0.3, 7, 8], wall); box(g.exam, [5, 3.5, -1], [0.3, 7, 8], wall); box(g.exam, [0, 0.92, -0.8], [6.9, 0.3, 2.55], steel); box(g.exam, [0, 1.1, -0.9], [6.3, 0.28, 2.15], white); box(g.exam, [0, 1.32, -1.78], [5.8, 0.5, 0.28], wall); box(g.exam, [-3.05, 1.55, -0.8], [0.1, 1.0, 2.15], steel); box(g.exam, [3.05, 1.55, -0.8], [0.1, 1.0, 2.15], steel); cyl(g.exam, [-3.2, 0.5, -0.8], 0.12, 0.9, steel); cyl(g.exam, [3.2, 0.5, -0.8], 0.12, 0.9, steel); const lamp = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.1, 14, 48), cyan); lamp.position.set(0, 4.2, -0.7); lamp.rotation.x = Math.PI / 2; g.exam.add(lamp); cyl(g.exam, [0, 3.4, -0.7], 0.07, 1.6, steel); box(g.exam, [-3.65, 2.25, -0.6], [0.5, 3.8, 0.65], dark); box(g.exam, [-3.65, 3.35, -0.98], [2.25, 1.65, 0.08], screen); addText(g.exam, 'PATIENT MONITOR', [-3.65, 4.0, -1.04], [2.3, 0.42, 1], '#57e6ff', 23); addText(g.exam, 'ECG  •  SpO₂  •  TEMP', [0, 0.4, -2.25], [2.9, 0.48, 1], '#55e8a2', 25); const sensorGroup = new THREE.Group(); g.exam.add(sensorGroup); [-0.75, -0.25, 0.25, 0.75].forEach((x, i) => { const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.04, 18), i % 2 ? green : red); pad.rotation.x = Math.PI / 2; pad.position.set(x, 1.56, -0.95); sensorGroup.add(pad); }); box(sensorGroup, [0.42, 1.42, -1.08], [0.2, 0.17, 0.13], red); box(sensorGroup, [-0.48, 1.5, -1.12], [0.16, 0.1, 0.16], cyan); const cableMat = new THREE.LineBasicMaterial({ color: 0x52dfff }); const cable = (points: V3[]) => { const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map((p) => new THREE.Vector3(...p))), cableMat); sensorGroup.add(line); return line; }; cable([[-0.75, 1.55, -0.95], [-1.8, 1.35, -0.9], [-3.15, 2.2, -0.95]]); cable([[0.75, 1.55, -0.95], [1.4, 1.25, -0.95], [2.8, 1.8, -0.9]]); cable([[0.42, 1.42, -1.08], [1.3, 1.2, -1.08], [2.8, 1.8, -0.9]]); cable([[-0.48, 1.5, -1.12], [-1.3, 1.2, -1.1], [-2.8, 1.8, -0.9]]);
+      // Exterior and entrance.
+      box(groups.hospital, [0, -0.35, 0], [48, 0.55, 36], floor);
+      box(groups.hospital, [0, 5.1, -10], [31, 10.2, 7], wall);
+      box(groups.hospital, [-12, 3.1, -6], [4, 6.2, 11], blue);
+      box(groups.hospital, [12, 3.1, -6], [4, 6.2, 11], blue);
+      for (let x = -9; x <= 9; x += 3) for (let y = 2; y <= 8; y += 2) box(groups.hospital, [x, y, -6.45], [1.9, 1.25, 0.08], glass);
+      box(groups.hospital, [0, 2.7, -6.05], [7.4, 5.7, 0.4], dark);
+      box(groups.hospital, [0, 9.9, -6.5], [12, 0.16, 0.16], cyan);
+      box(groups.hospital, [-3.5, 0.9, -2.8], [5.5, 0.2, 5], steel);
+      box(groups.hospital, [3.5, 0.9, -2.8], [5.5, 0.2, 5], steel);
 
-      box(g.monitor, [3.0, 3.0, -2.65], [7.4, 5.4, 0.42], dark); box(g.monitor, [3.0, 3.0, -2.9], [6.9, 4.85, 0.08], screen); addText(g.monitor, 'LIVE PATIENT VITALS', [3.0, 5.05, -2.98], [3.6, 0.56, 1], '#57e6ff', 28); const makeTrace = (baseY: number, color: number) => { const points: THREE.Vector3[] = []; for (let i = 0; i < 210; i++) points.push(new THREE.Vector3(-3.0 + i * 0.028, baseY, 0)); const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color })); line.position.set(3.0, 3.65, -3.0); g.monitor.add(line); return { line, points }; }; const ecg = makeTrace(0.95, 0x55e89a); const spo = makeTrace(0.08, 0x52dfff); const temp = makeTrace(-0.8, 0xf1c85c); addText(g.monitor, 'ECG', [0.55, 4.2, -3.02], [0.75, 0.36, 1], '#55e89a', 19); addText(g.monitor, 'SpO₂', [0.55, 3.35, -3.02], [0.85, 0.36, 1], '#52dfff', 19); addText(g.monitor, 'TEMP', [0.55, 2.48, -3.02], [0.85, 0.36, 1], '#f1c85c', 19); const vitalText = addText(g.monitor, 'HR 72 BPM   •   SpO₂ 98%   •   TEMP 36.7°C', [3.0, 1.55, -2.99], [4.3, 0.52, 1], '#dffaff', 23); const alarm = addText(g.monitor, '● NORMAL    ● STABLE    ● CONNECTED', [3.0, 1.05, -2.99], [3.6, 0.42, 1], '#55e8a2', 21);
+      box(groups.entry, [-3.4, 3.1, -0.4], [2.5, 6.2, 1.7], dark);
+      box(groups.entry, [3.4, 3.1, -0.4], [2.5, 6.2, 1.7], dark);
+      box(groups.entry, [0, 5.95, -0.4], [7.3, 0.3, 1.7], dark);
+      const doorL = box(groups.entry, [-1.35, 2.65, 0.3], [2.35, 5.15, 0.1], glass);
+      const doorR = box(groups.entry, [1.35, 2.65, 0.3], [2.35, 5.15, 0.1], glass);
+      box(groups.entry, [0, 5.4, 0.35], [6.8, 0.12, 0.14], cyan);
 
-      box(g.analysis, [0, 2.9, -4.2], [10.8, 6.4, 0.36], dark); box(g.analysis, [0, 2.9, -4.42], [10.2, 5.9, 0.08], screen); addText(g.analysis, 'AI CLINICAL ANALYSIS', [0, 5.0, -4.5], [4.0, 0.62, 1], '#57e6ff', 30); const analysisRows = [addText(g.analysis, 'ECG              ✓ NORMAL', [-2.0, 3.9, -4.51], [3.1, 0.46, 1], '#dffaff', 24), addText(g.analysis, 'OXYGENATION      ✓ NORMAL', [-2.0, 3.25, -4.51], [3.35, 0.46, 1], '#dffaff', 24), addText(g.analysis, 'TEMPERATURE      ✓ NORMAL', [-2.0, 2.6, -4.51], [3.35, 0.46, 1], '#dffaff', 24), addText(g.analysis, 'PATIENT STATUS   STABLE', [-2.0, 1.95, -4.51], [3.35, 0.46, 1], '#55e8a2', 24), addText(g.analysis, 'ANALYSIS COMPLETE  ✓', [-2.0, 1.3, -4.51], [3.35, 0.46, 1], '#55e8a2', 24)]; const graphPoints: THREE.Vector3[] = []; for (let i = 0; i < 130; i++) graphPoints.push(new THREE.Vector3(-2.0 + i * 0.031, 0.15, 0)); const graph = new THREE.Line(new THREE.BufferGeometry().setFromPoints(graphPoints), new THREE.LineBasicMaterial({ color: 0x52dfff })); graph.position.set(2.25, 3.0, -4.52); g.analysis.add(graph); const sweep = box(g.analysis, [2.25, 3.0, -4.55], [0.045, 2.9, 0.025], cyan); addText(g.analysis, 'CONFIDENCE 98.4%  •  NO CRITICAL ANOMALY', [2.0, 1.3, -4.52], [3.6, 0.46, 1], '#55e8a2', 21);
+      // Realistic check-in kiosk: screen, camera and biometric pad.
+      box(groups.reception, [0, 1.4, -0.2], [3.0, 2.8, 1.15], dark);
+      box(groups.reception, [0, 0.25, -0.2], [1.45, 0.35, 0.8], steel);
+      const kioskScreen = makeScreen(900, 600);
+      kioskScreen.mesh.position.set(0, 2.55, -0.8); kioskScreen.mesh.scale.set(0.88, 0.88, 0.88); groups.reception.add(kioskScreen.mesh);
+      cyl(groups.reception, [0, 3.7, -0.25], 0.38, 0.18, steel);
+      const scanRing = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.045, 12, 40), cyan);
+      scanRing.rotation.x = Math.PI / 2; scanRing.position.set(0, 3.7, -0.48); groups.reception.add(scanRing);
+      const scanPad = box(groups.reception, [0, 0.55, -0.85], [0.9, 0.08, 0.6], cyan);
+      clearScreen(kioskScreen, 'PATIENT REGISTRATION');
 
-      const robotBase = new THREE.Group(); robotBase.position.set(1.9, 0.95, 0.4); robotBase.scale.setScalar(1.15); g.robot.add(robotBase); cyl(robotBase, [0, 0, 0], 0.82, 0.52, dark); cyl(robotBase, [0, 0.4, 0], 0.48, 0.34, steel); const shoulder = new THREE.Group(); shoulder.position.set(0, 0.6, 0); robotBase.add(shoulder); sphere(shoulder, [0, 0, 0], 0.36, steel); box(shoulder, [0, 0.65, 0], [0.46, 1.3, 0.46], blue); const elbow = new THREE.Group(); elbow.position.set(0, 1.3, 0); shoulder.add(elbow); sphere(elbow, [0, 0, 0], 0.32, steel); box(elbow, [0, 0.7, 0], [0.38, 1.42, 0.38], steel); const wrist = new THREE.Group(); wrist.position.set(0, 1.42, 0); elbow.add(wrist); sphere(wrist, [0, 0, 0], 0.25, cyan); box(wrist, [0, 0.43, 0], [0.28, 0.78, 0.28], steel); const tool = new THREE.Group(); tool.position.set(0, 0.84, 0); wrist.add(tool); box(tool, [0, 0, 0], [0.32, 0.2, 0.32], dark); cyl(tool, [0, -0.3, 0], 0.06, 0.56, steel); cyl(tool, [0, -0.63, 0], 0.09, 0.14, red); const workLight = new THREE.PointLight(0x55e8ff, 12, 9); workLight.position.set(0, -0.5, 0.4); tool.add(workLight); addText(g.robot, 'ROBOTIC ASSIST  •  ACTIVE', [1.0, 4.9, -0.45], [3.6, 0.58, 1], '#57e6ff', 28); addText(g.robot, 'MEDICAL GUIDANCE', [1.0, 4.35, -0.45], [2.5, 0.4, 1], '#dffaff', 20); const target = new THREE.Mesh(new THREE.RingGeometry(0.36, 0.46, 32), red); target.rotation.x = Math.PI / 2; target.position.set(0.4, 1.5, -0.35); g.robot.add(target);
+      // Patient rig. The pelvis is the root, so lying -> sitting -> standing stays spatially coherent.
+      const patient = groups.patient;
+      const body = new THREE.Group(); patient.add(body);
+      const torso = new THREE.Group(); body.add(torso); torso.position.y = 1.65;
+      box(torso, [0, 0, 0], [0.9, 1.5, 0.52], shirt);
+      cyl(torso, [0, 0.82, 0], 0.13, 0.25, skin);
+      const head = new THREE.Group(); head.position.set(0, 1.55, 0); torso.add(head);
+      sphere(head, [0, 0, 0], 0.39, skin); sphere(head, [0, 0.2, -0.02], 0.33, dark);
+      sphere(head, [-0.13, -0.02, -0.35], 0.035, dark); sphere(head, [0.13, -0.02, -0.35], 0.035, dark);
+      const armL = new THREE.Group(); armL.position.set(-0.55, 0.45, 0); torso.add(armL); box(armL, [0, -0.43, 0], [0.2, 0.88, 0.2], skin); sphere(armL, [0, -0.9, 0], 0.12, skin);
+      const armR = new THREE.Group(); armR.position.set(0.55, 0.45, 0); torso.add(armR); box(armR, [0, -0.43, 0], [0.2, 0.88, 0.2], skin); sphere(armR, [0, -0.9, 0], 0.12, skin);
+      const legL = new THREE.Group(); legL.position.set(-0.25, 0.75, 0); body.add(legL); box(legL, [0, -0.55, 0], [0.3, 1.1, 0.32], pants); box(legL, [0, -1.1, -0.1], [0.38, 0.22, 0.65], shoe);
+      const legR = new THREE.Group(); legR.position.set(0.25, 0.75, 0); body.add(legR); box(legR, [0, -0.55, 0], [0.3, 1.1, 0.32], pants); box(legR, [0, -1.1, -0.1], [0.38, 0.22, 0.65], shoe);
+      patient.scale.setScalar(0.88);
 
-      addText(g.result, 'RESULT  •  STABLE', [0, 4.6, 0], [3.4, 0.6, 1], '#55e8a2', 31); addText(g.result, 'GOOD NEWS  ✓', [0, 3.8, 0], [3.0, 0.52, 1], '#57e6ff', 29); const resultRing = new THREE.Mesh(new THREE.RingGeometry(0.7, 0.84, 48), green); resultRing.position.set(0, 2.8, 0); g.result.add(resultRing); const successLight = new THREE.PointLight(0x55e8a2, 14, 20); successLight.position.set(0, 3, 1); g.result.add(successLight);
+      // Examination room and bed.
+      box(groups.exam, [0, 0.15, -1], [12, 0.3, 9], floor);
+      box(groups.exam, [0, 4, -5.2], [12, 8, 0.25], wall);
+      box(groups.exam, [-5.7, 3.5, -1], [0.3, 7, 8], wall);
+      box(groups.exam, [5.7, 3.5, -1], [0.3, 7, 8], wall);
+      box(groups.exam, [0, 0.82, -0.7], [7.2, 0.35, 2.8], steel);
+      box(groups.exam, [0, 1.02, -0.7], [6.6, 0.28, 2.45], white);
+      box(groups.exam, [0, 1.28, -1.55], [5.8, 0.42, 0.28], wall);
+      box(groups.exam, [-3.1, 1.5, -0.7], [0.12, 1.2, 2.4], steel);
+      box(groups.exam, [3.1, 1.5, -0.7], [0.12, 1.2, 2.4], steel);
+      const lamp = new THREE.Mesh(new THREE.TorusGeometry(1.25, 0.1, 14, 48), cyan); lamp.position.set(0, 4.6, -0.7); lamp.rotation.x = Math.PI / 2; groups.exam.add(lamp);
 
-      const cameraA = new THREE.Vector3(); const cameraB = new THREE.Vector3(); const lookA = new THREE.Vector3(); const lookB = new THREE.Vector3(); const targetLook = new THREE.Vector3(); const moveCamera = (p: number, from: V3, to: V3, lookFrom: V3, lookTo: V3) => { camera.position.lerpVectors(cameraA.set(...from), cameraB.set(...to), p); targetLook.lerpVectors(lookA.set(...lookFrom), lookB.set(...lookTo), p); camera.lookAt(targetLook); }; const show = (visible: string[]) => groupNames.forEach((name) => { g[name].visible = visible.includes(name); }); const clock = new THREE.Clock();
+      // Patient monitor with animated traces drawn directly into a canvas.
+      box(groups.monitor, [3.8, 2.7, -1.9], [3.0, 4.6, 0.45], dark);
+      const vitalScreen = makeScreen(1100, 850); vitalScreen.mesh.position.set(3.8, 2.85, -2.15); vitalScreen.mesh.scale.set(0.95, 0.95, 0.95); groups.monitor.add(vitalScreen.mesh);
+      const monitorStand = cyl(groups.monitor, [3.8, 0.9, -1.9], 0.12, 2.2, steel);
+      cyl(groups.monitor, [3.8, 0.25, -1.9], 0.65, 0.18, dark);
+      clearScreen(vitalScreen, 'PATIENT VITALS');
+
+      // Sensors and clean visible cables on the patient's chest/hand.
+      const sensorGroup = new THREE.Group(); sensorGroup.position.set(0, 2.25, -0.34); groups.exam.add(sensorGroup);
+      [-0.55, -0.18, 0.18, 0.55].forEach((x, i) => { const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.04, 18), i % 2 ? green : red); pad.rotation.x = Math.PI / 2; pad.position.set(x, 0, 0); sensorGroup.add(pad); });
+      const fingerProbe = box(sensorGroup, [0.72, -0.02, -0.04], [0.2, 0.18, 0.14], red);
+      const tempProbe = box(sensorGroup, [-0.78, -0.02, -0.02], [0.16, 0.12, 0.16], cyan);
+      const cableMat = new THREE.LineBasicMaterial({ color: 0x43dfff });
+      const cablePoints = [[-0.55, 0, 0], [-1.3, -0.45, 0.05], [-2.0, -0.7, 0.1], [-2.7, -0.3, 0.15]] as V3[];
+      const cable = new THREE.Line(new THREE.BufferGeometry().setFromPoints(cablePoints.map((p) => new THREE.Vector3(...p))), cableMat); sensorGroup.add(cable);
+      fingerProbe.visible = true; tempProbe.visible = true;
+
+      // AI analysis panel.
+      box(groups.analysis, [0, 3.0, -4.0], [10.5, 6.3, 0.35], dark);
+      const aiScreen = makeScreen(1400, 850); aiScreen.mesh.position.set(0, 3.0, -4.22); aiScreen.mesh.scale.set(0.96, 0.96, 0.96); groups.analysis.add(aiScreen.mesh);
+      clearScreen(aiScreen, 'AI CLINICAL ANALYSIS');
+
+      // Robot placed beside the bed, with a clearly articulated tool reaching the patient.
+      const robotRoot = new THREE.Group(); robotRoot.position.set(3.0, 0.95, 0.2); groups.robot.add(robotRoot);
+      cyl(robotRoot, [0, 0, 0], 0.9, 0.55, dark); cyl(robotRoot, [0, 0.42, 0], 0.52, 0.32, steel);
+      const shoulder = new THREE.Group(); shoulder.position.set(0, 0.62, 0); robotRoot.add(shoulder); sphere(shoulder, [0, 0, 0], 0.38, steel); box(shoulder, [0, 0.65, 0], [0.48, 1.35, 0.48], blue);
+      const elbow = new THREE.Group(); elbow.position.set(0, 1.3, 0); shoulder.add(elbow); sphere(elbow, [0, 0, 0], 0.34, steel); box(elbow, [0, 0.72, 0], [0.4, 1.45, 0.4], steel);
+      const wrist = new THREE.Group(); wrist.position.set(0, 1.45, 0); elbow.add(wrist); sphere(wrist, [0, 0, 0], 0.27, cyan); box(wrist, [0, 0.44, 0], [0.3, 0.82, 0.3], steel);
+      const tool = new THREE.Group(); tool.position.set(0, 0.88, 0); wrist.add(tool); box(tool, [0, 0, 0], [0.34, 0.2, 0.34], dark); cyl(tool, [0, -0.3, 0], 0.065, 0.56, steel); cyl(tool, [0, -0.64, 0], 0.095, 0.15, red);
+      const workLight = new THREE.PointLight(0x55e8ff, 14, 8); workLight.position.set(0, -0.5, 0.45); tool.add(workLight);
+      const target = new THREE.Mesh(new THREE.RingGeometry(0.35, 0.44, 32), red); target.rotation.x = Math.PI / 2; target.position.set(0, 1.5, -0.55); groups.robot.add(target);
+
+      // Result scene is a clean hospital bay.
+      box(groups.result, [0, 0.15, 0], [14, 0.3, 9], floor);
+      box(groups.result, [0, 4, -5], [14, 8, 0.25], wall);
+      box(groups.result, [0, 0.82, -0.5], [7.2, 0.35, 2.8], steel);
+      box(groups.result, [0, 1.02, -0.5], [6.6, 0.28, 2.45], white);
+      box(groups.result, [0, 1.28, -1.35], [5.8, 0.42, 0.28], wall);
+      const resultLight = new THREE.PointLight(0x45e49a, 12, 18); resultLight.position.set(0, 3.5, 1); groups.result.add(resultLight);
+
+      const clock = new THREE.Clock();
+      const camPos = new THREE.Vector3();
+      const camLook = new THREE.Vector3();
+      const fromPos = new THREE.Vector3();
+      const toPos = new THREE.Vector3();
+      const fromLook = new THREE.Vector3();
+      const toLook = new THREE.Vector3();
+      const moveCamera = (p: number, fp: V3, tp: V3, fl: V3, tl: V3) => {
+        camPos.lerpVectors(fromPos.set(...fp), toPos.set(...tp), p);
+        camLook.lerpVectors(fromLook.set(...fl), toLook.set(...tl), p);
+        camera.position.copy(camPos); camera.lookAt(camLook);
+      };
+      const show = (visible: string[]) => Object.keys(groups).forEach((name) => { groups[name].visible = visible.includes(name); });
+
+      const drawVitals = (time: number) => {
+        const ctx = vitalScreen.canvas.getContext('2d'); if (!ctx) return;
+        ctx.fillStyle = '#06151c'; ctx.fillRect(0, 0, 1100, 850);
+        write(ctx, 'PATIENT VITALS', 45, 48, 30, '#59e6ff');
+        write(ctx, 'HR 72 BPM', 45, 110, 34, '#55e8a2'); write(ctx, 'SpO₂ 98 %', 45, 160, 32, '#59e6ff'); write(ctx, 'TEMP 36.7 °C', 45, 210, 30, '#f1cf68');
+        ctx.strokeStyle = '#1e4852'; ctx.lineWidth = 3; ctx.strokeRect(40, 255, 1020, 500);
+        const rows = [360, 500, 640]; const colors = ['#55e8a2', '#59e6ff', '#f1cf68'];
+        rows.forEach((y, row) => {
+          ctx.beginPath(); ctx.strokeStyle = colors[row]; ctx.lineWidth = 5;
+          for (let i = 0; i < 220; i++) {
+            const x = 55 + i * 4.55; const phase = i + time * (row === 0 ? 7 : row === 1 ? 4 : 2.5); let wave = Math.sin(phase * 0.12) * 10;
+            if (row === 0 && i % 46 > 20 && i % 46 < 26) wave += [0, -28, 75, -52, 18, 0][i % 46 - 20] || 0;
+            const yy = y + wave; if (i === 0) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+          }
+          ctx.stroke();
+        });
+        vitalScreen.texture.needsUpdate = true;
+      };
+
+      const drawAnalysis = (p: number, time: number) => {
+        const ctx = aiScreen.canvas.getContext('2d'); if (!ctx) return;
+        ctx.fillStyle = '#06151c'; ctx.fillRect(0, 0, 1400, 850);
+        write(ctx, 'AI CLINICAL ANALYSIS', 55, 58, 38, '#59e6ff');
+        const rows = [['ECG', 'NORMAL'], ['OXYGENATION', 'NORMAL'], ['TEMPERATURE', 'NORMAL'], ['PATIENT STATUS', 'STABLE']];
+        rows.forEach((row, i) => { if (p > i * 0.18) { write(ctx, row[0], 75, 150 + i * 78, 28, '#dffaff'); write(ctx, row[1], 440, 150 + i * 78, 28, '#55e8a2'); } });
+        if (p > 0.72) write(ctx, 'ANALYSIS COMPLETE', 75, 500, 30, '#55e8a2');
+        ctx.strokeStyle = '#1e4852'; ctx.lineWidth = 3; ctx.strokeRect(650, 120, 670, 520);
+        ctx.beginPath(); ctx.strokeStyle = '#59e6ff'; ctx.lineWidth = 5;
+        for (let i = 0; i < 220; i++) { const x = 670 + i * 2.85; const y = 380 + Math.sin((i + time * 5) * 0.12) * 65 + Math.sin((i + time * 8) * 0.037) * 25; if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
+        ctx.stroke();
+        if (p > 0.88) write(ctx, 'STABLE', 985, 720, 42, '#55e8a2', 'center');
+        aiScreen.texture.needsUpdate = true;
+      };
 
       const animate = () => {
         if (dead) return;
-        const dt = Math.min(clock.getDelta(), 0.05); if (!paused.current) timeline.current = (timeline.current + dt * 1000) % totalDuration;
-        let local = timeline.current; let idx = 0; while (idx < scenes.length - 1 && local >= scenes[idx].duration) { local -= scenes[idx].duration; idx++; }
-        const p = ease(clamp(local / scenes[idx].duration)); setSceneIndex((value) => value === idx ? value : idx);
-        show(idx === 0 ? ['hospital', 'patient'] : idx === 1 ? ['entry', 'patient'] : idx === 2 ? ['reception', 'patient'] : idx === 3 ? ['exam', 'patient'] : idx === 4 ? ['exam', 'patient', 'monitor'] : idx === 5 ? ['analysis'] : idx === 6 ? ['exam', 'patient', 'robot'] : idx === 7 || idx === 8 ? ['result', 'patient'] : ['hospital', 'patient']);
-        const walk = Math.sin(clock.elapsedTime * 7.2) * 0.43; legL.rotation.x = idx < 3 ? walk : 0; legR.rotation.x = idx < 3 ? -walk : 0; armL.rotation.x = idx < 3 ? -walk * 0.7 : 0; armR.rotation.x = idx < 3 ? walk * 0.7 : 0;
-        if (idx === 0) { g.patient.position.set(-7 + p * 5.8, 0, 4 - p * 4); g.patient.rotation.set(0, 0, 0); } else if (idx === 1) { g.patient.position.set(-1.8 + p * 1.8, 0, 2.2 - p * 2.2); g.patient.rotation.set(0, 0, 0); } else if (idx === 2) { g.patient.position.set(-1.5 + p * 1.5, 0, 1.2); g.patient.rotation.set(0, 0, 0); } else if (idx >= 3 && idx <= 7) { g.patient.position.set(0, 1.28, 0); g.patient.rotation.set(0, 0, Math.PI / 2); } else if (idx === 8) { const rise = clamp(p / 0.42); const jump = clamp((p - 0.42) / 0.58); g.patient.rotation.set(0, 0, Math.PI / 2 * (1 - ease(rise))); g.patient.position.set(0, 1.28 - ease(rise) * 1.28 + Math.abs(Math.sin(jump * Math.PI * 2)) * 0.9, 0); patientBody.rotation.z = Math.sin(jump * Math.PI * 4) * 0.08; const celebration = Math.sin(jump * Math.PI * 2); armL.rotation.x = -1.1 + celebration * 0.25; armR.rotation.x = 1.1 - celebration * 0.25; legL.rotation.x = -0.35 + celebration * 0.3; legR.rotation.x = 0.35 - celebration * 0.3; } else { g.patient.position.set(0, 0, 0); g.patient.rotation.set(0, 0, 0); } if (idx !== 8) patientBody.rotation.z = 0;
-        const doorP = idx === 1 ? p : 0; doorL.position.x = -1.35 - doorP * 2.0; doorR.position.x = 1.35 + doorP * 2.0; regStates.forEach((sprite, i) => { sprite.visible = idx === 2 && i === (p < 0.2 ? 0 : p < 0.48 ? 1 : p < 0.72 ? 2 : 3); }); scanRing.rotation.z = clock.elapsedTime * 2.8; scanRing.scale.setScalar(1 + Math.sin(clock.elapsedTime * 5) * 0.1); scanBeam.scale.y = 0.5 + (Math.sin(clock.elapsedTime * 5) + 1) * 0.25; scannerGlow.rotation.z = clock.elapsedTime * 2.4; lamp.rotation.z = clock.elapsedTime * 0.18;
-        const signalTime = clock.elapsedTime * 8; const updateTrace = (trace: { line: THREE.Line; points: THREE.Vector3[] }, kind: number) => { trace.points.forEach((point, i) => { const phase = i + signalTime * (kind === 0 ? 20 : kind === 1 ? 14 : 8); const wave = kind === 0 ? Math.sin(phase * 0.28) * 0.045 + (i % 44 === 22 ? 0.52 : i % 44 === 23 ? -0.32 : i % 44 === 24 ? 0.2 : 0) : kind === 1 ? Math.sin(phase * 0.19) * 0.09 : Math.sin(phase * 0.08) * 0.06; point.y = (kind === 0 ? 0.95 : kind === 1 ? 0.08 : -0.8) + wave; point.x = -3.0 + (i / (trace.points.length - 1)) * 5.88; }); trace.line.geometry.setFromPoints(trace.points); }; updateTrace(ecg, 0); updateTrace(spo, 1); updateTrace(temp, 2); vitalText.scale.x = 4.3 + Math.sin(clock.elapsedTime * 2) * 0.03; alarm.visible = idx === 4;
-        analysisRows.forEach((row, i) => { row.visible = idx === 5 && p > i * 0.14; }); graphPoints.forEach((point, i) => { point.y = 0.15 + Math.sin((i + clock.elapsedTime * 18) * 0.22) * 0.08 + (i % 28 === 14 ? 0.25 : 0); }); graph.geometry.setFromPoints(graphPoints); sweep.position.x = 2.25 + Math.sin(clock.elapsedTime * 2) * 1.9;
-        if (idx === 6) { g.robot.position.set(0.25, 0, -0.15); shoulder.rotation.z = -0.72 + Math.sin(clock.elapsedTime * 1.2) * 0.06; elbow.rotation.z = 0.95 + Math.sin(clock.elapsedTime * 1.45) * 0.08; wrist.rotation.z = -0.52 + Math.sin(clock.elapsedTime * 1.8) * 0.08; tool.rotation.z = Math.sin(clock.elapsedTime * 2.2) * 0.08; target.scale.setScalar(1 + Math.sin(clock.elapsedTime * 5) * 0.16); } else { g.robot.position.set(2.8, 0, -1); shoulder.rotation.z = 0; elbow.rotation.z = 0; wrist.rotation.z = 0; }
-        resultRing.rotation.z = clock.elapsedTime * 0.8; resultRing.scale.setScalar(1 + Math.sin(clock.elapsedTime * 3) * 0.08); successLight.intensity = 10 + Math.sin(clock.elapsedTime * 4) * 3;
-        if (idx === 0) moveCamera(p, [17, 9.5, 24], [10, 7, 15], [0, 3, -6], [0, 2.7, -4]); else if (idx === 1) moveCamera(p, [8, 5.2, 13], [5.3, 4.0, 8], [0, 2.8, 0], [0, 2.6, 0]); else if (idx === 2) moveCamera(p, [7.0, 4.5, 7.8], [4.8, 3.3, 5.5], [0, 2.2, -0.4], [0, 2.2, -0.7]); else if (idx === 3) moveCamera(p, [7.5, 5.0, 7.5], [6.0, 4.0, 5.6], [0, 1.4, -0.5], [0, 1.3, -0.6]); else if (idx === 4) moveCamera(p, [8.2, 4.7, 7.5], [6.0, 3.7, 4.2], [2.2, 3.0, -2.0], [3.0, 3.0, -2.7]); else if (idx === 5) moveCamera(p, [8.2, 4.8, 6.8], [6.0, 3.7, 4.8], [0, 3.0, -3.2], [0, 3.0, -4.3]); else if (idx === 6) moveCamera(p, [9.2, 5.4, 8.2], [7.0, 4.4, 5.8], [1.2, 1.9, 0], [1.2, 2.0, 0]); else if (idx === 7) moveCamera(p, [6.5, 4.7, 7.2], [4.4, 3.6, 5.3], [0, 2.2, 0], [0, 2.8, 0]); else if (idx === 8) moveCamera(p, [6.8, 4.8, 7.5], [4.8, 3.7, 5.8], [0, 2.0, 0], [0, 2.0, 0]); else moveCamera(p, [12, 8, 15], [18, 10, 22], [0, 3, -5], [0, 3, -5]);
-        renderer.render(scene, camera); raf = requestAnimationFrame(animate);
+        const dt = Math.min(clock.getDelta(), 0.05);
+        if (!paused.current) timeline.current = (timeline.current + dt * 1000) % totalDuration;
+        let local = timeline.current; let idx = 0;
+        while (idx < scenes.length - 1 && local >= scenes[idx].duration) { local -= scenes[idx].duration; idx += 1; }
+        const p = ease(clamp(local / scenes[idx].duration));
+        setSceneIndex((value) => value === idx ? value : idx);
+        show(idx === 0 ? ['hospital', 'patient'] : idx === 1 ? ['entry', 'patient'] : idx === 2 ? ['reception', 'patient'] : idx <= 6 ? ['exam', 'patient', 'monitor', 'analysis', 'robot'] : ['result', 'patient']);
+
+        // Patient positions are explicitly tied to each story beat.
+        if (idx === 0) { patient.rotation.set(0, 0, 0); patient.position.set(-7 + p * 5, 0, 3 - p * 3); }
+        if (idx === 1) { patient.rotation.set(0, 0, 0); patient.position.set(-2 + p * 2, 0, 1.2); const d = p * 1.7; doorL.position.x = -1.35 - d; doorR.position.x = 1.35 + d; }
+        if (idx === 2) { patient.rotation.set(0, Math.PI * 0.05, 0); patient.position.set(0, 0, 1.25); const state = p < 0.28 ? 0 : p < 0.55 ? 1 : p < 0.78 ? 2 : 3; const ctx = kioskScreen.canvas.getContext('2d'); if (ctx) { clearScreen(kioskScreen, ['PATIENT REGISTRATION', 'SCANNING...', 'IDENTITY DETECTED', 'CHECK-IN COMPLETE ✓'][state]); ctx.fillStyle = '#55e8a2'; ctx.fillRect(110, 460, 680 * clamp((p - 0.28) / 0.72), 24); kioskScreen.texture.needsUpdate = true; } scanRing.scale.setScalar(1 + Math.sin(clock.elapsedTime * 6) * 0.12); scanPad.material = p > 0.55 ? green : cyan; }
+
+        if (idx >= 3 && idx <= 6) {
+          patient.rotation.x = Math.PI / 2; patient.rotation.y = 0; patient.rotation.z = 0; patient.position.set(-0.55, 1.48, -0.65);
+          if (idx === 3) { patient.position.x = -1.8 + p * 1.25; }
+          if (idx === 4) { drawVitals(clock.elapsedTime); }
+          if (idx === 5) { drawAnalysis(p, clock.elapsedTime); }
+          if (idx === 6) {
+            const approach = 0.72 + 0.28 * Math.sin(p * Math.PI);
+            robotRoot.position.set(2.65 - approach * 0.35, 0.95, 0.25);
+            shoulder.rotation.z = -0.55 - 0.18 * Math.sin(p * Math.PI);
+            elbow.rotation.z = 0.85 + 0.35 * Math.sin(p * Math.PI);
+            wrist.rotation.z = -0.35;
+            tool.rotation.z = 0.08 * Math.sin(clock.elapsedTime * 3);
+            target.position.set(0.35, 1.48, -0.72);
+            target.scale.setScalar(1 + Math.sin(clock.elapsedTime * 5) * 0.15);
+          }
+        }
+
+        if (idx === 7) {
+          patient.rotation.x = Math.PI / 2; patient.position.set(-0.55, 1.48, -0.5);
+          robotRoot.position.set(2.65, 0.95, 0.25);
+        }
+        if (idx === 8) {
+          const stand = clamp((p - 0.18) / 0.48); const joy = clamp((p - 0.66) / 0.34);
+          patient.rotation.x = THREE.MathUtils.lerp(Math.PI / 2, 0, ease(stand));
+          patient.position.x = -0.55;
+          patient.position.y = THREE.MathUtils.lerp(1.48, 0.35, ease(stand));
+          patient.position.z = THREE.MathUtils.lerp(-0.5, 1.0, ease(stand));
+          armL.rotation.z = -joy * 1.15; armR.rotation.z = joy * 1.15;
+          const bounce = joy > 0 ? Math.abs(Math.sin((p - 0.66) * Math.PI * 5)) * 0.28 : 0;
+          patient.position.y += bounce;
+          patient.rotation.z = Math.sin(clock.elapsedTime * 8) * joy * 0.06;
+        }
+        if (idx === 9) { patient.rotation.set(0, 0, 0); patient.position.set(0, 0.35, 1.2); }
+
+        const fp: V3 = idx === 0 ? [13, 8, 20] : idx === 1 ? [7, 4.8, 11] : idx === 2 ? [6.5, 4.0, 8] : idx === 3 ? [8.5, 5.0, 6.5] : idx === 4 ? [8.8, 4.6, 7.2] : idx === 5 ? [8.0, 4.4, 6.8] : idx === 6 ? [10.5, 5.8, 8.5] : idx === 7 ? [7.8, 4.6, 7.0] : idx === 8 ? [7.5, 4.8, 7.5] : [11, 7, 13];
+        const tp: V3 = idx === 0 ? [8, 5.4, 12] : idx === 1 ? [4.5, 3.5, 6] : idx === 2 ? [5.5, 3.3, 5.5] : idx === 3 ? [6.2, 3.8, 5.0] : idx === 4 ? [7.0, 3.8, 5.4] : idx === 5 ? [5.7, 3.7, 5.2] : idx === 6 ? [7.0, 4.0, 6.4] : idx === 7 ? [6.8, 4.0, 6.4] : idx === 8 ? [6.8, 4.0, 6.8] : [15, 8, 18];
+        const fl: V3 = idx === 0 ? [0, 2.4, -5] : idx === 1 ? [0, 2.4, 0] : idx === 2 ? [0, 1.9, -0.2] : idx === 3 ? [0, 1.35, -0.7] : idx === 4 ? [2.3, 2.5, -1.6] : idx === 5 ? [0, 2.8, -4] : idx === 6 ? [0.6, 1.6, -0.6] : idx === 7 ? [0, 1.4, -0.5] : idx === 8 ? [0, 1.5, 0.2] : [0, 2.6, -4];
+        const tl: V3 = idx === 0 ? [0, 2.5, -4] : idx === 1 ? [0, 2.4, 0] : idx === 2 ? [0, 2.0, -0.5] : idx === 3 ? [0, 1.35, -0.7] : idx === 4 ? [3.2, 2.7, -2.0] : idx === 5 ? [0, 3.0, -4.1] : idx === 6 ? [0.6, 1.6, -0.6] : idx === 7 ? [0, 1.5, -0.5] : idx === 8 ? [0, 1.6, 0.3] : [0, 2.8, -4];
+        moveCamera(p, fp, tp, fl, tl);
+
+        renderer.render(scene, camera);
+        raf = requestAnimationFrame(animate);
       };
-      const resize = () => { const width = Math.max(1, mount.clientWidth); const height = Math.max(1, mount.clientHeight); camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height, false); };
-      window.addEventListener('resize', resize); resize(); animate(); return () => { dead = true; window.removeEventListener('resize', resize); cancelAnimationFrame(raf); renderer.dispose(); scene.traverse((object) => { const mesh = object as THREE.Mesh; if (mesh.geometry) mesh.geometry.dispose(); if (Array.isArray(mesh.material)) mesh.material.forEach((material) => material.dispose()); else if (mesh.material) mesh.material.dispose(); }); if (renderer.domElement.parentElement === mount) mount.removeChild(renderer.domElement); };
-    } catch (e) { console.error('Biomedical City 3D initialization failed:', e); if (!dead) setError(true); return () => { dead = true; cancelAnimationFrame(raf); }; }
+
+      const resize = () => { const w = Math.max(1, mount.clientWidth); const h = Math.max(1, mount.clientHeight); camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false); };
+      window.addEventListener('resize', resize); resize(); animate();
+      return () => { dead = true; window.removeEventListener('resize', resize); cancelAnimationFrame(raf); renderer.dispose(); scene.traverse((object) => { const mesh = object as THREE.Mesh; if (mesh.geometry) mesh.geometry.dispose(); if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose()); else if (mesh.material) mesh.material.dispose(); }); if (renderer.domElement.parentElement === mount) mount.removeChild(renderer.domElement); };
+    } catch (exception) { console.error('Biomedical City 3D initialization failed:', exception); if (!dead) setError(true); return () => { dead = true; cancelAnimationFrame(raf); }; }
   }, []);
-  const jump = (index: number) => { timeline.current = scenes.slice(0, index).reduce((sum, s) => sum + s.duration, 0); setSceneIndex(index); }; const toggle = () => { paused.current = !paused.current; setIsPaused(paused.current); }; const current = scenes[sceneIndex];
-  return <section className="biomedical-city" id="city" aria-label="Biomedical City — A Patient's Journey"><div ref={mountRef} className="biomedical-city-canvas" />{error && <div className="city-error">Biomedical City 3D could not initialize. Please reload the page.</div>}<div className="city-vignette" /><div className="city-hud"><div className="city-kicker">BIOMEDICAL CITY • A PATIENT'S JOURNEY • 2035</div><h2>Biomedical City</h2><div className="city-story"><span className="city-scene-number">{String(sceneIndex + 1).padStart(2, '0')}</span><div><strong>{current.title}</strong><p>{current.subtitle}</p></div></div><p className="city-description">Arrival → entry → check-in → examination → biosignals → AI → robotics → result → joy.</p><div className="city-progress">{scenes.map((s, i) => <button key={s.title} className={i === sceneIndex ? 'active' : ''} onClick={() => jump(i)} aria-label={s.title} />)}</div><button className="city-play" onClick={toggle}>{isPaused ? 'PLAY JOURNEY' : 'PAUSE JOURNEY'}</button></div>{sceneIndex === 9 && <div className="city-signature"><span>ENGINEERING TECHNOLOGY</span><strong>FOR BETTER HEALTHCARE</strong></div>}<div className="city-label">REALISTIC FUTURE CARE • 2035</div></section>;
+
+  const jump = (index: number) => { timeline.current = scenes.slice(0, index).reduce((sum, item) => sum + item.duration, 0); setSceneIndex(index); };
+  const toggle = () => { paused.current = !paused.current; setIsPaused(paused.current); };
+  const current = scenes[sceneIndex];
+
+  return (
+    <section className="biomedical-city" id="city" aria-label="Biomedical City — A Patient's Journey">
+      <div ref={mountRef} className="biomedical-city-canvas" />
+      {error && <div className="city-error">Biomedical City 3D could not initialize. Please reload the page.</div>}
+      <div className="city-vignette" />
+      <div className="city-hud">
+        <div className="city-kicker">BIOMEDICAL CITY • 2035</div>
+        <h2>Biomedical City</h2>
+        <div className="city-story"><span className="city-scene-number">{String(sceneIndex + 1).padStart(2, '0')}</span><div><strong>{current.title}</strong><p>{current.subtitle}</p></div></div>
+        <div className="city-progress">{scenes.map((item, index) => <button key={item.title} className={index === sceneIndex ? 'active' : ''} onClick={() => jump(index)} aria-label={item.title} />)}</div>
+        <button className="city-play" onClick={toggle}>{isPaused ? 'PLAY JOURNEY' : 'PAUSE JOURNEY'}</button>
+      </div>
+      {sceneIndex === 9 && <div className="city-signature"><span>ENGINEERING TECHNOLOGY</span><strong>FOR BETTER HEALTHCARE</strong></div>}
+      <div className="city-label">FUTURE CARE • 2035</div>
+    </section>
+  );
 };
 
 export default BiomedicalCity;
