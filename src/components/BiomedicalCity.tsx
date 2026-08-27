@@ -284,14 +284,6 @@ const BiomedicalCity: React.FC = () => {
         1.5
       );
 
-      const yellow = material(
-        0xf1cf68,
-        0.35,
-        0.18,
-        0xa47b12,
-        1.4
-      );
-
       const skin = material(
         0xc88d73,
         0.72,
