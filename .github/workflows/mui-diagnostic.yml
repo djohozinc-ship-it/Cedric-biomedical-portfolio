@@ -1,0 +1,36 @@
+name: MUI dependency diagnostic
+
+on:
+  push:
+    branches:
+      - fix/mui-diagnostic
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Inspect MUI dependency tree
+        run: |
+          echo '--- package.json MUI entries ---'
+          node -e "const p=require('./package.json'); console.log({dependencies:{material:p.dependencies['@mui/material'],icons:p.dependencies['@mui/icons-material']},overrides:p.overrides})"
+          echo '--- npm ls MUI ---'
+          npm ls @mui/material @mui/icons-material @mui/utils @mui/system @mui/private-theming @mui/styled-engine --all || true
+          echo '--- packages importing elementAcceptingRef ---'
+          grep -R "elementAcceptingRef" node_modules/@mui node_modules/react-vertical-timeline-component 2>/dev/null | head -50 || true
+          echo '--- packages importing refType ---'
+          grep -R "@mui/utils/refType" node_modules/@mui node_modules/react-vertical-timeline-component 2>/dev/null | head -50 || true
+
+      - name: Build without changing dependencies
+        run: npm run build
