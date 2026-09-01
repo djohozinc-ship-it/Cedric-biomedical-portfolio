@@ -10,8 +10,8 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@mui/icons-material": "5.15.19",
-    "@mui/material": "5.15.19",
+    "@mui/icons-material": "5.15.20",
+    "@mui/material": "5.15.20",
     "@emailjs/browser": "^4.4.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -30,10 +30,10 @@
     "web-vitals": "^2.1.4"
   },
   "overrides": {
-    "@mui/private-theming": "5.15.14",
+    "@mui/private-theming": "5.15.20",
     "@mui/styled-engine": "5.15.14",
-    "@mui/system": "5.15.15",
-    "@mui/utils": "5.15.14"
+    "@mui/system": "5.15.20",
+    "@mui/utils": "5.15.20"
   },
   "scripts": {
     "start": "react-scripts start",
