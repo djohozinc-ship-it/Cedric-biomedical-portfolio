@@ -3,6 +3,7 @@ import Main from "./components/Main";
 import Timeline from "./components/Timeline";
 import Expertise from "./components/Expertise";
 import Project from "./components/Project";
+import ProjectDetails from "./components/ProjectDetails";
 import Contact from "./components/Contact";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
@@ -47,26 +48,38 @@ function BiomedicalCityViewport() {
 
 function App() {
     const [mode, setMode] = useState<string>('dark');
+    const [hash, setHash] = useState(window.location.hash);
+    const isProjectPage = hash.startsWith('#/project/');
 
     const handleModeChange = () => {
         setMode(mode === 'dark' ? 'light' : 'dark');
     }
 
     useEffect(() => {
-        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+        const onHashChange = () => {
+            setHash(window.location.hash);
+            window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+        };
+
+        window.addEventListener('hashchange', onHashChange);
+        return () => window.removeEventListener('hashchange', onHashChange);
     }, []);
 
     return (
     <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
         <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
-        <FadeIn transitionDuration={700}>
-            <BiomedicalCityViewport />
-            <Main/>
-            <Expertise/>
-            <Timeline/>
-            <Project/>
-            <Contact/>
-        </FadeIn>
+        {isProjectPage ? (
+            <ProjectDetails />
+        ) : (
+            <FadeIn transitionDuration={700}>
+                <BiomedicalCityViewport />
+                <Main/>
+                <Expertise/>
+                <Timeline/>
+                <Project/>
+                <Contact/>
+            </FadeIn>
+        )}
         <Footer />
     </div>
     );
