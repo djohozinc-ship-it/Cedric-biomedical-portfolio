@@ -48,6 +48,26 @@
   display: block;
   width: 100%;
   height: 100%;
+  will-change: transform;
+  animation: future-camera-drift 22s ease-in-out infinite;
+}
+
+/* Cinematic depth-of-field simulation: restrained blur at the optical edges. */
+.biomedical-future-scene .future-scene-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 0;
+  width: auto;
+  height: auto;
+  box-shadow: inset 0 0 95px 28px rgba(0, 4, 8, .38);
+  background:
+    linear-gradient(90deg, rgba(2, 7, 12, .28), transparent 18%, transparent 82%, rgba(2, 7, 12, .28)),
+    linear-gradient(0deg, rgba(2, 7, 12, .38), transparent 22%, transparent 78%, rgba(2, 7, 12, .22));
+  filter: blur(5px);
+  opacity: .9;
 }
 
 .future-scene-overlay {
@@ -64,36 +84,123 @@
     radial-gradient(circle at 50% 45%, transparent 0 38%, rgba(1, 7, 12, .25) 100%);
 }
 
-.future-scene-overlay::before,
 .future-scene-overlay::after {
   content: '';
   position: absolute;
   pointer-events: none;
-  border: 1px solid rgba(75, 221, 255, .24);
-  box-shadow: inset 0 0 25px rgba(45, 218, 255, .035), 0 0 18px rgba(45, 218, 255, .025);
-}
-
-.future-scene-overlay::before {
-  top: 1.25rem;
-  left: 1.25rem;
-  width: clamp(90px, 12vw, 170px);
-  height: 70px;
-  border-right: 0;
-  border-bottom: 0;
-  animation: future-corner-pulse 2.8s ease-in-out infinite;
-}
-
-.future-scene-overlay::after {
   top: 1.25rem;
   right: 1.25rem;
   width: clamp(110px, 16vw, 220px);
   height: 110px;
+  border: 1px solid rgba(75, 221, 255, .24);
   border-left: 0;
   border-bottom: 0;
+  box-shadow: inset 0 0 25px rgba(45, 218, 255, .035), 0 0 18px rgba(45, 218, 255, .025);
   animation: future-corner-pulse 3.4s ease-in-out infinite reverse;
 }
 
-.future-scene-overlay > span {
+.future-scene-hud {
+  position: absolute;
+  top: clamp(1.35rem, 3vw, 2.5rem);
+  z-index: 2;
+  min-width: min(260px, 36vw);
+  padding: .7rem .9rem;
+  border: 1px solid rgba(76, 222, 255, .22);
+  background: linear-gradient(135deg, rgba(5, 22, 30, .72), rgba(6, 15, 28, .32));
+  box-shadow: 0 0 25px rgba(27, 213, 255, .05), inset 0 0 22px rgba(27, 213, 255, .025);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.future-scene-hud::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 1px;
+  background: #58e4ff;
+  box-shadow: 0 0 10px rgba(88, 228, 255, .9);
+}
+
+.future-scene-hud::after {
+  content: '';
+  position: absolute;
+  right: .65rem;
+  bottom: .45rem;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #58e4ff;
+  box-shadow: 0 0 10px #58e4ff;
+  animation: future-status-blink 1.6s ease-in-out infinite;
+}
+
+.future-scene-hud-left { left: clamp(1.25rem, 3vw, 2.5rem); }
+.future-scene-hud-right { right: clamp(1.25rem, 3vw, 2.5rem); text-align: right; }
+
+.future-scene-hud span,
+.future-scene-hud strong {
+  display: block;
+}
+
+.future-scene-hud span {
+  color: #58e4ff;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-shadow: 0 0 13px rgba(54, 226, 255, .8);
+}
+
+.future-scene-hud strong {
+  margin-top: .3rem;
+  color: rgba(231, 249, 255, .8);
+  font-size: .52rem;
+  letter-spacing: .11em;
+  font-weight: 700;
+}
+
+/* Holographic display silhouettes and distant autonomous robots. */
+.future-scene-hud-right::before {
+  content: '◈  ◇  ◈';
+  position: absolute;
+  right: .7rem;
+  bottom: -2.2rem;
+  color: rgba(76, 226, 255, .42);
+  font-size: .58rem;
+  letter-spacing: .42em;
+  text-shadow: 0 0 12px rgba(48, 220, 255, .8);
+  animation: future-holo-flicker 2.8s steps(2, end) infinite;
+}
+
+.future-scene-hud-left::after {
+  content: '●  ◌  ▣';
+  right: -.1rem;
+  bottom: -.95rem;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(82, 255, 179, .45);
+  font-size: .5rem;
+  letter-spacing: .28em;
+  animation: future-holo-flicker 2.2s steps(2, end) infinite reverse;
+}
+
+.future-scene-title {
+  position: relative;
+  z-index: 2;
+  transform-origin: left bottom;
+  animation: future-title-breathe 8s ease-in-out infinite;
+}
+
+.future-scene-title span,
+.future-scene-title strong {
+  display: block;
+}
+
+.future-scene-title span {
   margin: 0 0 .55rem;
   color: #58e4ff;
   font-size: .7rem;
@@ -104,7 +211,7 @@
   animation: future-kicker 3s ease-in-out infinite;
 }
 
-.future-scene-overlay > strong {
+.future-scene-title strong {
   max-width: 850px;
   color: #f0fbff;
   font-size: clamp(1.65rem, 4.4vw, 3.7rem);
@@ -151,6 +258,13 @@
   85% { transform: translateY(520%); opacity: 0; }
 }
 
+@keyframes future-camera-drift {
+  0%, 100% { transform: scale(1.015) translate3d(0, 0, 0); }
+  25% { transform: scale(1.035) translate3d(-.35%, -.25%, 0); }
+  50% { transform: scale(1.018) translate3d(.3%, -.45%, 0); }
+  75% { transform: scale(1.04) translate3d(.45%, .2%, 0); }
+}
+
 @keyframes future-corner-pulse {
   0%, 100% { opacity: .45; }
   50% { opacity: 1; box-shadow: inset 0 0 35px rgba(45, 218, 255, .07), 0 0 25px rgba(45, 218, 255, .08); }
@@ -161,20 +275,50 @@
   50% { opacity: 1; text-shadow: 0 0 22px rgba(54, 226, 255, 1); }
 }
 
+@keyframes future-status-blink {
+  0%, 100% { opacity: .35; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes future-holo-flicker {
+  0%, 100% { opacity: .25; transform: translateY(0); }
+  18% { opacity: .8; }
+  20% { opacity: .35; transform: translateY(-1px); }
+  48% { opacity: .7; }
+  51% { opacity: .25; transform: translateY(1px); }
+  78% { opacity: .65; }
+}
+
+@keyframes future-title-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+
 @media (max-width: 768px) {
   .biomedical-future-scene { height: clamp(520px, 76svh, 680px); }
   .biomedical-future-scene::before { opacity: .32; background-size: 30px 30px, 30px 30px, 100% 8px, 100% 100%; }
+  .biomedical-future-scene canvas { animation-duration: 28s; }
   .future-scene-overlay { padding: 1.1rem; }
-  .future-scene-overlay::before { top: .85rem; left: .85rem; width: 85px; height: 52px; }
   .future-scene-overlay::after { top: .85rem; right: .85rem; width: 100px; height: 78px; }
-  .future-scene-overlay > span { font-size: .58rem; letter-spacing: .15em; }
-  .future-scene-overlay > strong { font-size: clamp(1.35rem, 7vw, 2.1rem); }
+  .future-scene-hud { top: .8rem; min-width: 0; max-width: 43vw; padding: .5rem .6rem; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+  .future-scene-hud-left { left: .8rem; }
+  .future-scene-hud-right { right: .8rem; }
+  .future-scene-hud span { font-size: .48rem; letter-spacing: .12em; }
+  .future-scene-hud strong { font-size: .42rem; letter-spacing: .06em; }
+  .future-scene-hud-right::before { display: none; }
+  .future-scene-overlay::before { filter: blur(7px); box-shadow: inset 0 0 65px 18px rgba(0, 4, 8, .42); }
+  .future-scene-title span { font-size: .58rem; letter-spacing: .15em; }
+  .future-scene-title strong { font-size: clamp(1.35rem, 7vw, 2.1rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .biomedical-future-scene::before,
   .biomedical-future-scene::after,
-  .future-scene-overlay::before,
+  .biomedical-future-scene canvas,
   .future-scene-overlay::after,
-  .future-scene-overlay > span { animation: none; }
+  .future-scene-hud::after,
+  .future-scene-hud-right::before,
+  .future-scene-hud-left::after,
+  .future-scene-title,
+  .future-scene-title span { animation: none; }
 }
