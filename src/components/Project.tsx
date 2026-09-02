@@ -5,20 +5,25 @@ import { projects } from './ProjectDetails';
 import '../assets/styles/Project.scss';
 
 function Project() {
+    const openProject = (slug: string) => {
+        sessionStorage.setItem('projects-scroll-position', String(window.scrollY));
+        window.location.hash = `#/project/${slug}`;
+    };
+
     return(
     <div className="projects-container" id="projects">
         <h1>Projects</h1>
         <div className="projects-grid">
             {projects.map((project) => (
                 <article className="project" key={project.slug}>
-                    <a href={`#/project/${project.slug}`} className="project-visual" aria-label={`Voir le projet ${project.title}`}>
+                    <button type="button" className="project-visual" aria-label={`Voir le projet ${project.title}`} onClick={() => openProject(project.slug)}>
                         <span>{project.title}</span>
-                    </a>
-                    <a href={`#/project/${project.slug}`}><h2>{project.title}</h2></a>
+                    </button>
+                    <button type="button" className="project-title-button" onClick={() => openProject(project.slug)}><h2>{project.title}</h2></button>
                     <p>{project.summary}</p>
-                    <a className="project-details-link" href={`#/project/${project.slug}`}>
+                    <button type="button" className="project-details-link" onClick={() => openProject(project.slug)}>
                         Voir le projet <FontAwesomeIcon icon={faArrowRight} />
-                    </a>
+                    </button>
                 </article>
             ))}
         </div>
