@@ -1,7 +1,7 @@
 footer {
+    width: 100%;
     text-align: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 50px 6% 40px;
 
     svg {
         width: 1.1em !important;
@@ -11,5 +11,16 @@ footer {
 
     p {
         font-size: 0.8em;
+        line-height: 1.5;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    footer {
+        padding: 38px 6% 28px;
+
+        p {
+            font-size: .76rem;
+        }
     }
 }
