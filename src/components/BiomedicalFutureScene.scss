@@ -139,189 +139,57 @@
 .future-scene-hud-right { right: clamp(1.25rem, 3vw, 2.5rem); text-align: right; }
 
 .future-scene-hud span,
-.future-scene-hud strong {
-  display: block;
-}
+.future-scene-hud strong { display: block; }
+.future-scene-hud span { color: #58e4ff; font-size: .62rem; font-weight: 800; letter-spacing: .2em; text-shadow: 0 0 13px rgba(54, 226, 255, .8); }
+.future-scene-hud strong { margin-top: .3rem; color: rgba(231, 249, 255, .8); font-size: .52rem; letter-spacing: .11em; font-weight: 700; }
+.future-scene-hud-right::before { content: '◈  ◇  ◈'; position: absolute; right: .7rem; bottom: -2.2rem; color: rgba(76, 226, 255, .42); font-size: .58rem; letter-spacing: .42em; text-shadow: 0 0 12px rgba(48, 220, 255, .8); animation: future-holo-flicker 2.8s steps(2, end) infinite; }
+.future-scene-hud-left::after { content: '●  ◌  ▣'; right: -.1rem; bottom: -.95rem; width: auto; height: auto; border-radius: 0; background: transparent; box-shadow: none; color: rgba(82, 255, 179, .45); font-size: .5rem; letter-spacing: .28em; animation: future-holo-flicker 2.2s steps(2, end) infinite reverse; }
 
-.future-scene-hud span {
-  color: #58e4ff;
-  font-size: .62rem;
-  font-weight: 800;
-  letter-spacing: .2em;
-  text-shadow: 0 0 13px rgba(54, 226, 255, .8);
-}
-
-.future-scene-hud strong {
-  margin-top: .3rem;
-  color: rgba(231, 249, 255, .8);
-  font-size: .52rem;
-  letter-spacing: .11em;
-  font-weight: 700;
-}
-
-.future-scene-hud-right::before {
-  content: '◈  ◇  ◈';
-  position: absolute;
-  right: .7rem;
-  bottom: -2.2rem;
-  color: rgba(76, 226, 255, .42);
-  font-size: .58rem;
-  letter-spacing: .42em;
-  text-shadow: 0 0 12px rgba(48, 220, 255, .8);
-  animation: future-holo-flicker 2.8s steps(2, end) infinite;
-}
-
-.future-scene-hud-left::after {
-  content: '●  ◌  ▣';
-  right: -.1rem;
-  bottom: -.95rem;
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  color: rgba(82, 255, 179, .45);
-  font-size: .5rem;
-  letter-spacing: .28em;
-  animation: future-holo-flicker 2.2s steps(2, end) infinite reverse;
-}
-
-.future-scene-title {
-  position: relative;
-  z-index: 2;
-  transform-origin: left bottom;
-  animation: future-title-breathe 8s ease-in-out infinite;
-}
-
+.future-scene-title { position: relative; z-index: 2; transform-origin: left bottom; animation: future-title-breathe 8s ease-in-out infinite; }
 .future-scene-title span,
-.future-scene-title strong {
-  display: block;
-}
-
-.future-scene-title span {
-  margin: 0 0 .55rem;
-  color: #58e4ff;
-  font-size: .7rem;
-  font-weight: 800;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  text-shadow: 0 0 16px rgba(54, 226, 255, .9);
-  animation: future-kicker 3s ease-in-out infinite;
-}
-
+.future-scene-title strong { display: block; }
+.future-scene-title span { margin: 0 0 .55rem; color: #58e4ff; font-size: .7rem; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; text-shadow: 0 0 16px rgba(54, 226, 255, .9); animation: future-kicker 3s ease-in-out infinite; }
 .future-scene-title span { font-size: 0; }
-.future-scene-title span::after {
-  content: 'ENGINEERING IN SERVICE OF';
-  font-size: .7rem;
-}
-
-.future-scene-title strong {
-  max-width: 850px;
-  color: #f0fbff;
-  font-size: clamp(1.65rem, 4.4vw, 3.7rem);
-  line-height: 1.02;
-  letter-spacing: -.035em;
-  text-shadow: 0 0 30px rgba(54, 226, 255, .24), 0 2px 30px rgba(0, 0, 0, .75);
-}
-
+.future-scene-title span::after { content: 'ENGINEERING IN SERVICE OF'; font-size: .7rem; }
+.future-scene-title strong { max-width: 850px; color: #f0fbff; font-size: clamp(1.65rem, 4.4vw, 3.7rem); line-height: 1.02; letter-spacing: -.035em; text-shadow: 0 0 30px rgba(54, 226, 255, .24), 0 2px 30px rgba(0, 0, 0, .75); }
 .future-scene-title strong { font-size: 0; }
-.future-scene-title strong::after {
-  content: 'HEALTH';
-  display: block;
-  font-size: clamp(1.65rem, 4.4vw, 3.7rem);
-}
+.future-scene-title strong::after { content: 'HEALTH'; display: block; font-size: clamp(1.65rem, 4.4vw, 3.7rem); }
 
-.future-scene-error {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-  color: #dffaff;
-  text-align: center;
-  font-size: .95rem;
-  letter-spacing: .04em;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(37, 205, 235, .16), transparent 30%),
-    linear-gradient(135deg, #06131d, #0b1224);
-}
+.future-scene-error { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding: 2rem; color: #dffaff; text-align: center; font-size: .95rem; letter-spacing: .04em; background: radial-gradient(circle at 50% 45%, rgba(37, 205, 235, .16), transparent 30%), linear-gradient(135deg, #06131d, #0b1224); }
+.future-scene-error::before { content: 'SYSTEM RECOVERY • BIOMEDICAL CITY'; position: absolute; top: 1.5rem; left: 1.5rem; color: #58e4ff; font-size: .65rem; font-weight: 800; letter-spacing: .2em; }
 
-.future-scene-error::before {
-  content: 'SYSTEM RECOVERY • BIOMEDICAL CITY';
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  color: #58e4ff;
-  font-size: .65rem;
-  font-weight: 800;
-  letter-spacing: .2em;
-}
-
-@keyframes future-grid-drift {
-  from { background-position: 0 0, 0 0, 0 0, 0 0; }
-  to { background-position: 42px 42px, -42px 42px, 0 90px, 0 0; }
-}
-
-@keyframes future-scan {
-  0%, 100% { transform: translateY(-10%); opacity: 0; }
-  15%, 75% { opacity: 1; }
-  85% { transform: translateY(520%); opacity: 0; }
-}
-
-@keyframes future-camera-drift {
-  0%, 100% { transform: scale(1.015) translate3d(0, 0, 0); }
-  25% { transform: scale(1.035) translate3d(-.35%, -.25%, 0); }
-  50% { transform: scale(1.018) translate3d(.3%, -.45%, 0); }
-  75% { transform: scale(1.04) translate3d(.45%, .2%, 0); }
-}
-
-@keyframes future-corner-pulse {
-  0%, 100% { opacity: .45; }
-  50% { opacity: 1; box-shadow: inset 0 0 35px rgba(45, 218, 255, .07), 0 0 25px rgba(45, 218, 255, .08); }
-}
-
-@keyframes future-kicker {
-  0%, 100% { opacity: .72; }
-  50% { opacity: 1; text-shadow: 0 0 22px rgba(54, 226, 255, 1); }
-}
-
-@keyframes future-status-blink {
-  0%, 100% { opacity: .35; transform: scale(.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-
-@keyframes future-holo-flicker {
-  0%, 100% { opacity: .25; transform: translateY(0); }
-  18% { opacity: .8; }
-  20% { opacity: .35; transform: translateY(-1px); }
-  48% { opacity: .7; }
-  51% { opacity: .25; transform: translateY(1px); }
-  78% { opacity: .65; }
-}
-
-@keyframes future-title-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.012); }
-}
+@keyframes future-grid-drift { from { background-position: 0 0, 0 0, 0 0, 0 0; } to { background-position: 42px 42px, -42px 42px, 0 90px, 0 0; } }
+@keyframes future-scan { 0%, 100% { transform: translateY(-10%); opacity: 0; } 15%, 75% { opacity: 1; } 85% { transform: translateY(520%); opacity: 0; } }
+@keyframes future-camera-drift { 0%, 100% { transform: scale(1.015) translate3d(0, 0, 0); } 25% { transform: scale(1.035) translate3d(-.35%, -.25%, 0); } 50% { transform: scale(1.018) translate3d(.3%, -.45%, 0); } 75% { transform: scale(1.04) translate3d(.45%, .2%, 0); } }
+@keyframes future-corner-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; box-shadow: inset 0 0 35px rgba(45, 218, 255, .07), 0 0 25px rgba(45, 218, 255, .08); } }
+@keyframes future-kicker { 0%, 100% { opacity: .72; } 50% { opacity: 1; text-shadow: 0 0 22px rgba(54, 226, 255, 1); } }
+@keyframes future-status-blink { 0%, 100% { opacity: .35; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.2); } }
+@keyframes future-holo-flicker { 0%, 100% { opacity: .25; transform: translateY(0); } 18% { opacity: .8; } 20% { opacity: .35; transform: translateY(-1px); } 48% { opacity: .7; } 51% { opacity: .25; transform: translateY(1px); } 78% { opacity: .65; } }
+@keyframes future-title-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012); } }
 
 @media (max-width: 768px) {
-  .biomedical-future-scene { height: clamp(440px, 62svh, 560px); }
+  .biomedical-future-scene { height: 430px; }
   .biomedical-future-scene::before { opacity: .32; background-size: 30px 30px, 30px 30px, 100% 8px, 100% 100%; }
   .biomedical-future-scene canvas { animation-duration: 28s; }
-  .future-scene-overlay { padding: .9rem; }
-  .future-scene-overlay::after { top: .7rem; right: .7rem; width: 92px; height: 72px; }
-  .future-scene-hud { top: .7rem; min-width: 0; max-width: 43vw; padding: .45rem .55rem; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
-  .future-scene-hud-left { left: .7rem; }
-  .future-scene-hud-right { right: .7rem; }
-  .future-scene-hud span { font-size: .46rem; letter-spacing: .1em; }
-  .future-scene-hud strong { font-size: .4rem; letter-spacing: .05em; }
+  .future-scene-overlay { padding: .75rem; }
+  .future-scene-overlay::after { top: .6rem; right: .6rem; width: 88px; height: 68px; }
+  .future-scene-hud { top: .6rem; min-width: 0; max-width: 43vw; padding: .4rem .5rem; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+  .future-scene-hud-left { left: .6rem; }
+  .future-scene-hud-right { right: .6rem; }
+  .future-scene-hud span { font-size: .44rem; letter-spacing: .09em; }
+  .future-scene-hud strong { font-size: .38rem; letter-spacing: .04em; }
   .future-scene-hud-right::before { display: none; }
   .future-scene-overlay::before { filter: blur(7px); box-shadow: inset 0 0 65px 18px rgba(0, 4, 8, .42); }
-  .future-scene-title span { font-size: 0; letter-spacing: .12em; }
-  .future-scene-title span::after { font-size: .55rem; }
+  .future-scene-title span { font-size: 0; letter-spacing: .1em; }
+  .future-scene-title span::after { font-size: .5rem; }
   .future-scene-title strong { font-size: 0; }
-  .future-scene-title strong::after { font-size: clamp(1.25rem, 6.6vw, 1.95rem); }
+  .future-scene-title strong::after { font-size: clamp(1.15rem, 6vw, 1.75rem); }
+}
+
+@media (max-width: 480px) {
+  .biomedical-future-scene { height: 360px; }
+  .future-scene-overlay { padding: .65rem; }
+  .future-scene-title strong::after { font-size: clamp(1.05rem, 5.8vw, 1.55rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
