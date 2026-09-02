@@ -1,44 +1,41 @@
 import React from "react";
-import '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReact, faDocker, faPython } from '@fortawesome/free-brands-svg-icons';
+import { faMicrochip, faStethoscope, faCode } from '@fortawesome/free-solid-svg-icons';
 import Chip from '@mui/material/Chip';
 import '../assets/styles/Expertise.scss';
 
-const labelsFirst = [
-    "React",
+const biomedicalSkills = [
+    "Maintenance biomédicale",
+    "Dispositifs médicaux",
+    "Diagnostic & dépannage",
+    "Sécurité des équipements",
+    "Prototypage",
+    "Conception de solutions de santé"
+];
+
+const electronicsSkills = [
+    "ESP32",
+    "Arduino",
+    "Électronique analogique",
+    "Électronique numérique",
+    "Capteurs",
+    "ADS1115",
+    "MCP23017",
+    "KiCad",
+    "SolidWorks"
+];
+
+const softwareSkills = [
+    "C/C++",
     "TypeScript",
-    "JavaScript",
-    "HTML5",
-    "CSS3",
-    "SASS",
-    "Flask",
-    "Python",
-    "SQL",
-    "PostgreSQL",
-    "Postman"
-];
-
-const labelsSecond = [
-    "Git",
-    "GitHub Actions",
+    "React",
+    "React Native",
+    "Expo",
+    "MQTT",
+    "OpenCV",
+    "MediaPipe",
     "Docker",
-    "AWS",
-    "Azure",
-    "Linux",
-    "Snowflake",
-    "Pandas",
-    "Selenium",
-];
-
-const labelsThird = [
-    "OpenAI",
-    "Groq",
-    "LangChain",
-    "Qdrant",
-    "Hugging Face",
-    "LlamaIndex",
-    "Streamlit",
+    "Linux"
 ];
 
 function Expertise() {
@@ -48,36 +45,36 @@ function Expertise() {
             <h1>Expertise</h1>
             <div className="skills-grid">
                 <div className="skill">
-                    <FontAwesomeIcon icon={faReact} size="3x"/>
-                    <h3>Full Stack Web Development</h3>
-                    <p>I have built a diverse array of web applications from scratch using modern technologies such as React and Flask. I have a strong proficiency in the SDLC process and frontend + backend development.</p>
+                    <FontAwesomeIcon icon={faStethoscope} size="3x"/>
+                    <h3>Ingénierie biomédicale</h3>
+                    <p>Formation en génie biomédical orientée vers la maintenance des équipements hospitaliers, la conception de dispositifs médicaux et le développement de solutions techniques adaptées aux besoins du secteur de la santé.</p>
                     <div className="flex-chips">
-                        <span className="chip-title">Tech stack:</span>
-                        {labelsFirst.map((label, index) => (
+                        <span className="chip-title">Domaines :</span>
+                        {biomedicalSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
                     </div>
                 </div>
 
                 <div className="skill">
-                    <FontAwesomeIcon icon={faDocker} size="3x"/>
-                    <h3>DevOps & Automation</h3>
-                    <p>Once the application is built, I help clients set up DevOps testing, CI/CD pipelines, and deployment automation to support the successful Go-Live.</p>
+                    <FontAwesomeIcon icon={faMicrochip} size="3x"/>
+                    <h3>Électronique & systèmes embarqués</h3>
+                    <p>Conception et prototypage de systèmes électroniques pour la santé : acquisition de données, capteurs, commande, communication et intégration de microcontrôleurs dans des solutions embarquées.</p>
                     <div className="flex-chips">
-                        <span className="chip-title">Tech stack:</span>
-                        {labelsSecond.map((label, index) => (
+                        <span className="chip-title">Technologies :</span>
+                        {electronicsSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
                     </div>
                 </div>
 
                 <div className="skill">
-                    <FontAwesomeIcon icon={faPython} size="3x"/>
-                    <h3>GenAI & LLM</h3>
-                    <p>Stay relevant in the market by leveraging the latest AI models in your projects. I have professional experience building enterprise grade GenAI-enabled solutions to empower intelligent decision making.</p>
+                    <FontAwesomeIcon icon={faCode} size="3x"/>
+                    <h3>Logiciel, IoT & technologies de santé</h3>
+                    <p>Développement d'applications et de systèmes connectés pour compléter les dispositifs biomédicaux, avec un intérêt particulier pour l'IoT, l'analyse de signaux et l'intelligence artificielle appliquée à la santé.</p>
                     <div className="flex-chips">
-                        <span className="chip-title">Tech stack:</span>
-                        {labelsThird.map((label, index) => (
+                        <span className="chip-title">Technologies :</span>
+                        {softwareSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
                     </div>
