@@ -1,69 +1,119 @@
 .project-details-page {
     min-height: 100vh;
-    padding: 8% 10% 6%;
+    box-sizing: border-box;
+    padding: 110px clamp(24px, 7vw, 110px) 90px;
     text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-details-page::before {
+    content: '';
+    position: absolute;
+    top: -180px;
+    right: -180px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(80, 0, 202, .16) 0%, rgba(80, 0, 202, 0) 68%);
+    pointer-events: none;
 }
 
 .project-back {
-    border: 0;
-    background: transparent;
-    color: inherit;
-    padding: 0;
-    margin-bottom: 50px;
+    border: 1px solid rgba(127, 127, 127, .28);
+    background: rgba(127, 127, 127, .08);
+    color: inherit !important;
+    padding: 10px 17px;
+    margin: 0 0 52px;
     cursor: pointer;
     font: inherit;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    opacity: .8;
+    border-radius: 999px;
+    transition: transform .2s ease, background-color .2s ease, border-color .2s ease;
 }
 
 .project-back:hover {
     opacity: 1;
+    transform: translateX(-4px);
+    background: rgba(80, 0, 202, .12);
+    border-color: rgba(80, 0, 202, .45);
 }
 
 .project-details-hero {
-    max-width: 950px;
-    margin-bottom: 70px;
+    max-width: 1000px;
+    margin: 0 auto 75px;
+    position: relative;
 }
 
 .project-category {
-    display: inline-block;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: .7;
-    margin-bottom: 15px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 12px;
+    box-sizing: border-box;
+    border: 1px solid rgba(80, 0, 202, .35);
+    border-radius: 999px;
+    color: #a879ff !important;
+    background: rgba(80, 0, 202, .10);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    margin-bottom: 18px;
 }
 
 .project-details-hero h1 {
-    font-size: clamp(2.4rem, 6vw, 4.8rem);
-    line-height: 1.05;
-    margin: 0 0 25px;
+    font-size: clamp(2.7rem, 6vw, 5.3rem);
+    line-height: 1.02;
+    letter-spacing: -.04em;
+    margin: 0 0 24px;
 }
 
 .project-lead {
-    font-size: 1.25rem;
-    line-height: 1.7;
+    font-size: clamp(1.08rem, 2vw, 1.3rem);
+    line-height: 1.75;
     max-width: 850px;
-    opacity: .85;
+    margin: 0;
+    opacity: .78;
 }
 
 .project-details-section {
-    max-width: 950px;
-    margin: 0 auto 60px;
+    max-width: 1000px;
+    margin: 0 auto 28px;
+    padding: 30px;
+    box-sizing: border-box;
+    border: 1px solid rgba(127, 127, 127, .18);
+    border-radius: 20px;
+    background: rgba(127, 127, 127, .045);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .08);
+    backdrop-filter: blur(8px);
 }
 
 .project-details-section h2 {
-    margin-bottom: 25px;
+    margin: 0 0 22px;
     display: flex;
     align-items: center;
     gap: 12px;
+    font-size: 1.25rem;
+    letter-spacing: -.01em;
 }
 
-.project-description p {
-    font-size: 1.05rem;
+.project-details-section h2 svg {
+    color: #a879ff;
+    font-size: .95em;
+}
+
+.project-description p,
+.project-media-placeholder p {
+    font-size: 1rem;
     line-height: 1.8;
-    margin-bottom: 18px;
+    margin: 0 0 15px;
+    opacity: .86;
+}
+
+.project-description p:last-child {
+    margin-bottom: 0;
 }
 
 .project-chips {
@@ -72,33 +122,81 @@
     gap: 10px;
 }
 
+.project-chips .MuiChip-root {
+    height: 34px;
+    color: inherit !important;
+    background: rgba(80, 0, 202, .11) !important;
+    border: 1px solid rgba(80, 0, 202, .24);
+    font-weight: 600;
+}
+
+.project-chips .MuiChip-label {
+    color: inherit !important;
+}
+
 .project-features {
     margin: 0;
-    padding-left: 25px;
-    line-height: 2;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.project-features li {
+    position: relative;
+    padding: 14px 16px 14px 42px;
+    border-radius: 12px;
+    border: 1px solid rgba(127, 127, 127, .14);
+    background: rgba(127, 127, 127, .045);
+    line-height: 1.55;
+    color: inherit;
+}
+
+.project-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 15px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #fff;
+    background: #5000ca;
+    font-size: .72rem;
+    font-weight: 800;
 }
 
 .project-media-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
 }
 
 .project-media-grid img,
 .project-media-grid video {
     width: 100%;
+    aspect-ratio: 16 / 10;
     display: block;
-    border-radius: 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(127, 127, 127, .18);
+    background: rgba(127, 127, 127, .08);
     max-height: 520px;
     object-fit: cover;
 }
 
 .project-media-placeholder {
-    border: 1px dashed rgba(127, 127, 127, .5);
-    border-radius: 10px;
+    border: 1px dashed rgba(127, 127, 127, .35);
+    border-radius: 16px;
     padding: 55px 25px;
     text-align: center;
-    opacity: .8;
+    background: rgba(127, 127, 127, .035);
+}
+
+.project-media-placeholder svg {
+    color: #a879ff;
 }
 
 .project-media-placeholder h3 {
@@ -106,7 +204,8 @@
 }
 
 .project-media-placeholder p {
-    margin: 0;
+    max-width: 560px;
+    margin: 0 auto;
 }
 
 .project-links {
@@ -119,20 +218,64 @@
     margin-bottom: 5px;
 }
 
+.project-links a {
+    width: fit-content;
+    color: #a879ff !important;
+    font-weight: 600;
+}
+
 .project-not-found {
     text-align: center;
     padding: 100px 20px;
 }
 
+.light-mode .project-details-page {
+    color: #0d1116;
+}
+
+.light-mode .project-details-page .project-category {
+    color: #5000ca !important;
+    background: rgba(80, 0, 202, .07);
+}
+
+.light-mode .project-details-page .project-details-section {
+    background: rgba(255, 255, 255, .72);
+    border-color: rgba(13, 17, 22, .10);
+    box-shadow: 0 14px 40px rgba(13, 17, 22, .06);
+}
+
+.light-mode .project-details-page .project-chips .MuiChip-root,
+.light-mode .project-details-page .project-chips .MuiChip-label {
+    color: #0d1116 !important;
+}
+
+.light-mode .project-details-page .project-chips .MuiChip-root {
+    background: rgba(80, 0, 202, .07) !important;
+}
+
+.light-mode .project-details-page .project-links a {
+    color: #5000ca !important;
+}
+
 @media screen and (max-width: 700px) {
     .project-details-page {
-        padding: 12% 5% 8%;
+        padding: 90px 5% 65px;
+    }
+
+    .project-back {
+        margin-bottom: 38px;
     }
 
     .project-details-hero {
-        margin-bottom: 50px;
+        margin-bottom: 48px;
     }
 
+    .project-details-section {
+        padding: 23px 20px;
+        border-radius: 16px;
+    }
+
+    .project-features,
     .project-media-grid {
         grid-template-columns: 1fr;
     }
