@@ -105,13 +105,100 @@ const BiomedicalCity: React.FC = () => {
         {p:[-1,7.5,30],l:[0,3.8,18],fov:47,hold:4},
         {p:[0,7.5,-12],l:[0,4.5,-22],fov:42,hold:5},
       ];
-      const clock=new THREE.Clock();const look=new THREE.Vector3();const target=new THREE.Vector3();
+
+      const clock=new THREE.Clock();
+      const look=new THREE.Vector3(...shots[0].l);
+      const target=new THREE.Vector3(...shots[0].l);
+      const desiredPosition=new THREE.Vector3(...shots[0].p);
+      let currentFov=shots[0].fov;
+      let lastTime=0;
+
       const resize=()=>{const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);};window.addEventListener('resize',resize);resize();
-      const animate=()=>{if(dead)return;const t=clock.getElapsedTime();const total=shots.reduce((sum,s)=>sum+s.hold,0);let time=t%total;let idx=0;while(idx<shots.length-1&&time>shots[idx].hold){time-=shots[idx].hold;idx++;}const next=(idx+1)%shots.length;const a=shots[idx],b=shots[next];const transition=Math.min(1,Math.max(0,(time-a.hold*.62)/(a.hold*.38)));const e=transition*transition*(3-2*transition);camera.position.set(THREE.MathUtils.lerp(a.p[0],b.p[0],e),THREE.MathUtils.lerp(a.p[1],b.p[1],e)+Math.sin(t*.45)*.07,THREE.MathUtils.lerp(a.p[2],b.p[2],e));camera.fov=THREE.MathUtils.lerp(a.fov,b.fov,e);camera.updateProjectionMatrix();target.set(THREE.MathUtils.lerp(a.l[0],b.l[0],e),THREE.MathUtils.lerp(a.l[1],b.l[1],e),THREE.MathUtils.lerp(a.l[2],b.l[2],e));look.lerp(target,.11);camera.lookAt(look);
-        const door=THREE.MathUtils.smoothstep(Math.sin(t*.34)*.5+.5,.2,.75);labDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.5,door);labDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.5,door);surgeryDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.5,door);surgeryDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.5,door);entranceDoors.left.position.x=THREE.MathUtils.lerp(-1.9,-4.4,door);entranceDoors.right.position.x=THREE.MathUtils.lerp(1.9,4.4,door);
-        carousel.rotation.y=t*.5;pipette.rotation.z=Math.sin(t*1.1)*.28;seqBars.forEach((m,i)=>{m.scale.y=.65+Math.sin(t*2+i*.7)*.35;});scope.rotation.y=Math.sin(t*.45)*.035;pcr.rotation.y=Math.sin(t*.32)*.025;nozzle.position.x=Math.sin(t*.8)*1.4;gantry.position.x=Math.sin(t*.8)*1.4;arm.position.x=-6+((Math.sin(t*.42)+1)*.5)*12;arm2.rotation.z=Math.sin(t*.9)*.12;gripper.rotation.z=Math.sin(t*1.2)*.18;joints.forEach((j,i)=>{j.rotation.x=Math.sin(t*.8+i*.6)*.08;j.rotation.y=Math.cos(t*1.1+i)*.05;});tips.forEach((x,i)=>x.position.z=Math.sin(t*1.5+i)*.15);ctGlow.rotation.z=t*1.05;particles.rotation.y=t*.006;cyanLight.intensity=(mobile?10:20)+Math.sin(t)*1.8;violetLight.intensity=(mobile?7:14)+Math.cos(t*.8)*1.2;
-        [labName,seqPanel,scopeScreen,pcrPanel,bscPanel,incPanel,cryoPanel,printPanel,railPanel,surgPanel,imgPanel,title].forEach((p,i)=>{const m=p.userData.material as THREE.MeshBasicMaterial|undefined;if(m)m.opacity=.9+Math.sin(t*1.7+i)*.05;});renderer.render(scene,camera);raf=requestAnimationFrame(animate);};
-      animate();return()=>{dead=true;cancelAnimationFrame(raf);window.removeEventListener('resize',resize);pg.dispose();pm.dispose();renderer.dispose();mount.innerHTML='';};
+
+      const animate=()=>{
+        if(dead)return;
+        const rawDelta=clock.getDelta();
+        const delta=Math.min(rawDelta,.05);
+        const t=clock.elapsedTime;
+        const total=shots.reduce((sum,s)=>sum+s.hold,0);
+        let time=t%total;
+        let idx=0;
+        while(idx<shots.length-1&&time>shots[idx].hold){time-=shots[idx].hold;idx++;}
+        const next=(idx+1)%shots.length;
+        const a=shots[idx],b=shots[next];
+        const transition=Math.min(1,Math.max(0,(time-a.hold*.62)/(a.hold*.38)));
+        const e=transition*transition*(3-2*transition);
+
+        desiredPosition.set(
+          THREE.MathUtils.lerp(a.p[0],b.p[0],e),
+          THREE.MathUtils.lerp(a.p[1],b.p[1],e),
+          THREE.MathUtils.lerp(a.p[2],b.p[2],e)
+        );
+        const cinematicDrift=mobile?.035:.065;
+        desiredPosition.x+=Math.sin(t*.31)*cinematicDrift;
+        desiredPosition.y+=Math.sin(t*.47)*.055;
+        desiredPosition.z+=Math.cos(t*.27)*cinematicDrift;
+
+        target.set(
+          THREE.MathUtils.lerp(a.l[0],b.l[0],e),
+          THREE.MathUtils.lerp(a.l[1],b.l[1],e),
+          THREE.MathUtils.lerp(a.l[2],b.l[2],e)
+        );
+        target.x+=Math.sin(t*.38)*.035;
+        target.y+=Math.cos(t*.42)*.025;
+
+        const cameraSmooth=1-Math.exp(-delta*(mobile?3.8:4.6));
+        const targetSmooth=1-Math.exp(-delta*(mobile?4.8:5.8));
+        camera.position.lerp(desiredPosition,cameraSmooth);
+        look.lerp(target,targetSmooth);
+
+        const nextFov=THREE.MathUtils.lerp(a.fov,b.fov,e);
+        currentFov=THREE.MathUtils.damp(currentFov,nextFov,2.8,delta);
+        if(Math.abs(camera.fov-currentFov)>.015){camera.fov=currentFov;camera.updateProjectionMatrix();}
+        camera.lookAt(look);
+
+        const doorCycle=(Math.sin(t*.22-.7)+1)*.5;
+        const door=THREE.MathUtils.smoothstep(doorCycle,.24,.76);
+        labDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.5,door);labDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.5,door);
+        surgeryDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.5,door);surgeryDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.5,door);
+        entranceDoors.left.position.x=THREE.MathUtils.lerp(-1.9,-4.4,door);entranceDoors.right.position.x=THREE.MathUtils.lerp(1.9,4.4,door);
+
+        carousel.rotation.y=t*.34+Math.sin(t*.17)*.08;
+        pipette.rotation.z=Math.sin(t*.72)*.16;
+        pipette.position.y=1.6+Math.sin(t*.92)*.035;
+        seqBars.forEach((m,i)=>{const phase=t*1.65-i*.32;const pulse=(Math.sin(phase)+1)*.5;m.scale.y=.72+pulse*.28;m.position.y=2.48+pulse*.18;});
+        scope.rotation.y=Math.sin(t*.28)*.022;
+        scope.rotation.x=Math.sin(t*.19)*.012;
+        pcr.rotation.y=Math.sin(t*.24)*.018;
+        nozzle.position.x=Math.sin(t*.55)*1.35;
+        nozzle.position.z=Math.cos(t*.38)*.28;
+        gantry.position.x=nozzle.position.x;
+        gantry.position.z=nozzle.position.z;
+        arm.position.x=-6+((Math.sin(t*.22)+1)*.5)*12;
+        arm2.rotation.z=Math.sin(t*.62)*.09;
+        gripper.rotation.z=Math.sin(t*.86)*.12;
+        joints.forEach((j,i)=>{
+          const phase=t*(.45+i*.035)+i*.8;
+          j.rotation.x=Math.sin(phase)*(.045+.012*(i%3));
+          j.rotation.y=Math.cos(phase*.83)*.035;
+          j.rotation.z+=Math.sin(phase*.5)*.002;
+        });
+        tips.forEach((x,i)=>{x.position.z=Math.sin(t*.95+i*.75)*.09;});
+        ctGlow.rotation.z=t*.72;
+        particles.rotation.y=t*.004;
+        cyanLight.intensity=(mobile?10:20)+Math.sin(t*.65)*1.2;
+        violetLight.intensity=(mobile?7:14)+Math.cos(t*.52)*.8;
+        greenLight.intensity=(mobile?5:9)+Math.sin(t*.73+.8)*.6;
+
+        [labName,seqPanel,scopeScreen,pcrPanel,bscPanel,incPanel,cryoPanel,printPanel,railPanel,surgPanel,imgPanel,title].forEach((p,i)=>{const m=p.userData.material as THREE.MeshBasicMaterial|undefined;if(m)m.opacity=.9+Math.sin(t*1.15+i*.55)*.035;});
+
+        renderer.render(scene,camera);
+        lastTime=t;
+        raf=requestAnimationFrame(animate);
+      };
+      void lastTime;
+      animate();
+      return()=>{dead=true;cancelAnimationFrame(raf);window.removeEventListener('resize',resize);pg.dispose();pm.dispose();renderer.dispose();mount.innerHTML='';};
     }catch(e){console.error('Biomedical future scene failed:',e);setError(true);return()=>{dead=true;cancelAnimationFrame(raf);};}
   },[]);
 
