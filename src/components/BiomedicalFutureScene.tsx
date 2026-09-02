@@ -20,7 +20,6 @@ const BiomedicalCity: React.FC = () => {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x07151d);
       scene.fog = new THREE.Fog(0x07151d, 28, 105);
-
       const camera = new THREE.PerspectiveCamera(mobile ? 52 : 44, 1, 0.1, 140);
       const renderer = new THREE.WebGLRenderer({ antialias: !mobile, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.2 : 1.4));
@@ -56,7 +55,6 @@ const BiomedicalCity: React.FC = () => {
       const red = mat(0xff5877, .2, .3, 0xc91f43, 3);
       const robot = mat(0xbfd1d5, .88, .22);
       const robotDark = mat(0x0b171d, .95, .18);
-
       const glass = new THREE.MeshPhysicalMaterial({ color: 0x73eaff, transmission: .55, opacity: .19, transparent: true, roughness: .06, metalness: .08, side: THREE.DoubleSide, depthWrite: false, emissive: 0x0b4552, emissiveIntensity: 1.3 });
       const doorGlass = new THREE.MeshPhysicalMaterial({ color: 0x9af4ff, transmission: .65, opacity: .24, transparent: true, roughness: .04, metalness: .05, side: THREE.DoubleSide, depthWrite: false, emissive: 0x0a6070, emissiveIntensity: 1.8 });
 
@@ -77,7 +75,7 @@ const BiomedicalCity: React.FC = () => {
         return m;
       };
       const sphere = (parent: THREE.Object3D, pos: V3, radius: number, material: THREE.Material, segments = 18) => {
-        const m = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, segments - 4), material);
+        const m = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, Math.max(8, segments - 4)), material);
         m.position.set(...pos);
         m.castShadow = !mobile;
         m.receiveShadow = true;
@@ -91,13 +89,12 @@ const BiomedicalCity: React.FC = () => {
         return l;
       };
 
-      // Campus floor: clean and open, so the medical technologies remain visible.
+      // Open campus floor: technologies stay readable instead of disappearing in dark blocks.
       box(scene, [0, -.65, 0], [74, 1.1, 58], dark);
       box(scene, [0, -.05, 0], [72, .08, 56], graphite);
       for (let x = -34; x <= 34; x += 4) box(scene, [x, .01, 0], [.015, .015, 54], cyan);
       for (let z = -25; z <= 25; z += 4) box(scene, [0, .01, z], [70, .015, .015], cyan);
 
-      // Large readable holographic medical screen.
       const createPanel = (title: string, subtitle: string, width: number, height: number) => {
         const group = new THREE.Group();
         const canvas = document.createElement('canvas');
@@ -119,8 +116,8 @@ const BiomedicalCity: React.FC = () => {
           ctx.strokeStyle = '#43e7ff';
           ctx.lineWidth = 3;
           ctx.beginPath();
-          const ecg = [0,0,18,0,28,-34,39,18,52,0,76,0,88,-24,99,10,115,0,150,0,165,-30,178,16,190,0,230,0];
-          ecg.forEach((v, i) => i % 2 === 0 ? ctx.moveTo(45 + v * 2.7, 195) : ctx.lineTo(45 + ecg[i - 1] * 2.7, 195));
+          const ecg: Array<[number, number]> = [[0,0],[20,0],[30,-34],[42,18],[56,0],[82,0],[94,-24],[106,10],[124,0],[150,0],[164,-30],[178,16],[196,0],[230,0]];
+          ecg.forEach(([x, y], index) => index === 0 ? ctx.moveTo(45 + x * 2.7, 195 + y) : ctx.lineTo(45 + x * 2.7, 195 + y));
           ctx.stroke();
           ctx.font = '700 26px Arial';
           ctx.fillStyle = '#55ffb5';
@@ -132,17 +129,14 @@ const BiomedicalCity: React.FC = () => {
         const texture = new THREE.CanvasTexture(canvas);
         texture.colorSpace = THREE.SRGBColorSpace;
         const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: .94, side: THREE.DoubleSide, depthWrite: false });
-        const screen = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
-        group.add(screen);
-        const frame = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(width, height, .03)), new THREE.LineBasicMaterial({ color: 0x73efff, transparent: true, opacity: .85 }));
-        group.add(frame);
+        group.add(new THREE.Mesh(new THREE.PlaneGeometry(width, height), material));
+        group.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(width, height, .03)), new THREE.LineBasicMaterial({ color: 0x73efff, transparent: true, opacity: .85 })));
         group.userData.material = material;
         return group;
       };
 
       const slidingDoors = (parent: THREE.Object3D, z: number, width: number, height: number): Door => {
-        const rail = box(parent, [0, height + .08, z], [width, .08, .12], steel);
-        void rail;
+        box(parent, [0, height + .08, z], [width, .08, .12], steel);
         const left = box(parent, [-width * .22, height / 2, z], [width * .4, height, .08], doorGlass);
         const right = box(parent, [width * .22, height / 2, z], [width * .4, height, .08], doorGlass);
         box(parent, [-width * .43, height / 2, z - .05], [.06, height, .1], cyan);
@@ -150,7 +144,7 @@ const BiomedicalCity: React.FC = () => {
         return { left, right };
       };
 
-      // FUTURISTIC GLASS OPERATING ROOM — deliberately large and in front.
+      // Large glass operating room + recognizable four-arm surgical robot.
       const surgery = new THREE.Group();
       surgery.position.set(-13, 0, 8);
       scene.add(surgery);
@@ -201,12 +195,12 @@ const BiomedicalCity: React.FC = () => {
       makeSurgicalArm(-4.8, 3.2, 1);
       makeSurgicalArm(4.8, -3.2, -1);
       makeSurgicalArm(4.8, 3.2, -1);
-      box(surgery, [0, 1.25, 0], [6.4, .3, 2.8], robotWhite = robot);
+      box(surgery, [0, 1.25, 0], [6.4, .3, 2.8], robot);
       const surgeryPanel = createPanel('SURGICAL ROBOT', '4-ARM PRECISION SYSTEM // STERILE OR', 6.8, 2.2);
       surgeryPanel.position.set(0, 5.2, -4.9);
       surgery.add(surgeryPanel);
 
-      // GLASS LAB — humanoid robot, carousel and pipette clearly visible.
+      // Glass laboratory with humanoid robot, sample carousel and robotic pipette.
       const lab = new THREE.Group();
       lab.position.set(15, 0, 6);
       scene.add(lab);
@@ -216,8 +210,7 @@ const BiomedicalCity: React.FC = () => {
       box(lab, [0, 7, 0], [13.5, .22, 9], graphite);
       box(lab, [0, 3.5, -4.35], [13.4, 6.8, .06], glass);
       const labDoors = slidingDoors(lab, 4.4, 6, 5.2);
-      const bench = box(lab, [1.8, 1.15, 0], [8.5, .25, 5.2], graphite);
-      void bench;
+      box(lab, [1.8, 1.15, 0], [8.5, .25, 5.2], graphite);
       const carousel = new THREE.Group();
       carousel.position.set(2.4, 1.55, .1);
       lab.add(carousel);
@@ -232,7 +225,6 @@ const BiomedicalCity: React.FC = () => {
       box(pipette, [0, .7, 0], [.25, 1.55, .25], steel);
       sphere(pipette, [0, 1.55, 0], .2, cyan, 12);
       box(pipette, [0, -.22, 0], [.09, .55, .09], green);
-
       const humanoid = new THREE.Group();
       humanoid.position.set(-2.6, .55, -.5);
       lab.add(humanoid);
@@ -255,7 +247,7 @@ const BiomedicalCity: React.FC = () => {
       labPanel.position.set(0, 5.15, -4.4);
       lab.add(labPanel);
 
-      // IMAGING: CT/MRI ring and transparent anatomical patient.
+      // CT/MRI imaging center.
       const imaging = new THREE.Group();
       imaging.position.set(0, 0, 18);
       scene.add(imaging);
@@ -284,7 +276,7 @@ const BiomedicalCity: React.FC = () => {
       imagingPanel.rotation.y = .12;
       imaging.add(imagingPanel);
 
-      // AI diagnostics wall and readable medical data.
+      // AI diagnostics and readable medical telemetry.
       const ai = new THREE.Group();
       ai.position.set(25, 0, -7);
       scene.add(ai);
@@ -296,9 +288,8 @@ const BiomedicalCity: React.FC = () => {
         const x = -4 + (i % 7) * 1.3;
         const y = 1.4 + Math.floor(i / 7) * 1.4;
         sphere(ai, [x, y, -.35], .1, i % 2 ? violet : cyan, 8);
-        if (i < 7) line(ai, [[x, y, -.34], [x, x > 0 ? y + .1 : y + .2, -.34]], cyan);
+        if (i < 7) line(ai, [[x, y, -.34], [x + .9, y + .2, -.34]], cyan);
       }
-
       const patientPanel = createPanel('PATIENT STATUS', 'REMOTE MONITORING // SECURE BIOMEDICAL LINK', 7.2, 2.2);
       patientPanel.position.set(-2.5, 6.5, 5);
       patientPanel.rotation.y = .18;
@@ -322,7 +313,7 @@ const BiomedicalCity: React.FC = () => {
         if (i % 2 === 0) line(helix, [[x, y, z], [-x, y, -z]], green);
       }
 
-      // Research center entrance at the end of the route.
+      // Glass research entrance.
       const entrance = new THREE.Group();
       entrance.position.set(0, 0, -22);
       scene.add(entrance);
@@ -348,7 +339,6 @@ const BiomedicalCity: React.FC = () => {
       const particles = new THREE.Points(pg, pm);
       scene.add(particles);
 
-      // Close-up camera choreography: every required technology gets a dedicated shot.
       const paths: Array<{ p: V3; l: V3; fov: number }> = [
         { p: [0, 8, 34], l: [0, 3.5, 14], fov: 46 },
         { p: [-25, 5.5, 14], l: [-13, 3.5, 8], fov: 38 },
@@ -403,7 +393,6 @@ const BiomedicalCity: React.FC = () => {
         labDoors.right.position.x = THREE.MathUtils.lerp(1.32, 2.8, door);
         entranceDoors.left.position.x = THREE.MathUtils.lerp(-1.6, -3.7, door);
         entranceDoors.right.position.x = THREE.MathUtils.lerp(1.6, 3.7, door);
-
         surgicalJoints.forEach((joint, index) => {
           joint.rotation.x = Math.sin(t * .9 + index * .65) * .08;
           joint.rotation.y = Math.sin(t * 1.15 + index) * .04;
@@ -420,12 +409,10 @@ const BiomedicalCity: React.FC = () => {
         particles.rotation.y = t * .008;
         cyanLight.intensity = (mobile ? 12 : 22) + Math.sin(t) * 2;
         violetLight.intensity = (mobile ? 8 : 15) + Math.cos(t * .8) * 1.5;
-
         [surgeryPanel, labPanel, imagingPanel, aiPanel, patientPanel, genomicPanel, entrancePanel].forEach((panel, index) => {
           const material = panel.userData.material as THREE.MeshBasicMaterial | undefined;
           if (material) material.opacity = .88 + Math.sin(t * 2 + index) * .06;
         });
-
         renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
       };
@@ -443,10 +430,7 @@ const BiomedicalCity: React.FC = () => {
     } catch (e) {
       console.error('Biomedical future scene failed:', e);
       setError(true);
-      return () => {
-        dead = true;
-        cancelAnimationFrame(raf);
-      };
+      return () => { dead = true; cancelAnimationFrame(raf); };
     }
   }, []);
 
