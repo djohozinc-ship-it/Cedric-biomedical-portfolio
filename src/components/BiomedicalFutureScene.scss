@@ -209,6 +209,12 @@
   animation: future-kicker 3s ease-in-out infinite;
 }
 
+.future-scene-title span { font-size: 0; }
+.future-scene-title span::after {
+  content: 'ENGINEERING IN SERVICE OF';
+  font-size: .7rem;
+}
+
 .future-scene-title strong {
   max-width: 850px;
   color: #f0fbff;
@@ -216,6 +222,13 @@
   line-height: 1.02;
   letter-spacing: -.035em;
   text-shadow: 0 0 30px rgba(54, 226, 255, .24), 0 2px 30px rgba(0, 0, 0, .75);
+}
+
+.future-scene-title strong { font-size: 0; }
+.future-scene-title strong::after {
+  content: 'HEALTH';
+  display: block;
+  font-size: clamp(1.65rem, 4.4vw, 3.7rem);
 }
 
 .future-scene-error {
@@ -305,8 +318,10 @@
   .future-scene-hud strong { font-size: .4rem; letter-spacing: .05em; }
   .future-scene-hud-right::before { display: none; }
   .future-scene-overlay::before { filter: blur(7px); box-shadow: inset 0 0 65px 18px rgba(0, 4, 8, .42); }
-  .future-scene-title span { font-size: .55rem; letter-spacing: .12em; }
-  .future-scene-title strong { font-size: clamp(1.25rem, 6.6vw, 1.95rem); }
+  .future-scene-title span { font-size: 0; letter-spacing: .12em; }
+  .future-scene-title span::after { font-size: .55rem; }
+  .future-scene-title strong { font-size: 0; }
+  .future-scene-title strong::after { font-size: clamp(1.25rem, 6.6vw, 1.95rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
