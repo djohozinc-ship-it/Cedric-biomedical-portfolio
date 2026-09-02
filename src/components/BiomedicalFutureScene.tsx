@@ -41,7 +41,6 @@ const BiomedicalFutureScene: React.FC = () => {
       const dark = mat(0x071218, .25, .9); const graphite = mat(0x172a32, .32, .72); const steel = mat(0xa9bac0, .18, .9); const white = mat(0xeaf4f5, .7, .08);
       const cyan = mat(0x32e4ff, .2, .35, 0x12c6e6, 4); const cyanSoft = mat(0x178ca5, .35, .25, 0x0a6679, 2); const violet = mat(0x8d78ff, .25, .4, 0x5439e8, 3);
       const green = mat(0x54ffb3, .25, .25, 0x1ccf84, 3); const red = mat(0xff496e, .3, .15, 0xc51d42, 2.5); const skin = mat(0xc9917c, .7, .02); const blue = mat(0x2f75a8, .55, .18);
-      const darkFabric = mat(0x18232a, .68, .15);
       const box = (p: THREE.Object3D, pos: V3, size: V3, m: THREE.Material) => { const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), m); mesh.position.set(...pos); mesh.castShadow = !mobile; mesh.receiveShadow = true; p.add(mesh); return mesh; };
       const cyl = (p: THREE.Object3D, pos: V3, r: number, h: number, m: THREE.Material, segments = 20) => { const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, segments), m); mesh.position.set(...pos); mesh.castShadow = !mobile; mesh.receiveShadow = true; p.add(mesh); return mesh; };
       const sphere = (p: THREE.Object3D, pos: V3, r: number, m: THREE.Material, segments = 18) => { const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, segments, Math.max(12, segments - 4)), m); mesh.position.set(...pos); mesh.castShadow = !mobile; mesh.receiveShadow = true; p.add(mesh); return mesh; };
