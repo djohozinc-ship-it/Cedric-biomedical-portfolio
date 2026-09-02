@@ -7,6 +7,31 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import TextField from '@mui/material/TextField';
 
+const inputSx = {
+  '& .MuiInputBase-input': {
+    color: '#050f0b !important',
+    WebkitTextFillColor: '#050f0b',
+    opacity: 1,
+    caretColor: '#050f0b',
+  },
+  '& input': {
+    color: '#050f0b !important',
+    WebkitTextFillColor: '#050f0b',
+  },
+  '& textarea': {
+    color: '#050f0b !important',
+    WebkitTextFillColor: '#050f0b',
+    opacity: 1,
+    caretColor: '#050f0b',
+  },
+  '& .MuiInputLabel-root': {
+    color: '#050f0b',
+  },
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: '#5000ca',
+  },
+};
+
 function Contact() {
   const form = useRef<HTMLFormElement>(null);
 
@@ -47,9 +72,7 @@ function Contact() {
         'service_rulvpmk',
         'template_3wagmzk',
         form.current,
-        {
-          publicKey: '-Y-o-mn_TDpvIYzzm'
-        }
+        { publicKey: '-Y-o-mn_TDpvIYzzm' }
       );
 
       setStatus('Message envoyé avec succès !');
@@ -58,9 +81,7 @@ function Contact() {
       setMessage('');
     } catch (error) {
       console.error('Erreur EmailJS:', error);
-      setStatus(
-        "Une erreur est survenue. Le message n'a pas pu être envoyé."
-      );
+      setStatus("Une erreur est survenue. Le message n'a pas pu être envoyé.");
     } finally {
       setSending(false);
     }
@@ -70,7 +91,6 @@ function Contact() {
     <div id="contact">
       <div className="items-container">
         <div className="contact_wrapper">
-
           <h1>Contact Me</h1>
 
           <p>
@@ -86,9 +106,7 @@ function Contact() {
             noValidate
             autoComplete="off"
           >
-
             <div className="form-flex">
-
               <TextField
                 required
                 label="Your Name"
@@ -97,18 +115,8 @@ function Contact() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
-                helperText={
-                  nameError ? 'Please enter your name' : ''
-                }
-                sx={{
-                  '& .MuiInputBase-input': {
-                    color: '#050f0b',
-                    WebkitTextFillColor: '#050f0b',
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: '#050f0b',
-                  },
-                }}
+                helperText={nameError ? 'Please enter your name' : ''}
+                sx={inputSx}
               />
 
               <TextField
@@ -120,20 +128,9 @@ function Contact() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={emailError}
-                helperText={
-                  emailError ? 'Please enter your email' : ''
-                }
-                sx={{
-                  '& .MuiInputBase-input': {
-                    color: '#050f0b',
-                    WebkitTextFillColor: '#050f0b',
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: '#050f0b',
-                  },
-                }}
+                helperText={emailError ? 'Please enter your email' : ''}
+                sx={inputSx}
               />
-
             </div>
 
             <TextField
@@ -147,18 +144,8 @@ function Contact() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               error={messageError}
-              helperText={
-                messageError ? 'Please enter your message' : ''
-              }
-              sx={{
-                  '& .MuiInputBase-input': {
-                    color: '#050f0b',
-                    WebkitTextFillColor: '#050f0b',
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: '#050f0b',
-                  },
-                }}
+              helperText={messageError ? 'Please enter your message' : ''}
+              sx={inputSx}
             />
 
             <Button
@@ -170,14 +157,8 @@ function Contact() {
               {sending ? 'Sending...' : 'Send'}
             </Button>
 
-            {status && (
-              <p className="contact-status">
-                {status}
-              </p>
-            )}
-
+            {status && <p className="contact-status">{status}</p>}
           </Box>
-
         </div>
       </div>
     </div>
