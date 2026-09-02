@@ -100,9 +100,7 @@ const BiomedicalCity: React.FC = () => {
       for (let y = 2; y <= 12; y += 2.5) box(atrium, [0, y, 5.18], [25, .05, .04], cyanSoft);
 
       const createSlidingDoors = (p: THREE.Object3D, z: number, width: number, height: number) => {
-        const doors = new THREE.Group();
-        doors.position.z = z;
-        p.add(doors);
+        const doors = new THREE.Group(); doors.position.z = z; p.add(doors);
         box(doors, [-width * .26, height + .16, 0], [width * .98, .08, .08], steel);
         box(doors, [-width * .26, .12, 0], [width * .98, .06, .06], cyanSoft);
         const left = box(doors, [-width * .18, height / 2, 0], [width * .32, height, .07], glassDoor);
@@ -148,24 +146,19 @@ const BiomedicalCity: React.FC = () => {
       const mriRing = new THREE.Mesh(new THREE.TorusGeometry(1.65, .13, 12, 48), violet); mriRing.position.set(0, 2.4, 1.8); mriRing.rotation.x = Math.PI / 2; mri.add(mriRing);
 
       const createHologramPanel = (p: THREE.Object3D, pos: V3, size: V3, accent: THREE.Material) => {
-        const holo = new THREE.Group();
-        holo.position.set(...pos);
-        p.add(holo);
-        const panelMat = new THREE.MeshBasicMaterial({ color: (accent as THREE.MeshStandardMaterial).color?.getHex?.() ?? 0x32e4ff, transparent: true, opacity: .13, side: THREE.DoubleSide, depthWrite: false });
+        const holo = new THREE.Group(); holo.position.set(...pos); p.add(holo);
+        const accentColor = accent instanceof THREE.MeshStandardMaterial ? accent.color.getHex() : 0x32e4ff;
+        const panelMat = new THREE.MeshBasicMaterial({ color: accentColor, transparent: true, opacity: .13, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending });
         const panel = new THREE.Mesh(new THREE.PlaneGeometry(size[0], size[1]), panelMat);
-        panel.rotation.x = Math.PI / 2;
-        holo.add(panel);
+        panel.rotation.x = Math.PI / 2; holo.add(panel);
         const frame = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(size[0], .02, size[1])), new THREE.LineBasicMaterial({ color: 0x63edff, transparent: true, opacity: .75 }));
-        frame.rotation.x = Math.PI / 2;
-        holo.add(frame);
+        frame.rotation.x = Math.PI / 2; holo.add(frame);
         for (let i = 0; i < 5; i++) {
           const scan = new THREE.Mesh(new THREE.BoxGeometry(size[0] * (.55 + (i % 2) * .25), .012, .018), accent);
-          scan.position.set(0, 0, -size[1] * .32 + i * size[1] * .15);
-          holo.add(scan);
+          scan.position.set(0, 0, -size[1] * .32 + i * size[1] * .15); holo.add(scan);
         }
         return { holo, panel, panelMat };
       };
-      const diagnosticHolo = createHologramPanel(ai, [0, 6.1, .6], [7.8, 3.6, 0], cyan);
 
       const ai = new THREE.Group(); ai.position.set(15, 0, 7); tech.add(ai);
       box(ai, [0, 4, 0], [11, 8, .35], dark); box(ai, [0, 4, -.22], [10.2, 6.8, .05], cyanSoft);
@@ -176,7 +169,8 @@ const BiomedicalCity: React.FC = () => {
       const nodes: THREE.Mesh[] = [];
       for (let i = 0; i < 12; i++) nodes.push(sphere(ai, [-4.2 + (i % 4) * 2.8, 5.9 - Math.floor(i / 4) * 1.7, -.45], .08, i % 2 ? violet : cyan, 8) as THREE.Mesh);
       for (let i = 0; i < nodes.length - 4; i++) line(ai, [[nodes[i].position.x, nodes[i].position.y, -.45], [nodes[i + 4].position.x, nodes[i + 4].position.y, -.45]], cyanSoft);
-      const aiHolo = createHologramPanel(ai, [0, 6.2, .3], [6.8, 2.7, 0], violet);
+      const diagnosticHolo = createHologramPanel(ai, [0, 6.2, .45], [7.6, 3.1, 0], cyan);
+      const aiHolo = createHologramPanel(ai, [0, 5.9, .25], [6.4, 2.4, 0], violet);
 
       const lab = new THREE.Group(); lab.position.set(-23, 0, 1); tech.add(lab);
       box(lab, [0, .55, 0], [10, .3, 6], graphite); box(lab, [-4.7, 2.8, 0], [.2, 5.6, 6], graphite); box(lab, [4.7, 2.8, 0], [.2, 5.6, 6], graphite); box(lab, [0, 5.5, 0], [10, .2, 6], graphite); box(lab, [0, 2.8, -2.9], [10, 5.2, .12], glass);
@@ -215,31 +209,24 @@ const BiomedicalCity: React.FC = () => {
 
       const scanBeamMat = new THREE.MeshBasicMaterial({ color: 0x52efff, transparent: true, opacity: .2, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending });
       const scanBeam = new THREE.Mesh(new THREE.BoxGeometry(1.8, .035, 3.1), scanBeamMat);
-      scanBeam.position.set(0, 3.05, 7);
-      scanBeam.rotation.x = Math.PI / 2;
-      patient.add(scanBeam);
+      scanBeam.position.set(0, 3.05, 7); scanBeam.rotation.x = Math.PI / 2; patient.add(scanBeam);
       const scanBeamGlow = new THREE.Mesh(new THREE.BoxGeometry(2.8, .018, 3.4), new THREE.MeshBasicMaterial({ color: 0x32e4ff, transparent: true, opacity: .07, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
-      scanBeamGlow.position.copy(scanBeam.position);
-      scanBeamGlow.rotation.copy(scanBeam.rotation);
-      patient.add(scanBeamGlow);
+      scanBeamGlow.position.copy(scanBeam.position); scanBeamGlow.rotation.copy(scanBeam.rotation); patient.add(scanBeamGlow);
 
       const createRobot = (p: THREE.Object3D, pos: V3, scale = 1) => {
-        const robot = new THREE.Group();
-        robot.position.set(...pos); robot.scale.setScalar(scale); p.add(robot);
-        const body = box(robot, [0, 1.25, 0], [1.05, 1.35, .68], robotWhite);
-        body.rotation.z = .02;
+        const robot = new THREE.Group(); robot.position.set(...pos); robot.scale.setScalar(scale); p.add(robot);
+        const body = box(robot, [0, 1.25, 0], [1.05, 1.35, .68], robotWhite); body.rotation.z = .02;
         box(robot, [0, 2.2, 0], [.72, .72, .62], robotDark);
         const visor = box(robot, [0, 2.25, .33], [.54, .2, .025], cyan);
-        const neck = cyl(robot, [0, 1.9, 0], .18, .2, steel, 12);
-        const wheelBase = cyl(robot, [0, .45, 0], .62, .22, robotDark, 20);
-        wheelBase.rotation.x = Math.PI / 2;
+        cyl(robot, [0, 1.9, 0], .18, .2, steel, 12);
+        const wheelBase = cyl(robot, [0, .45, 0], .62, .22, robotDark, 20); wheelBase.rotation.x = Math.PI / 2;
         [-.38, .38].forEach(x => cyl(robot, [x, .42, .35], .13, .28, cyan, 12));
         const armL = new THREE.Group(); armL.position.set(-.72, 1.55, 0); robot.add(armL);
         const armR = new THREE.Group(); armR.position.set(.72, 1.55, 0); robot.add(armR);
         box(armL, [0, -.32, 0], [.18, .72, .18], steel); box(armR, [0, -.32, 0], [.18, .72, .18], steel);
         sphere(armL, [0, -.72, .02], .14, cyan, 12); sphere(armR, [0, -.72, .02], .14, cyan, 12);
         const headLight = new THREE.PointLight(0x2feaff, mobile ? .8 : 1.5, 5); headLight.position.set(0, 2.2, .5); robot.add(headLight);
-        return { robot, visor, armL, armR, neck };
+        return { robot, visor, armL, armR };
       };
 
       const robots = [
@@ -282,11 +269,8 @@ const BiomedicalCity: React.FC = () => {
         if (dead) return;
         const t = clock.getElapsedTime(); const duration = 6.2; const cycle = cameraPaths.length * duration; const phase = (t % cycle) / duration; const index = Math.floor(phase); const next = (index + 1) % cameraPaths.length; const blend = phase - index; const eased = blend * blend * (3 - 2 * blend); const a = cameraPaths[index]; const b = cameraPaths[next];
         camera.position.set(THREE.MathUtils.lerp(a.p[0], b.p[0], eased), THREE.MathUtils.lerp(a.p[1], b.p[1], eased) + Math.sin(t * .55) * .22, THREE.MathUtils.lerp(a.p[2], b.p[2], eased));
-        camera.fov = THREE.MathUtils.lerp(a.fov, b.fov, eased) + Math.sin(t * .45) * .35;
-        camera.updateProjectionMatrix();
-        target.set(THREE.MathUtils.lerp(a.l[0], b.l[0], eased), THREE.MathUtils.lerp(a.l[1], b.l[1], eased), THREE.MathUtils.lerp(a.l[2], b.l[2], eased)); look.lerp(target, .12); camera.lookAt(look);
-        const cinematicRoll = Math.sin(t * .18) * .008 + Math.sin(t * .53) * .003;
-        camera.rotation.z = cinematicRoll;
+        camera.fov = THREE.MathUtils.lerp(a.fov, b.fov, eased) + Math.sin(t * .45) * .35; camera.updateProjectionMatrix();
+        target.set(THREE.MathUtils.lerp(a.l[0], b.l[0], eased), THREE.MathUtils.lerp(a.l[1], b.l[1], eased), THREE.MathUtils.lerp(a.l[2], b.l[2], eased)); look.lerp(target, .12); camera.lookAt(look); camera.rotation.z = Math.sin(t * .18) * .008 + Math.sin(t * .53) * .003;
 
         scanRing.rotation.z = t * 1.2; scanCore.rotation.z = -t * .8; mriRing.rotation.z = t * .6; carousel.rotation.y = t * .8; pipette.rotation.z = Math.sin(t * 1.3) * .35; holoBody.rotation.y = t * .8; nanoRing.rotation.z = t * 1.4; helixGroup.rotation.y = t * .55; telemetryRing.rotation.z = -t * 1.5;
         surgeryDoors.left.position.x = THREE.MathUtils.lerp(-1.12, -1.75, (Math.sin(t * .7) + 1) * .5);
@@ -299,7 +283,7 @@ const BiomedicalCity: React.FC = () => {
         nodes.forEach((node, i) => { node.scale.setScalar(.8 + Math.sin(t * 2.5 + i) * .22); });
         surgicalTips.forEach((o, i) => { o.position.z = Math.sin(t * 1.5 + i) * .15; });
         nanoParticles.forEach((o, i) => { const ang = t * (.35 + (i % 5) * .03) + i; const r = 1 + (i % 7) * .18; o.position.x = Math.cos(ang) * r; o.position.z = Math.sin(ang) * r; o.position.y = 5.2 + Math.sin(ang * 1.7) * 1.1; });
-        robots.forEach((unit, i) => { unit.robot.position.x += Math.sin(t * .22 + i) * .0015; unit.robot.rotation.y = Math.sin(t * .45 + i) * .12; unit.armL.rotation.z = Math.sin(t * 1.2 + i) * .18; unit.armR.rotation.z = -Math.sin(t * 1.1 + i) * .16; unit.visor.material = cyan; });
+        robots.forEach((unit, i) => { unit.robot.position.x += Math.sin(t * .22 + i) * .0015; unit.robot.rotation.y = Math.sin(t * .45 + i) * .12; unit.armL.rotation.z = Math.sin(t * 1.2 + i) * .18; unit.armR.rotation.z = -Math.sin(t * 1.1 + i) * .16; });
         serviceRobot.robot.position.x = -7 + Math.sin(t * .45) * 1.8; serviceRobot.robot.position.z = 2 + Math.cos(t * .45) * .9; serviceRobot.robot.rotation.y = Math.sin(t * .45) * .5;
         ecg.material.opacity = .65 + Math.sin(t * 4) * .25; oxygen.material.opacity = .55 + Math.sin(t * 2.5) * .2;
         dataBeams.forEach((material, i) => { material.opacity = .35 + (Math.sin(t * 2 + i) + 1) * .2; });
