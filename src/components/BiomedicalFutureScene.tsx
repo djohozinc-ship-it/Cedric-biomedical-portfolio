@@ -4,7 +4,7 @@ import './BiomedicalFutureScene.scss';
 
 type V3 = [number, number, number];
 
-const BiomedicalFutureScene: React.FC = () => {
+const BiomedicalCity: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState(false);
 
@@ -70,7 +70,6 @@ const BiomedicalFutureScene: React.FC = () => {
       const sphere = (p: THREE.Object3D, pos: V3, r: number, m: THREE.Material, segments = 18) => { const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, segments, Math.max(12, segments - 4)), m); mesh.position.set(...pos); mesh.castShadow = !mobile; mesh.receiveShadow = true; p.add(mesh); return mesh; };
       const line = (p: THREE.Object3D, points: V3[], m: THREE.Material) => { const geometry = new THREE.BufferGeometry().setFromPoints(points.map(v => new THREE.Vector3(...v))); const mesh = new THREE.Line(geometry, m); p.add(mesh); return mesh; };
 
-      // City foundation and illuminated transit grid.
       box(city, [0, -.55, 0], [84, 1, 66], dark);
       box(city, [0, .02, 0], [78, .08, 60], graphite);
       for (let z = -28; z <= 28; z += 4) box(city, [0, .09, z], [76, .025, .025], cyanSoft);
@@ -90,7 +89,6 @@ const BiomedicalFutureScene: React.FC = () => {
       tower(-25, 5, 12, 5, graphite);
       tower(25, 5, 15, 5, graphite);
 
-      // Central biomedical research atrium.
       const atrium = new THREE.Group(); atrium.position.set(0, 0, -20); city.add(atrium);
       box(atrium, [0, 7, 0], [30, 14, 10], graphite);
       box(atrium, [0, 7, 5.08], [27, 13, .08], glass);
@@ -98,7 +96,6 @@ const BiomedicalFutureScene: React.FC = () => {
       for (let x = -12; x <= 12; x += 4) box(atrium, [x, 7, 5.18], [.08, 12, .05], cyan);
       for (let y = 2; y <= 12; y += 2.5) box(atrium, [0, y, 5.18], [25, .05, .04], cyanSoft);
 
-      // Robotic surgery theatre.
       const surgery = new THREE.Group(); surgery.position.set(-14, 0, 9); tech.add(surgery);
       box(surgery, [0, 3.3, 0], [12, 6.6, 8], glass);
       box(surgery, [0, 6.55, 0], [10, .08, 6], cyanSoft);
@@ -118,7 +115,6 @@ const BiomedicalFutureScene: React.FC = () => {
       box(surgery, [0, 5.1, 0], [2.2, .12, 2.2], white);
       const surgeryLight = new THREE.PointLight(0xffffff, mobile ? 4 : 8, 12); surgeryLight.position.set(0, 5.4, 0); surgery.add(surgeryLight);
 
-      // Imaging suite: CT ring + MRI-style secondary bore + reconstructed anatomy.
       const imaging = new THREE.Group(); imaging.position.set(1, 0, 12); tech.add(imaging);
       cyl(imaging, [0, 2.5, 0], 3.2, 1.2, dark, 48);
       const scanRing = new THREE.Mesh(new THREE.TorusGeometry(3, .18, 16, 64), cyan); scanRing.position.set(0, 2.5, 0); scanRing.rotation.y = Math.PI / 2; imaging.add(scanRing);
@@ -131,7 +127,6 @@ const BiomedicalFutureScene: React.FC = () => {
       box(mri, [0, 2.4, 0], [3.5, 4.8, 3.5], graphite);
       const mriRing = new THREE.Mesh(new THREE.TorusGeometry(1.65, .13, 12, 48), violet); mriRing.position.set(0, 2.4, 1.8); mriRing.rotation.x = Math.PI / 2; mri.add(mriRing);
 
-      // AI diagnostics wall with ECG, SpO2 and neural network nodes.
       const ai = new THREE.Group(); ai.position.set(15, 0, 7); tech.add(ai);
       box(ai, [0, 4, 0], [11, 8, .35], dark); box(ai, [0, 4, -.22], [10.2, 6.8, .05], cyanSoft);
       const ecgPoints: V3[] = [];
@@ -142,7 +137,6 @@ const BiomedicalFutureScene: React.FC = () => {
       for (let i = 0; i < 12; i++) nodes.push(sphere(ai, [-4.2 + (i % 4) * 2.8, 5.9 - Math.floor(i / 4) * 1.7, -.45], .08, i % 2 ? violet : cyan, 8) as THREE.Mesh);
       for (let i = 0; i < nodes.length - 4; i++) line(ai, [[nodes[i].position.x, nodes[i].position.y, -.45], [nodes[i + 4].position.x, nodes[i + 4].position.y, -.45]], cyanSoft);
 
-      // Automated laboratory and sample-processing carousel.
       const lab = new THREE.Group(); lab.position.set(-23, 0, 1); tech.add(lab);
       box(lab, [0, 2.8, 0], [10, 5.6, 6], glass); box(lab, [0, 1.2, 0], [8.2, .35, 4.6], dark);
       const carousel = new THREE.Group(); carousel.position.set(0, 1.55, 0); lab.add(carousel);
@@ -152,14 +146,12 @@ const BiomedicalFutureScene: React.FC = () => {
       box(pipette, [0, .9, 0], [.25, 2, .25], steel); cyl(pipette, [0, 1.9, 0], .16, .3, cyan, 12);
       const labBeam = new THREE.Mesh(new THREE.BoxGeometry(5.5, .035, .035), green); labBeam.position.set(0, 4.8, -3.05); lab.add(labBeam);
 
-      // Smart prosthesis and rehabilitation exoskeleton.
       const prosthesis = new THREE.Group(); prosthesis.position.set(22, 0, -5); tech.add(prosthesis);
       box(prosthesis, [0, 2.8, 0], [7, 5.6, 5], dark); sphere(prosthesis, [0, 3.2, 0], .65, steel, 20); box(prosthesis, [0, 1.9, 0], [.85, 2.6, .7], steel);
       for (let i = 0; i < 5; i++) { const finger = new THREE.Group(); finger.position.set((i - 2) * .2, .45, 0); prosthesis.add(finger); box(finger, [0, -.35, 0], [.14, .9, .16], i === 1 ? green : steel); sphere(finger, [0, -.85, 0], .09, cyan, 10); }
       const exo = new THREE.Group(); exo.position.set(-1.9, 1.1, 0); prosthesis.add(exo);
       box(exo, [0, .9, 0], [.42, 2.1, .42], steel); box(exo, [0, -.25, 0], [1.2, .3, .4], graphite); cyl(exo, [0, -1, 0], .24, 1.1, cyan, 16);
 
-      // Nanotechnology visualization and DNA.
       const nano = new THREE.Group(); nano.position.set(-1, 0, -1); tech.add(nano);
       sphere(nano, [0, 5.2, 0], .7, violet, 20);
       const nanoRing = new THREE.Mesh(new THREE.TorusGeometry(1.5, .035, 8, 64), cyan); nanoRing.position.set(0, 5.2, 0); nanoRing.rotation.x = Math.PI / 2; nano.add(nanoRing);
@@ -169,8 +161,8 @@ const BiomedicalFutureScene: React.FC = () => {
 
       const monitor = new THREE.Group(); monitor.position.set(7, 0, -3); tech.add(monitor);
       box(monitor, [0, 2.5, 0], [8, 5, 5], graphite); box(monitor, [0, 4, 2.45], [5.8, 2.6, .08], dark);
-      const pulse = line(monitor, Array.from({ length: 100 }, (_, i) => { const p = i % 25; let y = 4; if (p === 8) y = 4.1; if (p === 9) y = 4.65; if (p === 10) y = 3.1; if (p === 11) y = 4.9; return [-2.6 + i * .053, y, 2.38] as V3; }), green);
-      const spo2 = line(monitor, Array.from({ length: 80 }, (_, i) => [-2.6 + i * .066, 2.55 + Math.sin(i * .32) * .15, 2.38] as V3), cyan);
+      line(monitor, Array.from({ length: 100 }, (_, i) => { const p = i % 25; let y = 4; if (p === 8) y = 4.1; if (p === 9) y = 4.65; if (p === 10) y = 3.1; if (p === 11) y = 4.9; return [-2.6 + i * .053, y, 2.38] as V3; }), green);
+      line(monitor, Array.from({ length: 80 }, (_, i) => [-2.6 + i * .066, 2.55 + Math.sin(i * .32) * .15, 2.38] as V3), cyan);
 
       const person = new THREE.Group(); person.position.set(0, .5, 7); patient.add(person);
       sphere(person, [0, 2.7, 0], .42, skin, 20); box(person, [0, 1.5, 0], [1.15, 1.7, .62], blue); box(person, [-.32, .2, 0], [.38, 1.05, .42], dark); box(person, [.32, .2, 0], [.38, 1.05, .42], dark);
@@ -178,7 +170,6 @@ const BiomedicalFutureScene: React.FC = () => {
       const telemetry = new THREE.Group(); telemetry.position.set(0, 3.8, 0); person.add(telemetry);
       const telemetryRing = new THREE.Mesh(new THREE.TorusGeometry(.75, .025, 8, 40), green); telemetry.add(telemetryRing);
 
-      // Floating data streams make the city feel like one connected clinical system.
       const dataBeams: THREE.MeshStandardMaterial[] = [];
       const beamPairs: Array<[V3, V3]> = [[[-20, 4, 5], [-10, 4, 9]], [[-8, 5, 9], [2, 5, 12]], [[5, 5, 12], [14, 5, 7]], [[14, 4, 7], [21, 4, -4]], [[-21, 3, 1], [-2, 5, -1]]];
       beamPairs.forEach(([a, b]) => { const start = new THREE.Vector3(...a); const end = new THREE.Vector3(...b); const mid = start.clone().add(end).multiplyScalar(.5); const length = start.distanceTo(end); const beam = new THREE.Mesh(new THREE.CylinderGeometry(.025, .025, length, 8), cyan); beam.position.copy(mid); beam.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), end.clone().sub(start).normalize()); scene.add(beam); dataBeams.push(beam.material as THREE.MeshStandardMaterial); });
@@ -235,4 +226,4 @@ const BiomedicalFutureScene: React.FC = () => {
   );
 };
 
-export default BiomedicalFutureScene;
+export default BiomedicalCity;
