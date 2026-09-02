@@ -168,10 +168,10 @@
 @keyframes future-title-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012); } }
 
 @media (max-width: 768px) {
-  .biomedical-future-scene { height: 430px; }
+  .biomedical-future-scene { height: 340px; }
   .biomedical-future-scene::before { opacity: .32; background-size: 30px 30px, 30px 30px, 100% 8px, 100% 100%; }
   .biomedical-future-scene canvas { animation-duration: 28s; }
-  .future-scene-overlay { padding: .75rem; }
+  .future-scene-overlay { padding: .65rem; }
   .future-scene-overlay::after { top: .6rem; right: .6rem; width: 88px; height: 68px; }
   .future-scene-hud { top: .6rem; min-width: 0; max-width: 43vw; padding: .4rem .5rem; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
   .future-scene-hud-left { left: .6rem; }
@@ -180,6 +180,7 @@
   .future-scene-hud strong { font-size: .38rem; letter-spacing: .04em; }
   .future-scene-hud-right::before { display: none; }
   .future-scene-overlay::before { filter: blur(7px); box-shadow: inset 0 0 65px 18px rgba(0, 4, 8, .42); }
+  .future-scene-title { margin-bottom: 1.15rem; }
   .future-scene-title span { font-size: 0; letter-spacing: .1em; }
   .future-scene-title span::after { font-size: .5rem; }
   .future-scene-title strong { font-size: 0; }
@@ -187,8 +188,9 @@
 }
 
 @media (max-width: 480px) {
-  .biomedical-future-scene { height: 360px; }
-  .future-scene-overlay { padding: .65rem; }
+  .biomedical-future-scene { height: 290px; }
+  .future-scene-overlay { padding: .55rem; }
+  .future-scene-title { margin-bottom: .8rem; }
   .future-scene-title strong::after { font-size: clamp(1.05rem, 5.8vw, 1.55rem); }
 }
 
