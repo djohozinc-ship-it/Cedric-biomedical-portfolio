@@ -1,7 +1,180 @@
-.biomedical-future-scene { position:relative; width:100%; height:clamp(560px,82vh,820px); overflow:hidden; background:#050b10; isolation:isolate; }
-.biomedical-future-scene canvas { display:block; width:100%; height:100%; }
-.biomedical-future-overlay { position:absolute; inset:0; z-index:2; pointer-events:none; display:flex; flex-direction:column; justify-content:flex-end; padding:clamp(1.25rem,4vw,3rem); background:linear-gradient(to bottom,transparent 55%,rgba(2,7,11,.72)); }
-.biomedical-future-kicker { margin:0 0 .5rem; font-size:.72rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:#58ddf7; text-shadow:0 0 16px rgba(54,226,255,.7); }
-.biomedical-future-title { margin:0; max-width:760px; color:#eefaff; font-size:clamp(1.6rem,4vw,3.4rem); line-height:1.05; letter-spacing:-.03em; text-shadow:0 0 28px rgba(54,226,255,.2); }
-@media (max-width:768px) { .biomedical-future-scene { height:clamp(520px,76svh,680px); } .biomedical-future-overlay { padding:1.1rem; background:linear-gradient(to bottom,transparent 48%,rgba(2,7,11,.78)); } .biomedical-future-kicker { font-size:.62rem; letter-spacing:.16em; } .biomedical-future-title { font-size:clamp(1.35rem,7vw,2rem); } }
-@media (prefers-reduced-motion:reduce) { .biomedical-future-scene canvas { animation:none; } }
+.biomedical-future-scene {
+  position: relative;
+  width: 100%;
+  height: clamp(560px, 82vh, 820px);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(24, 110, 135, .28), transparent 24%),
+    radial-gradient(circle at 78% 25%, rgba(102, 74, 220, .2), transparent 25%),
+    radial-gradient(circle at 18% 70%, rgba(24, 211, 235, .14), transparent 30%),
+    linear-gradient(145deg, #02070c 0%, #061722 48%, #0a1020 100%);
+}
+
+.biomedical-future-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    linear-gradient(rgba(73, 225, 255, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73, 225, 255, .035) 1px, transparent 1px),
+    repeating-linear-gradient(0deg, transparent 0 7px, rgba(87, 223, 255, .025) 8px),
+    radial-gradient(circle at 50% 50%, transparent 0 45%, rgba(0, 0, 0, .55) 100%);
+  background-size: 42px 42px, 42px 42px, 100% 9px, 100% 100%;
+  mix-blend-mode: screen;
+  animation: future-grid-drift 18s linear infinite;
+}
+
+.biomedical-future-scene::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20%;
+  height: 22%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(78, 231, 255, .1), transparent);
+  box-shadow: 0 0 70px rgba(48, 220, 255, .08);
+  animation: future-scan 7s ease-in-out infinite;
+}
+
+.biomedical-future-scene canvas {
+  position: relative;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.future-scene-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  background:
+    linear-gradient(to bottom, transparent 48%, rgba(1, 6, 11, .18) 67%, rgba(1, 5, 9, .88) 100%),
+    radial-gradient(circle at 50% 45%, transparent 0 38%, rgba(1, 7, 12, .25) 100%);
+}
+
+.future-scene-overlay::before,
+.future-scene-overlay::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid rgba(75, 221, 255, .24);
+  box-shadow: inset 0 0 25px rgba(45, 218, 255, .035), 0 0 18px rgba(45, 218, 255, .025);
+}
+
+.future-scene-overlay::before {
+  top: 1.25rem;
+  left: 1.25rem;
+  width: clamp(90px, 12vw, 170px);
+  height: 70px;
+  border-right: 0;
+  border-bottom: 0;
+  animation: future-corner-pulse 2.8s ease-in-out infinite;
+}
+
+.future-scene-overlay::after {
+  top: 1.25rem;
+  right: 1.25rem;
+  width: clamp(110px, 16vw, 220px);
+  height: 110px;
+  border-left: 0;
+  border-bottom: 0;
+  animation: future-corner-pulse 3.4s ease-in-out infinite reverse;
+}
+
+.future-scene-overlay > span {
+  margin: 0 0 .55rem;
+  color: #58e4ff;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  text-shadow: 0 0 16px rgba(54, 226, 255, .9);
+  animation: future-kicker 3s ease-in-out infinite;
+}
+
+.future-scene-overlay > strong {
+  max-width: 850px;
+  color: #f0fbff;
+  font-size: clamp(1.65rem, 4.4vw, 3.7rem);
+  line-height: 1.02;
+  letter-spacing: -.035em;
+  text-shadow: 0 0 30px rgba(54, 226, 255, .24), 0 2px 30px rgba(0, 0, 0, .75);
+}
+
+.future-scene-error {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  color: #dffaff;
+  text-align: center;
+  font-size: .95rem;
+  letter-spacing: .04em;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(37, 205, 235, .16), transparent 30%),
+    linear-gradient(135deg, #06131d, #0b1224);
+}
+
+.future-scene-error::before {
+  content: 'SYSTEM RECOVERY • BIOMEDICAL CITY';
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  color: #58e4ff;
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+@keyframes future-grid-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 42px 42px, -42px 42px, 0 90px, 0 0; }
+}
+
+@keyframes future-scan {
+  0%, 100% { transform: translateY(-10%); opacity: 0; }
+  15%, 75% { opacity: 1; }
+  85% { transform: translateY(520%); opacity: 0; }
+}
+
+@keyframes future-corner-pulse {
+  0%, 100% { opacity: .45; }
+  50% { opacity: 1; box-shadow: inset 0 0 35px rgba(45, 218, 255, .07), 0 0 25px rgba(45, 218, 255, .08); }
+}
+
+@keyframes future-kicker {
+  0%, 100% { opacity: .72; }
+  50% { opacity: 1; text-shadow: 0 0 22px rgba(54, 226, 255, 1); }
+}
+
+@media (max-width: 768px) {
+  .biomedical-future-scene { height: clamp(520px, 76svh, 680px); }
+  .biomedical-future-scene::before { opacity: .32; background-size: 30px 30px, 30px 30px, 100% 8px, 100% 100%; }
+  .future-scene-overlay { padding: 1.1rem; }
+  .future-scene-overlay::before { top: .85rem; left: .85rem; width: 85px; height: 52px; }
+  .future-scene-overlay::after { top: .85rem; right: .85rem; width: 100px; height: 78px; }
+  .future-scene-overlay > span { font-size: .58rem; letter-spacing: .15em; }
+  .future-scene-overlay > strong { font-size: clamp(1.35rem, 7vw, 2.1rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .biomedical-future-scene::before,
+  .biomedical-future-scene::after,
+  .future-scene-overlay::before,
+  .future-scene-overlay::after,
+  .future-scene-overlay > span { animation: none; }
+}
