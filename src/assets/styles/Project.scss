@@ -1,4 +1,6 @@
 .projects-container {
+    width: 100%;
+    max-width: 1600px;
     display: flex;
     flex-direction: column;
     padding: 5% 10%;
@@ -7,22 +9,32 @@
 
 .projects-container .projects-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 50px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 50px);
 }
 
 .projects-container .projects-grid .project {
+    min-width: 0;
     text-align: left;
+}
+
+.project h2 {
+    line-height: 1.25;
 }
 
 .project h2:hover {
     text-decoration: underline;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.project p {
+    line-height: 1.6;
 }
 
 .project-visual {
+    width: 100%;
     min-height: 190px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 18px;
     display: flex;
     align-items: center;
@@ -36,12 +48,12 @@
 }
 
 .project-visual span {
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
     font-weight: 700;
 }
 
 .project-visual:hover {
-    transform: scale(1.02);
+    transform: translateY(-3px);
     border-color: rgba(127, 127, 127, 0.5);
 }
 
@@ -51,26 +63,59 @@
     gap: 8px;
     font-weight: 600;
     text-decoration: none;
+    min-height: 40px;
 }
 
 .project-details-link:hover {
     text-decoration: underline;
 }
 
-@media screen {
-    @media (max-width: 700px) {
-        .projects-container {
-            display: block;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
+@media screen and (max-width: 900px) {
+    .projects-container {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
 
-        .projects-container .projects-grid {
-            display: block;
-        }
+    .projects-container .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+}
 
-        .projects-container .projects-grid .project {
-            padding-bottom: 5%;
-        }
+@media screen and (max-width: 700px) {
+    .projects-container {
+        display: block;
+        padding: 12% 7%;
+    }
+
+    .projects-container .projects-grid {
+        display: grid;
+        gap: 34px;
+    }
+
+    .project-visual {
+        min-height: 165px;
+        padding: 24px;
+        border-radius: 9px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .projects-container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .project-visual {
+        min-height: 145px;
+        margin-bottom: 14px;
+    }
+
+    .project h2 {
+        font-size: 1.3rem;
+    }
+
+    .project p {
+        font-size: .98rem;
     }
 }
