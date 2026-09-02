@@ -1,13 +1,11 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import {
-  Main,
-  Timeline,
-  Expertise,
-  Project,
-  Contact,
-  Navigation,
-  Footer,
-} from "./components";
+import Main from "./components/Main";
+import Timeline from "./components/Timeline";
+import Expertise from "./components/Expertise";
+import Project from "./components/Project";
+import Contact from "./components/Contact";
+import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
 import FadeIn from './components/FadeIn';
 import './index.scss';
 
