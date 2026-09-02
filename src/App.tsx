@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 import FadeIn from './components/FadeIn';
 import './index.scss';
 
-const BiomedicalCity = React.lazy(() => import('./components/BiomedicalCity'));
+const BiomedicalCity = React.lazy(() => import('./components/BiomedicalFutureScene'));
 
 function BiomedicalCityViewport() {
     const viewportRef = useRef<HTMLDivElement>(null);
