@@ -1,0 +1,139 @@
+.project-details-page {
+    min-height: 100vh;
+    padding: 8% 10% 6%;
+    text-align: left;
+}
+
+.project-back {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    margin-bottom: 50px;
+    cursor: pointer;
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    opacity: .8;
+}
+
+.project-back:hover {
+    opacity: 1;
+}
+
+.project-details-hero {
+    max-width: 950px;
+    margin-bottom: 70px;
+}
+
+.project-category {
+    display: inline-block;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: .7;
+    margin-bottom: 15px;
+}
+
+.project-details-hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.8rem);
+    line-height: 1.05;
+    margin: 0 0 25px;
+}
+
+.project-lead {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    max-width: 850px;
+    opacity: .85;
+}
+
+.project-details-section {
+    max-width: 950px;
+    margin: 0 auto 60px;
+}
+
+.project-details-section h2 {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.project-description p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+.project-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.project-features {
+    margin: 0;
+    padding-left: 25px;
+    line-height: 2;
+}
+
+.project-media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.project-media-grid img,
+.project-media-grid video {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    max-height: 520px;
+    object-fit: cover;
+}
+
+.project-media-placeholder {
+    border: 1px dashed rgba(127, 127, 127, .5);
+    border-radius: 10px;
+    padding: 55px 25px;
+    text-align: center;
+    opacity: .8;
+}
+
+.project-media-placeholder h3 {
+    margin: 18px 0 8px;
+}
+
+.project-media-placeholder p {
+    margin: 0;
+}
+
+.project-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.project-links h2 {
+    margin-bottom: 5px;
+}
+
+.project-not-found {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+@media screen and (max-width: 700px) {
+    .project-details-page {
+        padding: 12% 5% 8%;
+    }
+
+    .project-details-hero {
+        margin-bottom: 50px;
+    }
+
+    .project-media-grid {
+        grid-template-columns: 1fr;
+    }
+}
