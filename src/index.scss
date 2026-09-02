@@ -1,11 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
+  width: 100%;
+  min-width: 320px;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 1.1rem !important;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
+img {
+  display: block;
 }
 
 code {
@@ -15,8 +37,10 @@ code {
 
 .main-container {
   position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: clip;
   background-color: #0d1116;
-
 }
 
 a {
@@ -25,7 +49,7 @@ a {
 
 a:hover {
   color: #5000ca;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 }
 
 p, a, h1, h2, h3, h4, h5, label, button {
@@ -33,12 +57,19 @@ p, a, h1, h2, h3, h4, h5, label, button {
   font-family: "Lato", sans-serif;
 }
 
+h1, h2, h3, h4, h5, p {
+  overflow-wrap: anywhere;
+}
+
 .navigation-bar {
   justify-content: space-between;
   background-color: #0d1116;
+  min-height: 64px;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
 
   button {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-family: "Lato", sans-serif;
     text-transform: initial;
     padding: 6px 10px;
@@ -49,10 +80,26 @@ p, a, h1, h2, h3, h4, h5, label, button {
   }
 }
 
+.navbar-fixed-top {
+  transition: box-shadow .25s ease, backdrop-filter .25s ease, background-color .25s ease;
+}
+
+.navbar-fixed-top.scrolled {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .18);
+  backdrop-filter: blur(12px);
+}
+
 .navigation-bar-responsive {
+  min-height: 100%;
+  padding: 10px 0 18px;
+
   span, p {
     color: #0d1116;
     font-family: "Lato", sans-serif;
+  }
+
+  .MuiListItemButton-root {
+    min-height: 52px;
   }
 }
 
@@ -86,6 +133,8 @@ p, a, h1, h2, h3, h4, h5, label, button {
 
 .items-container {
   padding: 5% 10%;
+  width: 100%;
+  max-width: 1600px;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -105,7 +154,6 @@ p, a, h1, h2, h3, h4, h5, label, button {
 
   a:hover {
     color: #5000ca;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
   }
 
   .navigation-bar svg {
@@ -146,10 +194,41 @@ p, a, h1, h2, h3, h4, h5, label, button {
   }
 }
 
-@media screen {
-  @media (max-width: 768px) {
-    .items-container {
-      padding: 5% 5%;
-    }
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 1rem !important;
+  }
+
+  .container {
+    margin-top: 56px;
+  }
+
+  .navigation-bar {
+    min-height: 56px;
+    padding-left: 10px !important;
+    padding-right: 14px !important;
+  }
+
+  .items-container {
+    padding: 12% 6%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    margin-top: 56px;
+  }
+
+  .items-container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  h1 {
+    line-height: 1.05;
+  }
+
+  p {
+    line-height: 1.6;
   }
 }
