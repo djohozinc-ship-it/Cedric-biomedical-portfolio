@@ -1,41 +1,37 @@
-import React from "react";
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrochip, faStethoscope, faCode } from '@fortawesome/free-solid-svg-icons';
 import Chip from '@mui/material/Chip';
 import '../assets/styles/Expertise.scss';
 
 const biomedicalSkills = [
-    "Maintenance biomédicale",
+    "Maintenance préventive et corrective",
+    "Équipements biomédicaux",
+    "Diagnostic et recherche de pannes",
+    "Installation et mise en service",
+    "Suivi des équipements hospitaliers",
     "Dispositifs médicaux",
-    "Diagnostic & dépannage",
-    "Sécurité des équipements",
-    "Prototypage",
-    "Conception de solutions de santé"
+    "Maintenance niveau 1",
+    "Environnement hospitalier"
 ];
 
 const electronicsSkills = [
-    "ESP32",
-    "Arduino",
-    "Électronique analogique",
-    "Électronique numérique",
-    "Capteurs",
-    "ADS1115",
-    "MCP23017",
-    "KiCad",
-    "SolidWorks"
+    "Câblage industriel",
+    "Conception de schémas électroniques",
+    "Réalisation de PCB",
+    "Technologies embarquées",
+    "Électronique & électrotechnique",
+    "Moteurs triphasés",
+    "Systèmes photovoltaïques"
 ];
 
 const softwareSkills = [
-    "C/C++",
-    "TypeScript",
-    "React",
-    "React Native",
-    "Expo",
-    "MQTT",
-    "OpenCV",
-    "MediaPipe",
-    "Docker",
-    "Linux"
+    "KiCad",
+    "SolidWorks",
+    "Arduino IDE",
+    "VS Code",
+    "Prototypage technologique",
+    "Vision artificielle"
 ];
 
 function Expertise() {
@@ -46,10 +42,10 @@ function Expertise() {
             <div className="skills-grid">
                 <div className="skill">
                     <FontAwesomeIcon icon={faStethoscope} size="3x"/>
-                    <h3>Ingénierie biomédicale</h3>
-                    <p>Formation en génie biomédical orientée vers la maintenance des équipements hospitaliers, la conception de dispositifs médicaux et le développement de solutions techniques adaptées aux besoins du secteur de la santé.</p>
+                    <h3>Maintenance biomédicale</h3>
+                    <p>Formation et expérience pratique dans la maintenance des équipements biomédicaux et hospitaliers, le diagnostic, l'installation et le suivi des dispositifs médicaux.</p>
                     <div className="flex-chips">
-                        <span className="chip-title">Domaines :</span>
+                        <span className="chip-title">Compétences :</span>
                         {biomedicalSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
@@ -58,10 +54,10 @@ function Expertise() {
 
                 <div className="skill">
                     <FontAwesomeIcon icon={faMicrochip} size="3x"/>
-                    <h3>Électronique & systèmes embarqués</h3>
-                    <p>Conception et prototypage de systèmes électroniques pour la santé : acquisition de données, capteurs, commande, communication et intégration de microcontrôleurs dans des solutions embarquées.</p>
+                    <h3>Électronique & électrotechnique</h3>
+                    <p>Compétences acquises en électrotechnique, électronique et réalisation de systèmes techniques, avec une orientation vers les technologies embarquées et les solutions biomédicales.</p>
                     <div className="flex-chips">
-                        <span className="chip-title">Technologies :</span>
+                        <span className="chip-title">Domaines :</span>
                         {electronicsSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
@@ -70,10 +66,10 @@ function Expertise() {
 
                 <div className="skill">
                     <FontAwesomeIcon icon={faCode} size="3x"/>
-                    <h3>Logiciel, IoT & technologies de santé</h3>
-                    <p>Développement d'applications et de systèmes connectés pour compléter les dispositifs biomédicaux, avec un intérêt particulier pour l'IoT, l'analyse de signaux et l'intelligence artificielle appliquée à la santé.</p>
+                    <h3>Conception & prototypage</h3>
+                    <p>Réalisation de prototypes technologiques combinant électronique, systèmes embarqués et outils numériques pour répondre à des problématiques concrètes, notamment dans le domaine de la santé.</p>
                     <div className="flex-chips">
-                        <span className="chip-title">Technologies :</span>
+                        <span className="chip-title">Outils & approches :</span>
                         {softwareSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
