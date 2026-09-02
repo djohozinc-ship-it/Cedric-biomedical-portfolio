@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { projects } from './ProjectDetails';
 import '../assets/styles/Project.scss';
 
 function Project() {
+    useEffect(() => {
+        const savedPosition = sessionStorage.getItem('projects-scroll-position');
+        if (savedPosition === null) return;
+
+        const position = Number(savedPosition);
+        if (!Number.isFinite(position)) return;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                window.scrollTo({ top: position, left: 0, behavior: 'auto' });
+                sessionStorage.removeItem('projects-scroll-position');
+            });
+        });
+    }, []);
+
     const openProject = (slug: string) => {
         sessionStorage.setItem('projects-scroll-position', String(window.scrollY));
         window.location.hash = `#/project/${slug}`;
