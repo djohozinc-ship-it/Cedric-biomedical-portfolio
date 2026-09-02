@@ -156,21 +156,22 @@ const BiomedicalFutureScene: React.FC = () => {
       const prosthesis = new THREE.Group(); prosthesis.position.set(22, 0, -5); tech.add(prosthesis);
       box(prosthesis, [0, 2.8, 0], [7, 5.6, 5], dark); sphere(prosthesis, [0, 3.2, 0], .65, steel, 20); box(prosthesis, [0, 1.9, 0], [.85, 2.6, .7], steel);
       for (let i = 0; i < 5; i++) { const finger = new THREE.Group(); finger.position.set((i - 2) * .2, .45, 0); prosthesis.add(finger); box(finger, [0, -.35, 0], [.14, .9, .16], i === 1 ? green : steel); sphere(finger, [0, -.85, 0], .09, cyan, 10); }
-      const exo = new THREE.Group(); exo.position.set(-8, 0, -5); tech.add(exo);
-      box(exo, [0, 3.3, 0], [2.2, 3.8, .7], graphite);
-      for (const x of [-.75, .75]) { cyl(exo, [x, 1.55, 0], .18, 2.8, steel, 14); cyl(exo, [x, .1, 0], .14, 1.2, cyan, 14); }
-      cyl(exo, [0, 5.1, 0], .55, .18, green, 18);
+      const exo = new THREE.Group(); exo.position.set(-1.9, 1.1, 0); prosthesis.add(exo);
+      box(exo, [0, .9, 0], [.42, 2.1, .42], steel); box(exo, [0, -.25, 0], [1.2, .3, .4], graphite); cyl(exo, [0, -1, 0], .24, 1.1, cyan, 16);
 
-      // Molecular/nanotechnology visualization and DNA.
+      // Nanotechnology visualization and DNA.
       const nano = new THREE.Group(); nano.position.set(-1, 0, -1); tech.add(nano);
       sphere(nano, [0, 5.2, 0], .7, violet, 20);
       const nanoRing = new THREE.Mesh(new THREE.TorusGeometry(1.5, .035, 8, 64), cyan); nanoRing.position.set(0, 5.2, 0); nanoRing.rotation.x = Math.PI / 2; nano.add(nanoRing);
-      const nanoParticles: THREE.Object3D[] = []; const nanoCount = mobile ? 28 : 55;
+      const nanoParticles: THREE.Object3D[] = [];
+      const nanoCount = mobile ? 28 : 55;
       for (let i = 0; i < nanoCount; i++) { const a = Math.random() * Math.PI * 2; const r = .8 + Math.random() * 2.1; nanoParticles.push(sphere(nano, [Math.cos(a) * r, 5.2 + (Math.random() - .5) * 2.4, Math.sin(a) * r], .045, i % 3 ? cyan : green, 8)); }
-      const helixGroup = new THREE.Group(); helixGroup.position.set(-7, 8, -3); tech.add(helixGroup);
-      for (let i = 0; i < 32; i++) { const y = i * .18; const a = i * .55; const x = Math.cos(a) * 1.1; const z = Math.sin(a) * 1.1; sphere(helixGroup, [x, y, z], .055, cyan, 8); sphere(helixGroup, [-x, y, -z], .055, violet, 8); if (i % 3 === 0) line(helixGroup, [[x, y, z], [-x, y, -z]], cyanSoft); }
 
-      // Patient and wearable telemetry node.
+      const monitor = new THREE.Group(); monitor.position.set(7, 0, -3); tech.add(monitor);
+      box(monitor, [0, 2.5, 0], [8, 5, 5], graphite); box(monitor, [0, 4, 2.45], [5.8, 2.6, .08], dark);
+      const pulse = line(monitor, Array.from({ length: 100 }, (_, i) => { const p = i % 25; let y = 4; if (p === 8) y = 4.1; if (p === 9) y = 4.65; if (p === 10) y = 3.1; if (p === 11) y = 4.9; return [-2.6 + i * .053, y, 2.38] as V3; }), green);
+      const spo2 = line(monitor, Array.from({ length: 80 }, (_, i) => [-2.6 + i * .066, 2.55 + Math.sin(i * .32) * .15, 2.38] as V3), cyan);
+
       const person = new THREE.Group(); person.position.set(0, .5, 7); patient.add(person);
       sphere(person, [0, 2.7, 0], .42, skin, 20); box(person, [0, 1.5, 0], [1.15, 1.7, .62], blue); box(person, [-.32, .2, 0], [.38, 1.05, .42], dark); box(person, [.32, .2, 0], [.38, 1.05, .42], dark);
       const wearable = cyl(person, [0, 1.65, -.36], .14, .05, green, 16); wearable.rotation.x = Math.PI / 2;
@@ -178,9 +179,12 @@ const BiomedicalFutureScene: React.FC = () => {
       const telemetryRing = new THREE.Mesh(new THREE.TorusGeometry(.75, .025, 8, 40), green); telemetry.add(telemetryRing);
 
       // Floating data streams make the city feel like one connected clinical system.
-      const dataBeams: THREE.Mesh[] = [];
+      const dataBeams: THREE.MeshStandardMaterial[] = [];
       const beamPairs: Array<[V3, V3]> = [[[-20, 4, 5], [-10, 4, 9]], [[-8, 5, 9], [2, 5, 12]], [[5, 5, 12], [14, 5, 7]], [[14, 4, 7], [21, 4, -4]], [[-21, 3, 1], [-2, 5, -1]]];
-      beamPairs.forEach(([a, b]) => { const start = new THREE.Vector3(...a); const end = new THREE.Vector3(...b); const mid = start.clone().add(end).multiplyScalar(.5); const length = start.distanceTo(end); const beam = new THREE.Mesh(new THREE.CylinderGeometry(.025, .025, length, 8), cyan); beam.position.copy(mid); beam.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), end.clone().sub(start).normalize()); scene.add(beam); dataBeams.push(beam); });
+      beamPairs.forEach(([a, b]) => { const start = new THREE.Vector3(...a); const end = new THREE.Vector3(...b); const mid = start.clone().add(end).multiplyScalar(.5); const length = start.distanceTo(end); const beam = new THREE.Mesh(new THREE.CylinderGeometry(.025, .025, length, 8), cyan); beam.position.copy(mid); beam.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), end.clone().sub(start).normalize()); scene.add(beam); dataBeams.push(beam.material as THREE.MeshStandardMaterial); });
+
+      const helixGroup = new THREE.Group(); helixGroup.position.set(-7, 8, -3); tech.add(helixGroup);
+      for (let i = 0; i < 32; i++) { const y = i * .18; const a = i * .55; const x = Math.cos(a) * 1.1; const z = Math.sin(a) * 1.1; sphere(helixGroup, [x, y, z], .055, cyan, 8); sphere(helixGroup, [-x, y, -z], .055, violet, 8); if (i % 3 === 0) line(helixGroup, [[x, y, z], [-x, y, -z]], cyanSoft); }
 
       const count = mobile ? 150 : 340;
       const positions = new Float32Array(count * 3);
@@ -189,61 +193,33 @@ const BiomedicalFutureScene: React.FC = () => {
       const pm = new THREE.PointsMaterial({ color: 0x73eaff, size: mobile ? .035 : .05, transparent: true, opacity: .58, sizeAttenuation: true });
       const particles = new THREE.Points(pg, pm); scene.add(particles);
 
-      // Cinematic route: establish the city, enter clinical zones, then reveal the connected ecosystem.
       const cameraPaths = [
-        { p: [-39, 13, 32] as V3, l: [-7, 4, 8] as V3 },
-        { p: [-24, 8, 18] as V3, l: [-14, 3, 9] as V3 },
-        { p: [-10, 6, 16] as V3, l: [-2, 4, 12] as V3 },
-        { p: [3, 6, 20] as V3, l: [1, 3, 12] as V3 },
-        { p: [17, 7, 18] as V3, l: [15, 4, 7] as V3 },
-        { p: [29, 7, 5] as V3, l: [21, 3, -5] as V3 },
-        { p: [18, 8, -11] as V3, l: [7, 3, -3] as V3 },
-        { p: [2, 9, -15] as V3, l: [-1, 5, -1] as V3 },
-        { p: [-12, 8, -14] as V3, l: [-7, 6, -3] as V3 },
-        { p: [-28, 7, -9] as V3, l: [-23, 3, 1] as V3 },
+        { p: [-36, 11, 30] as V3, l: [-8, 3, 8] as V3 }, { p: [-22, 8, 18] as V3, l: [-14, 3, 9] as V3 }, { p: [-6, 7, 22] as V3, l: [1, 3, 12] as V3 }, { p: [16, 7, 19] as V3, l: [15, 4, 7] as V3 },
+        { p: [29, 8, 5] as V3, l: [22, 3, -5] as V3 }, { p: [18, 9, -11] as V3, l: [7, 3, -3] as V3 }, { p: [-2, 9, -14] as V3, l: [-7, 6, -3] as V3 }, { p: [-26, 8, -9] as V3, l: [-23, 3, 1] as V3 },
+        { p: [0, 15, 28] as V3, l: [0, 3, 6] as V3 }, { p: [0, 5, 2] as V3, l: [0, 3, 7] as V3 },
       ];
-      const clock = new THREE.Clock();
-      const look = new THREE.Vector3();
-      const target = new THREE.Vector3();
+      const clock = new THREE.Clock(); const look = new THREE.Vector3(); const target = new THREE.Vector3();
       const resize = () => { const width = Math.max(1, mount.clientWidth); const height = Math.max(1, mount.clientHeight); camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height, false); };
       window.addEventListener('resize', resize); resize();
-
       const animate = () => {
         if (dead) return;
-        const t = clock.getElapsedTime();
-        const duration = 7.2;
-        const cycle = cameraPaths.length * duration;
-        const phase = (t % cycle) / duration;
-        const index = Math.floor(phase);
-        const next = (index + 1) % cameraPaths.length;
-        const blend = phase - index;
-        const eased = blend * blend * (3 - 2 * blend);
-        const a = cameraPaths[index]; const b = cameraPaths[next];
-        camera.position.set(THREE.MathUtils.lerp(a.p[0], b.p[0], eased), THREE.MathUtils.lerp(a.p[1], b.p[1], eased) + Math.sin(t * .65) * .3, THREE.MathUtils.lerp(a.p[2], b.p[2], eased));
-        target.set(THREE.MathUtils.lerp(a.l[0], b.l[0], eased), THREE.MathUtils.lerp(a.l[1], b.l[1], eased), THREE.MathUtils.lerp(a.l[2], b.l[2], eased));
-        look.lerp(target, .13); camera.lookAt(look);
-
-        scanRing.rotation.z = t * 1.15; scanCore.rotation.z = -t * .75; mriRing.rotation.z = -t * .65;
-        carousel.rotation.y = t * .8; pipette.rotation.z = Math.sin(t * 1.3) * .35; holoBody.rotation.y = t * .8;
-        nanoRing.rotation.z = t * 1.4; helixGroup.rotation.y = t * .55; telemetryRing.rotation.z = -t * 1.5;
+        const t = clock.getElapsedTime(); const duration = 7.5; const cycle = cameraPaths.length * duration; const phase = (t % cycle) / duration; const index = Math.floor(phase); const next = (index + 1) % cameraPaths.length; const blend = phase - index; const eased = blend * blend * (3 - 2 * blend); const a = cameraPaths[index]; const b = cameraPaths[next];
+        camera.position.set(THREE.MathUtils.lerp(a.p[0], b.p[0], eased), THREE.MathUtils.lerp(a.p[1], b.p[1], eased) + Math.sin(t * .7) * .35, THREE.MathUtils.lerp(a.p[2], b.p[2], eased));
+        target.set(THREE.MathUtils.lerp(a.l[0], b.l[0], eased), THREE.MathUtils.lerp(a.l[1], b.l[1], eased), THREE.MathUtils.lerp(a.l[2], b.l[2], eased)); look.lerp(target, .12); camera.lookAt(look);
+        scanRing.rotation.z = t * 1.2; scanCore.rotation.z = -t * .8; mriRing.rotation.z = t * .6; carousel.rotation.y = t * .8; pipette.rotation.z = Math.sin(t * 1.3) * .35; holoBody.rotation.y = t * .8; nanoRing.rotation.z = t * 1.4; helixGroup.rotation.y = t * .55; telemetryRing.rotation.z = -t * 1.5;
         nodes.forEach((node, i) => { node.scale.setScalar(.8 + Math.sin(t * 2.5 + i) * .22); });
         surgicalTips.forEach((o, i) => { o.position.z = Math.sin(t * 1.5 + i) * .15; });
         nanoParticles.forEach((o, i) => { const ang = t * (.35 + (i % 5) * .03) + i; const r = 1 + (i % 7) * .18; o.position.x = Math.cos(ang) * r; o.position.z = Math.sin(ang) * r; o.position.y = 5.2 + Math.sin(ang * 1.7) * 1.1; });
         ecg.material.opacity = .65 + Math.sin(t * 4) * .25; oxygen.material.opacity = .55 + Math.sin(t * 2.5) * .2;
-        dataBeams.forEach((beam, i) => { beam.material.opacity = .35 + (Math.sin(t * 2 + i) + 1) * .2; });
+        dataBeams.forEach((material, i) => { material.opacity = .35 + (Math.sin(t * 2 + i) + 1) * .2; });
         cyanLight.intensity = (mobile ? 13 : 23) + Math.sin(t * 1.3) * 3; violetLight.intensity = (mobile ? 9 : 15) + Math.cos(t * 1.1) * 2; greenLight.intensity = (mobile ? 6 : 11) + Math.sin(t * 2) * 2;
         particles.rotation.y = t * .008;
         renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
       };
       animate();
-
       return () => { dead = true; cancelAnimationFrame(raf); window.removeEventListener('resize', resize); renderer.dispose(); pg.dispose(); pm.dispose(); mount.innerHTML = ''; };
-    } catch (e) {
-      console.error('Biomedical future scene failed:', e);
-      setError(true);
-      return () => { dead = true; cancelAnimationFrame(raf); };
-    }
+    } catch (e) { console.error('Biomedical future scene failed:', e); setError(true); return () => { dead = true; cancelAnimationFrame(raf); }; }
   }, []);
 
   return (
