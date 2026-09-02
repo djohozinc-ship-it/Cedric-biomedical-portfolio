@@ -7,29 +7,11 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import TextField from '@mui/material/TextField';
 
-const inputSx = {
-  '& .MuiInputBase-input': {
-    color: '#050f0b !important',
-    WebkitTextFillColor: '#050f0b',
-    opacity: 1,
-    caretColor: '#050f0b',
-  },
-  '& input': {
-    color: '#050f0b !important',
-    WebkitTextFillColor: '#050f0b',
-  },
-  '& textarea': {
-    color: '#050f0b !important',
-    WebkitTextFillColor: '#050f0b',
-    opacity: 1,
-    caretColor: '#050f0b',
-  },
-  '& .MuiInputLabel-root': {
-    color: '#050f0b',
-  },
-  '& .MuiInputLabel-root.Mui-focused': {
-    color: '#5000ca',
-  },
+const inputStyle = {
+  color: '#050f0b',
+  WebkitTextFillColor: '#050f0b',
+  opacity: 1,
+  caretColor: '#050f0b',
 };
 
 function Contact() {
@@ -116,7 +98,8 @@ function Contact() {
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
                 helperText={nameError ? 'Please enter your name' : ''}
-                sx={inputSx}
+                inputProps={{ style: inputStyle }}
+                InputLabelProps={{ style: { color: '#050f0b' } }}
               />
 
               <TextField
@@ -129,7 +112,8 @@ function Contact() {
                 onChange={(e) => setEmail(e.target.value)}
                 error={emailError}
                 helperText={emailError ? 'Please enter your email' : ''}
-                sx={inputSx}
+                inputProps={{ style: inputStyle }}
+                InputLabelProps={{ style: { color: '#050f0b' } }}
               />
             </div>
 
@@ -145,7 +129,8 @@ function Contact() {
               onChange={(e) => setMessage(e.target.value)}
               error={messageError}
               helperText={messageError ? 'Please enter your message' : ''}
-              sx={inputSx}
+              inputProps={{ style: inputStyle }}
+              InputLabelProps={{ style: { color: '#050f0b' } }}
             />
 
             <Button
