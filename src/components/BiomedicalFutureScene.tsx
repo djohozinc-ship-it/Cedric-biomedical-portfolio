@@ -5,6 +5,8 @@ import './BiomedicalFutureScene.scss';
 type V3 = [number, number, number];
 type Door = { left: THREE.Object3D; right: THREE.Object3D };
 
+type Shot = { p: V3; l: V3; fov: number; hold: number };
+
 const BiomedicalCity: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState(false);
@@ -18,225 +20,244 @@ const BiomedicalCity: React.FC = () => {
     try {
       const mobile = window.matchMedia('(max-width: 768px)').matches;
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x07151d);
-      scene.fog = new THREE.Fog(0x07151d, 30, 112);
-      const camera = new THREE.PerspectiveCamera(mobile ? 52 : 44, 1, 0.1, 145);
+      scene.background = new THREE.Color(0x06151d);
+      scene.fog = new THREE.Fog(0x06151d, 32, 118);
+      const camera = new THREE.PerspectiveCamera(mobile ? 52 : 43, 1, 0.1, 150);
       const renderer = new THREE.WebGLRenderer({ antialias: !mobile, powerPreference: 'high-performance' });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.15 : 1.35));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.1 : 1.35));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.shadowMap.enabled = !mobile;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       mount.innerHTML = '';
       mount.appendChild(renderer.domElement);
 
-      scene.add(new THREE.HemisphereLight(0xcff8ff, 0x061016, 2.8));
-      const key = new THREE.DirectionalLight(0xffffff, 4);
-      key.position.set(-12, 25, 22);
+      scene.add(new THREE.HemisphereLight(0xd9fbff, 0x071017, 2.7));
+      const key = new THREE.DirectionalLight(0xffffff, 4.2);
+      key.position.set(-18, 25, 20);
       key.castShadow = !mobile;
       scene.add(key);
-      const cyanLight = new THREE.PointLight(0x22e6ff, mobile ? 12 : 22, 58);
-      cyanLight.position.set(-10, 8, 12);
+      const cyanLight = new THREE.PointLight(0x21e8ff, mobile ? 10 : 20, 60);
+      cyanLight.position.set(10, 8, 4);
       scene.add(cyanLight);
-      const violetLight = new THREE.PointLight(0x775cff, mobile ? 8 : 15, 55);
-      violetLight.position.set(16, 8, 8);
+      const violetLight = new THREE.PointLight(0x775cff, mobile ? 7 : 14, 55);
+      violetLight.position.set(-14, 8, 8);
       scene.add(violetLight);
-      const greenLight = new THREE.PointLight(0x54ffb5, mobile ? 6 : 10, 48);
-      greenLight.position.set(7, 7, -13);
+      const greenLight = new THREE.PointLight(0x51ffb1, mobile ? 5 : 9, 45);
+      greenLight.position.set(16, 5, -8);
       scene.add(greenLight);
 
-      const mat = (color: number, metalness = .25, roughness = .4, emissive = 0, intensity = 0) => new THREE.MeshStandardMaterial({ color, metalness, roughness, emissive, emissiveIntensity: intensity });
-      const steel = mat(0xd9e7e9, .85, .24);
-      const white = mat(0xf1f8f8, .15, .52);
-      const dark = mat(0x132831, .9, .3);
-      const graphite = mat(0x31515a, .72, .35);
-      const cyan = mat(0x38eaff, .35, .18, 0x0ccde9, 5);
-      const violet = mat(0x987dff, .4, .2, 0x5c3ee8, 4);
-      const green = mat(0x57ffb6, .3, .22, 0x20d890, 4);
-      const amber = mat(0xffd35a, .25, .25, 0xe49b00, 3);
-      const red = mat(0xff5877, .2, .3, 0xc91f43, 3);
-      const robot = mat(0xbfd1d5, .88, .22);
-      const robotDark = mat(0x0b171d, .95, .18);
-      const glass = new THREE.MeshPhysicalMaterial({ color: 0x73eaff, transmission: .55, opacity: .19, transparent: true, roughness: .06, metalness: .08, side: THREE.DoubleSide, depthWrite: false, emissive: 0x0b4552, emissiveIntensity: 1.3 });
-      const doorGlass = new THREE.MeshPhysicalMaterial({ color: 0x9af4ff, transmission: .65, opacity: .24, transparent: true, roughness: .04, metalness: .05, side: THREE.DoubleSide, depthWrite: false, emissive: 0x0a6070, emissiveIntensity: 1.8 });
+      const mat = (color: number, metalness = .3, roughness = .4, emissive = 0, intensity = 0) => new THREE.MeshStandardMaterial({ color, metalness, roughness, emissive, emissiveIntensity: intensity });
+      const steel = mat(0xdce8e9, .88, .2);
+      const white = mat(0xf4f9f8, .18, .48);
+      const dark = mat(0x10262e, .9, .3);
+      const graphite = mat(0x29464f, .75, .34);
+      const cyan = mat(0x36eaff, .35, .17, 0x0bd3ec, 5);
+      const violet = mat(0x987dff, .42, .2, 0x5a3de8, 4);
+      const green = mat(0x58ffb7, .3, .2, 0x1bd88a, 4);
+      const amber = mat(0xffd25a, .28, .25, 0xd99100, 3);
+      const red = mat(0xff5576, .2, .3, 0xc91f43, 3);
+      const black = mat(0x081116, .96, .16);
+      const glass = new THREE.MeshPhysicalMaterial({ color: 0x73eaff, transmission: .5, opacity: .16, transparent: true, roughness: .06, metalness: .08, side: THREE.DoubleSide, depthWrite: false, emissive: 0x0b4552, emissiveIntensity: 1.2 });
+      const doorGlass = new THREE.MeshPhysicalMaterial({ color: 0x9af4ff, transmission: .62, opacity: .25, transparent: true, roughness: .04, metalness: .05, side: THREE.DoubleSide, depthWrite: false, emissive: 0x0a6070, emissiveIntensity: 1.7 });
 
-      const box = (parent: THREE.Object3D, pos: V3, size: V3, material: THREE.Material) => {
-        const m = new THREE.Mesh(new THREE.BoxGeometry(...size), material);
-        m.position.set(...pos); m.castShadow = !mobile; m.receiveShadow = true; parent.add(m); return m;
-      };
-      const cyl = (parent: THREE.Object3D, pos: V3, radius: number, height: number, material: THREE.Material, segments = 20) => {
-        const m = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, segments), material);
-        m.position.set(...pos); m.castShadow = !mobile; m.receiveShadow = true; parent.add(m); return m;
-      };
-      const sphere = (parent: THREE.Object3D, pos: V3, radius: number, material: THREE.Material, segments = 18) => {
-        const m = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, Math.max(8, segments - 4)), material);
-        m.position.set(...pos); m.castShadow = !mobile; m.receiveShadow = true; parent.add(m); return m;
-      };
-      const line = (parent: THREE.Object3D, points: V3[], material: THREE.Material) => {
-        const g = new THREE.BufferGeometry().setFromPoints(points.map(p => new THREE.Vector3(...p)));
-        const l = new THREE.Line(g, material); parent.add(l); return l;
-      };
+      const box = (parent: THREE.Object3D, p: V3, s: V3, m: THREE.Material) => { const x = new THREE.Mesh(new THREE.BoxGeometry(...s), m); x.position.set(...p); x.castShadow = !mobile; x.receiveShadow = true; parent.add(x); return x; };
+      const cyl = (parent: THREE.Object3D, p: V3, r: number, h: number, m: THREE.Material, seg = 18) => { const x = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, seg), m); x.position.set(...p); x.castShadow = !mobile; x.receiveShadow = true; parent.add(x); return x; };
+      const sphere = (parent: THREE.Object3D, p: V3, r: number, m: THREE.Material, seg = 16) => { const x = new THREE.Mesh(new THREE.SphereGeometry(r, seg, Math.max(8, seg - 4)), m); x.position.set(...p); x.castShadow = !mobile; x.receiveShadow = true; parent.add(x); return x; };
+      const line = (parent: THREE.Object3D, pts: V3[], m: THREE.Material) => { const g = new THREE.BufferGeometry().setFromPoints(pts.map(p => new THREE.Vector3(...p))); const x = new THREE.Line(g, m); parent.add(x); return x; };
 
-      box(scene, [0, -.65, 0], [74, 1.1, 58], dark);
-      box(scene, [0, -.05, 0], [72, .08, 56], graphite);
-      for (let x = -34; x <= 34; x += 4) box(scene, [x, .01, 0], [.015, .015, 54], cyan);
-      for (let z = -25; z <= 25; z += 4) box(scene, [0, .01, z], [70, .015, .015], cyan);
+      // Campus floor: bright enough to keep silhouettes visible throughout the tour.
+      box(scene, [0, -.7, 0], [76, 1.2, 60], dark);
+      box(scene, [0, -.05, 0], [74, .08, 58], graphite);
+      for (let x = -35; x <= 35; x += 4) box(scene, [x, .01, 0], [.012, .012, 56], cyan);
+      for (let z = -27; z <= 27; z += 4) box(scene, [0, .01, z], [72, .012, .012], cyan);
 
-      const createPanel = (title: string, subtitle: string, width: number, height: number) => {
-        const group = new THREE.Group();
-        const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 360;
-        const ctx = canvas.getContext('2d');
+      const panel = (title: string, subtitle: string, w: number, h: number) => {
+        const g = new THREE.Group();
+        const c = document.createElement('canvas'); c.width = 1024; c.height = 360;
+        const ctx = c.getContext('2d');
         if (ctx) {
-          ctx.fillStyle = 'rgba(4,25,34,.86)'; ctx.fillRect(0, 0, 1024, 360);
-          ctx.strokeStyle = '#67edff'; ctx.lineWidth = 5; ctx.strokeRect(5, 5, 1014, 350);
-          ctx.font = '700 48px Arial'; ctx.fillStyle = '#8af2ff'; ctx.fillText(title, 42, 72);
-          ctx.font = '600 25px Arial'; ctx.fillStyle = '#d1f5fa'; ctx.fillText(subtitle, 42, 112);
+          ctx.fillStyle = 'rgba(3,23,31,.92)'; ctx.fillRect(0, 0, 1024, 360);
+          ctx.strokeStyle = '#70efff'; ctx.lineWidth = 5; ctx.strokeRect(5, 5, 1014, 350);
+          ctx.font = '700 48px Arial'; ctx.fillStyle = '#8af2ff'; ctx.fillText(title, 38, 68);
+          ctx.font = '600 24px Arial'; ctx.fillStyle = '#d7f6fa'; ctx.fillText(subtitle, 38, 108);
           ctx.strokeStyle = '#43e7ff'; ctx.lineWidth = 3; ctx.beginPath();
-          const ecg: Array<[number, number]> = [[0,0],[20,0],[30,-34],[42,18],[56,0],[82,0],[94,-24],[106,10],[124,0],[150,0],[164,-30],[178,16],[196,0],[230,0]];
-          ecg.forEach(([x,y], i) => i === 0 ? ctx.moveTo(45 + x * 2.7, 195 + y) : ctx.lineTo(45 + x * 2.7, 195 + y)); ctx.stroke();
-          ctx.font = '700 26px Arial'; ctx.fillStyle = '#55ffb5'; ctx.fillText('HR 72 BPM', 42, 300); ctx.fillText('SpO₂ 98%', 270, 300);
-          ctx.fillStyle = '#a28aff'; ctx.fillText('AI CONFIDENCE 97.4%', 500, 300);
+          const ecg: Array<[number, number]> = [[0,0],[18,0],[28,-30],[40,18],[54,0],[76,0],[90,-23],[103,10],[120,0],[148,0],[162,-28],[176,14],[195,0],[225,0]];
+          ecg.forEach(([x,y], i) => i ? ctx.lineTo(45 + x * 2.7, 190 + y) : ctx.moveTo(45 + x * 2.7, 190 + y)); ctx.stroke();
+          ctx.font = '700 25px Arial'; ctx.fillStyle = '#55ffb5'; ctx.fillText('HR 72 BPM', 38, 302); ctx.fillText('SpO₂ 98%', 270, 302);
+          ctx.fillStyle = '#a28aff'; ctx.fillText('AI CONFIDENCE 97.4%', 500, 302);
         }
-        const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
-        const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: .94, side: THREE.DoubleSide, depthWrite: false });
-        group.add(new THREE.Mesh(new THREE.PlaneGeometry(width, height), material));
-        group.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(width, height, .03)), new THREE.LineBasicMaterial({ color: 0x73efff, transparent: true, opacity: .85 })));
-        group.userData.material = material; return group;
+        const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+        const pm = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: .96, side: THREE.DoubleSide, depthWrite: false });
+        g.add(new THREE.Mesh(new THREE.PlaneGeometry(w, h), pm));
+        g.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, .03)), new THREE.LineBasicMaterial({ color: 0x73efff, transparent: true, opacity: .9 })));
+        g.userData.material = pm;
+        return g;
       };
 
-      const slidingDoors = (parent: THREE.Object3D, z: number, width: number, height: number): Door => {
+      const doors = (parent: THREE.Object3D, z: number, width: number, height: number): Door => {
         box(parent, [0, height + .08, z], [width, .08, .12], steel);
         const left = box(parent, [-width * .22, height / 2, z], [width * .4, height, .08], doorGlass);
         const right = box(parent, [width * .22, height / 2, z], [width * .4, height, .08], doorGlass);
-        box(parent, [-width * .43, height / 2, z - .05], [.06, height, .1], cyan); box(parent, [width * .43, height / 2, z - .05], [.06, height, .1], cyan);
+        box(parent, [-width * .43, height / 2, z - .05], [.06, height, .1], cyan);
+        box(parent, [width * .43, height / 2, z - .05], [.06, height, .1], cyan);
         return { left, right };
       };
 
-      // OPERATING ROOM
-      const surgery = new THREE.Group(); surgery.position.set(-13, 0, 8); scene.add(surgery);
-      box(surgery, [0,.45,0], [15,.25,10], white); box(surgery, [-7.2,3.7,0], [.22,7.2,10], graphite); box(surgery,[7.2,3.7,0],[.22,7.2,10],graphite); box(surgery,[0,7.2,0],[14.6,.22,10],graphite); box(surgery,[0,3.6,-4.85],[14.4,6.9,.06],glass);
-      const surgeryDoors = slidingDoors(surgery,4.9,7,5.4);
-      const surgicalJoints: THREE.Object3D[]=[]; const surgicalTips: THREE.Object3D[]=[];
-      const light = new THREE.Group(); light.position.set(0,6.2,0); surgery.add(light); cyl(light,[0,0,0],.22,1.2,robotDark,18); const lamp=new THREE.Mesh(new THREE.TorusGeometry(1.55,.12,10,48),steel); lamp.rotation.x=Math.PI/2; light.add(lamp); sphere(light,[0,-.05,0],1.05,white,24);
-      const makeSurgicalArm=(x:number,z:number,flip:number)=>{ const root=new THREE.Group(); root.position.set(x,1.05,z); surgery.add(root); cyl(root,[0,.55,0],.7,1.1,robotDark,22); const shoulder=new THREE.Group(); shoulder.position.y=1.05; shoulder.rotation.z=flip*.48; root.add(shoulder); sphere(shoulder,[0,0,0],.3,cyan,14); box(shoulder,[0,.9,0],[.38,1.8,.38],robot); const elbow=new THREE.Group(); elbow.position.y=1.8; elbow.rotation.z=-flip*.62; shoulder.add(elbow); sphere(elbow,[0,0,0],.27,violet,14); box(elbow,[0,.8,0],[.32,1.6,.32],robot); const wrist=new THREE.Group(); wrist.position.y=1.6; wrist.rotation.z=flip*.35; elbow.add(wrist); sphere(wrist,[0,0,0],.2,cyan,12); box(wrist,[0,.48,0],[.24,.9,.24],steel); const tip=cyl(wrist,[0,.98,0],.06,.5,cyan,10); surgicalJoints.push(shoulder,elbow,wrist); surgicalTips.push(tip); };
-      makeSurgicalArm(-4.8,-3.2,1); makeSurgicalArm(-4.8,3.2,1); makeSurgicalArm(4.8,-3.2,-1); makeSurgicalArm(4.8,3.2,-1); box(surgery,[0,1.25,0],[6.4,.3,2.8],robot);
-      const surgeryPanel=createPanel('SURGICAL ROBOT','4-ARM PRECISION SYSTEM // STERILE OR',6.8,2.2); surgeryPanel.position.set(0,5.2,-4.9); surgery.add(surgeryPanel);
+      // CEDRIC BIOMEDICAL LAB CENTER — deliberately large and central.
+      const lab = new THREE.Group(); lab.position.set(12, 0, 3); scene.add(lab);
+      box(lab, [0, .45, 0], [22, .25, 17], white);
+      box(lab, [-10.7, 4.5, 0], [.25, 9, 17], graphite);
+      box(lab, [10.7, 4.5, 0], [.25, 9, 17], graphite);
+      box(lab, [0, 9, 0], [21.5, .25, 17], graphite);
+      box(lab, [0, 4.5, -8.35], [21.2, 8.8, .06], glass);
+      box(lab, [0, 4.5, 8.35], [21.2, 8.8, .06], glass);
+      const labDoors = doors(lab, -8.4, 7, 5.8);
+      const labName = panel('CEDRIC BIOMEDICAL LAB CENTER', 'ADVANCED RESEARCH FACILITY // ROBOTICS · GENOMICS · BIOENGINEERING', 11.5, 2.8);
+      labName.position.set(0, 7.2, -8.48); lab.add(labName);
+      for (let x = -9; x <= 9; x += 3) box(lab, [x, 8.45, 0], [.07, .06, 15], cyan);
 
-      // ADVANCED GLASS LABORATORY
-      const lab=new THREE.Group(); lab.position.set(15,0,6); scene.add(lab);
-      box(lab,[0,.45,0],[18,.25,13],white); box(lab,[-8.7,4,0],[.22,8,13],graphite); box(lab,[8.7,4,0],[.22,8,13],graphite); box(lab,[0,8,0],[17.5,.22,13],graphite); box(lab,[0,4,-6.35],[17.4,7.8,.06],glass); box(lab,[0,4,6.35],[17.4,7.8,.06],glass);
-      const labDoors=slidingDoors(lab,-6.4,6.4,5.3);
-      // Interior light bars make the equipment readable through glass.
-      for(let x=-7;x<=7;x+=3.5) box(lab,[x,7.5,0],[.08,.05,11],cyan);
+      // Shared central automation island.
+      box(lab, [0, 1.05, 0], [19, .25, 4.4], graphite);
+      const carousel = new THREE.Group(); carousel.position.set(-7.2, 1.45, 0); lab.add(carousel);
+      cyl(carousel, [0,0,0], 1.55, .24, steel, 32);
+      for (let i=0;i<12;i++) { const a=i*Math.PI*2/12; cyl(carousel,[Math.cos(a)*1.2,.38,Math.sin(a)*1.2],.13,.72,i%3===0?red:cyan,12); }
+      const pipette = new THREE.Group(); pipette.position.set(-3.6,1.6,0); lab.add(pipette);
+      box(pipette,[0,.85,0],[.3,1.7,.3],steel); sphere(pipette,[0,1.75,0],.22,cyan,12); box(pipette,[0,-.18,0],[.09,.5,.09],green);
 
-      // Workbench + sample carousel.
-      box(lab,[0,1.15,-.1],[16,.25,3.8],graphite);
-      const carousel=new THREE.Group(); carousel.position.set(-5.8,1.55,-.1); lab.add(carousel); cyl(carousel,[0,0,0],1.55,.22,steel,32);
-      for(let i=0;i<12;i++){const a=i/12*Math.PI*2;cyl(carousel,[Math.cos(a)*1.2,.38,Math.sin(a)*1.2],.13,.7,i%3===0?red:cyan,12);}
-      const pipette=new THREE.Group(); pipette.position.set(-2.6,2.1,-.1); lab.add(pipette); box(pipette,[0,.7,0],[.25,1.55,.25],steel); sphere(pipette,[0,1.55,0],.2,cyan,12); box(pipette,[0,-.22,0],[.09,.55,.09],green);
+      // DNA SEQUENCER: front-facing, oversized, with visible cartridge bay.
+      const seq = new THREE.Group(); seq.position.set(-2.2, 1.25, -4.4); lab.add(seq);
+      box(seq,[0,1.35,0],[4.4,2.7,2.8],steel); box(seq,[0,1.55,-1.43],[3.35,1.3,.08],black); box(seq,[0,.55,-1.46],[3.5,.35,.06],cyan);
+      for(let i=-2;i<=2;i++) box(seq,[i*.55,.98,-1.52],[.28,.52,.05],i===0?green:violet);
+      const seqBars: THREE.Mesh[]=[]; for(let i=0;i<7;i++) seqBars.push(box(seq,[-1.45+i*.48,2.62,-.1],[.24,.55,.05],i%2?violet:cyan));
+      const seqPanel = panel('DNA SEQUENCER','GENOMIC ANALYSIS // RUNNING',4.4,1.35); seqPanel.position.set(0,3.25,-1.5); seq.add(seqPanel);
 
-      // 1. DNA SEQUENCER — cartridge bay + data lanes.
-      const sequencer=new THREE.Group(); sequencer.position.set(3.2,1.3,-.8); lab.add(sequencer);
-      box(sequencer,[0,1.1,0],[3.8,2.3,2.5],steel); box(sequencer,[0,1.55,-1.28],[2.8,1.25,.06],robotDark); box(sequencer,[0,.35,-1.3],[3.1,.42,.08],cyan);
-      for(let i=-2;i<=2;i++){box(sequencer,[i*.48,.95,-1.38],[.25,.5,.04],i===0?green:violet);}
-      for(let i=0;i<7;i++) box(sequencer,[-1.25+i*.42,1.85,-1.34],[.24,.08,.03],cyan);
-      const seqBars: THREE.Mesh[]=[]; for(let i=0;i<6;i++) seqBars.push(box(sequencer,[-1.1+i*.45,2.65,0],[.22,.5,.04],i%2?violet:cyan));
+      // AUTOMATED MICROSCOPE: unmistakable optical column + objective turret + display.
+      const scope = new THREE.Group(); scope.position.set(3.2,1.2,-4.2); lab.add(scope);
+      box(scope,[0,.5,0],[3.1,.3,2.5],black); box(scope,[0,2.05,0],[.58,3,.62],steel); box(scope,[.55,3.2,0],[1.55,.4,.8],steel);
+      cyl(scope,[.5,2.68,0],.62,.25,violet,24);
+      for(let i=0;i<4;i++){const a=i*Math.PI/2; cyl(scope,[.5+Math.cos(a)*.4,2.42,Math.sin(a)*.4],.1,.65,steel,10);}
+      box(scope,[0,1.02,-1.18],[2.2,1.1,.08],cyan);
+      const scopeScreen=panel('AUTO MICROSCOPY','CELL IMAGING // 40× OBJECTIVE',3.6,1.25); scopeScreen.position.set(0,2.25,-1.55); scope.add(scopeScreen);
 
-      // 2. AUTOMATED MICROSCOPE — optical column, objective turret, stage, monitor.
-      const microscope=new THREE.Group(); microscope.position.set(6.7,1.2,-.5); lab.add(microscope);
-      box(microscope,[0,.55,0],[2.5,.3,2.2],robotDark); box(microscope,[0,2,0],[.5,2.7,.55],steel); box(microscope,[.42,3.05,0],[1.3,.35,.7],steel);
-      cyl(microscope,[.35,2.58,0],.55,.25,violet,24); for(let i=0;i<4;i++){const o=cyl(microscope,[.35+Math.cos(i*Math.PI/2)*.38,2.3,Math.sin(i*Math.PI/2)*.38],.09,.65,cyan,12); o.rotation.z=.15;}
-      box(microscope,[0,.85,-1.18],[1.8,1.1,.06],glass); box(microscope,[1.15,2.1,-.5],[1.5,1.05,.08],robotDark); box(microscope,[1.15,2.1,-.55],[1.25,.8,.04],cyan);
+      // PCR / qPCR analyzer with sample wells.
+      const pcr = new THREE.Group(); pcr.position.set(7.4,1.25,-4.1); lab.add(pcr);
+      box(pcr,[0,1.05,0],[3.7,2.1,2.6],white); box(pcr,[0,1.55,-1.33],[2.8,.72,.07],black); box(pcr,[0,.78,-1.38],[2.6,.28,.05],cyan);
+      for(let r=0;r<3;r++) for(let c=0;c<6;c++) cyl(pcr,[-1.05+c*.42,.98,-1.43+r*.18],.07,.05,r===1?green:violet,10);
+      const pcrPanel=panel('PCR / qPCR','AMPLIFICATION STATION // 96-WELL',3.9,1.25); pcrPanel.position.set(0,2.65,-1.4); pcr.add(pcrPanel);
 
-      // 3. PCR / qPCR station — sample tray + thermal wells.
-      const pcr=new THREE.Group(); pcr.position.set(3.2,1.25,3.7); lab.add(pcr); box(pcr,[0,1,0],[3.4,2,2.4],white); box(pcr,[0,1.65,-1.23],[2.5,.75,.05],robotDark); box(pcr,[0,.65,-1.25],[2.3,.12,.05],violet);
-      for(let r=0;r<3;r++) for(let c=0;c<8;c++) cyl(pcr,[-.9+c*.26,.9+r*.22,-1.34],.055,.05,(r+c)%3===0?green:cyan,10);
+      // Biosafety cabinet with transparent enclosure and working deck.
+      const bsc = new THREE.Group(); bsc.position.set(-7.2,1.2,4.3); lab.add(bsc);
+      box(bsc,[0,.65,0],[5.3,.35,2.8],steel); box(bsc,[-2.45,2.9,0],[.18,4.6,2.8],graphite); box(bsc,[2.45,2.9,0],[.18,4.6,2.8],graphite); box(bsc,[0,5.1,0],[5, .18,2.8],graphite); box(bsc,[0,2.9,-1.35],[4.8,4.2,.05],doorGlass);
+      box(bsc,[0,1.15,0],[4.6,.08,2.2],white); box(bsc,[0,4.7,-1.42],[3.8,.08,.06],cyan);
+      const bscPanel=panel('BIOSAFETY CABINET','STERILE CELL CULTURE // HEPA FLOW',4.7,1.25); bscPanel.position.set(0,4.25,-1.48); bsc.add(bscPanel);
 
-      // 4. HEMATOLOGY ANALYZER — reagent/sample rack + display.
-      const hema=new THREE.Group(); hema.position.set(-.5,1.25,3.8); lab.add(hema); box(hema,[0,1,0],[3.5,2.1,2.5],steel); box(hema,[0,1.55,-1.27],[1.8,.8,.05],robotDark); box(hema,[0,1.55,-1.31],[1.45,.5,.03],green); box(hema,[-.7,.55,-1.4],[.12,.65,.08],red);
-      for(let i=-3;i<=3;i++) cyl(hema,[i*.32,.58,-.95],.08,.35,i%2?cyan:amber,12);
+      // Smart incubator: tall cabinet with visible internal shelves.
+      const incubator = new THREE.Group(); incubator.position.set(-1.2,1.15,4.35); lab.add(incubator);
+      box(incubator,[0,2.4,0],[3.1,4.8,2.5],white); box(incubator,[0,2.5,-1.28],[2.35,3.9,.06],doorGlass);
+      for(let y=1.15;y<=4;y+=.85){box(incubator,[0,y,-1.34],[2.1,.08,.05],steel); for(let x=-.72;x<=.72;x+=.48) box(incubator,[x,y+.18,-1.34],[.28,.32,.04],green);}
+      const incPanel=panel('SMART INCUBATOR','37.0 °C // CO₂ 5.0% // STABLE',3.5,1.25); incPanel.position.set(0,5.2,-1.45); incubator.add(incPanel);
 
-      // 5. BIOCHEMISTRY ANALYZER — reagent carousel + sample input.
-      const bio=new THREE.Group(); bio.position.set(-4.9,1.25,3.8); lab.add(bio); box(bio,[0,1,0],[3.7,2.1,2.5],white); box(bio,[0,2.1,0],[2.2,.25,1.7],robotDark); cyl(bio,[0,1.55,-1.3],.75,.16,steel,28); for(let i=0;i<10;i++){const a=i/10*Math.PI*2;cyl(bio,[Math.cos(a)*.57,1.7,-1.3+Math.sin(a)*.25],.08,.3,i%2?cyan:violet,10);}
+      // Hematology + biochemistry analyzers.
+      const analyzer = (parent: THREE.Object3D, p: V3, title: string, color: THREE.Material) => {
+        const g=new THREE.Group(); g.position.set(...p); parent.add(g); box(g,[0,1,0],[3.6,2,2.5],steel); box(g,[0,1.75,-1.3],[2.6,.7,.06],black); box(g,[-.9,.45,-1.34],[.5,.35,.05],color); box(g,[0,.45,-1.34],[.5,.35,.05],green); box(g,[.9,.45,-1.34],[.5,.35,.05],violet); const p=panel(title,'AUTOMATED CLINICAL ANALYSIS',3.7,1.2); p.position.set(0,2.7,-1.42); g.add(p); return g;
+      };
+      analyzer(lab,[5.8,1.2,2.9],'HEMATOLOGY ANALYZER',red);
+      analyzer(lab,[9.1,1.2,4.9],'BIOCHEMISTRY ANALYZER',amber);
 
-      // 6. BIOSAFETY CABINET — transparent containment chamber + internal work zone.
-      const bsc=new THREE.Group(); bsc.position.set(7,-.0,3.9); lab.add(bsc); box(bsc,[0,2.4,0],[3.1,4.6,2.4],steel); box(bsc,[0,3.0,-1.25],[2.65,2.7,.05],glass); box(bsc,[0,1.1,-1.3],[2.5,.12,.05],cyan); box(bsc,[0,4.35,0],[2.5,.12,1.7],robotDark); for(let i=-1;i<=1;i++) cyl(bsc,[i*.75,2.1,-.95],.13,.55,green,12);
+      // Cryogenic biobank: recognizable insulated tank + sample rack.
+      const cryo = new THREE.Group(); cryo.position.set(7.4,1.05,8.0); lab.add(cryo);
+      cyl(cryo,[0,1.7,0],1.65,3.4,steel,28); cyl(cryo,[0,3.45,0],1.42,.28,black,28); cyl(cryo,[0,3.7,0],.9,.25,cyan,24);
+      for(let i=0;i<6;i++) cyl(cryo,[Math.cos(i*Math.PI/3)*.9,2.2,Math.sin(i*Math.PI/3)*.9],.12,1.3,i%2?violet:green,10);
+      const cryoPanel=panel('CRYOBIOBANK','−196 °C // SAMPLE STORAGE',3.9,1.25); cryoPanel.position.set(0,4.7,-1.5); cryo.add(cryoPanel);
 
-      // 7. SMART INCUBATOR — tall chamber with visible sample racks.
-      const incubator=new THREE.Group(); incubator.position.set(-7,1.0,-3.8); lab.add(incubator); box(incubator,[0,2.4,0],[3.0,4.8,2.5],graphite); box(incubator,[0,2.55,-1.28],[2.45,3.9,.05],glass); box(incubator,[0,4.65,-1.34],[1.5,.28,.04],green);
-      for(let y=1.2;y<=4;y+=.75){box(incubator,[0,y,-1.38],[2.0,.05,.05],steel); for(let x=-.7;x<=.7;x+=.7)cyl(incubator,[x,y+.18,-1.42],.12,.35,cyan,10);}
+      // Biofabrication printer: gantry, print bed, moving nozzle.
+      const printer = new THREE.Group(); printer.position.set(-3.1,1.0,8.0); lab.add(printer);
+      box(printer,[0,.35,0],[5.2,.3,3.7],black); box(printer,[-2.3,2.7,0],[.18,4.7,3.5],steel); box(printer,[2.3,2.7,0],[.18,4.7,3.5],steel); box(printer,[0,4.9,0],[4.7,.18,3.5],steel);
+      const gantry=box(printer,[0,4.5,0],[3.8,.22,.22],cyan); const nozzle=new THREE.Group(); nozzle.position.set(0,4.05,0); printer.add(nozzle); box(nozzle,[0,-.25,0],[.32,.55,.32],steel); cyl(nozzle,[0,-.6,0],.09,.3,green,12); box(printer,[0,.58,0],[3.9,.12,2.6],white);
+      const printPanel=panel('BIOFABRICATION','3D BIOPRINTING // TISSUE ENGINEERING',4.8,1.25); printPanel.position.set(0,5.8,-1.9); printer.add(printPanel);
 
-      // 8. CRYOGENIC BIOBANK — cryotank + sample canisters.
-      const cryo=new THREE.Group(); cryo.position.set(5.5,1.0,4.0); lab.add(cryo); cyl(cryo,[0,2,0],1.45,3.8,steel,28); cyl(cryo,[0,3.95,0],1.52,.25,robotDark,28); cyl(cryo,[0,4.15,0],1.05,.18,cyan,24); for(let i=0;i<8;i++){const a=i/8*Math.PI*2;cyl(cryo,[Math.cos(a)*.8,2.2,Math.sin(a)*.8],.12,2.4,cyan,10);}
+      // Mobile manipulator rail across the rear of the lab.
+      const rail=box(lab,[0,6.4,5.9],[19,.12,.12],steel); const arm=new THREE.Group(); arm.position.set(-6,0,5.9); lab.add(arm);
+      box(arm,[0,2.9,0],[.3,5.6,.3],robotDark); sphere(arm,[0,5.7,0],.32,cyan,12); const arm2=new THREE.Group(); arm2.position.y=5.5; arm.add(arm2); box(arm2,[1.3,0,0],[2.6,.28,.28],robot); sphere(arm2,[2.6,0,0],.3,violet,12); const gripper=new THREE.Group(); gripper.position.set(2.75,-.15,0); arm2.add(gripper); box(gripper,[.15,-.28,0],[.08,.55,.08],green); box(gripper,[-.15,-.28,0],[.08,.55,.08],green);
+      const railPanel=panel('ROBOTIC SAMPLE HANDLER','AUTONOMOUS TRANSFER // RAIL R-01',5.2,1.25); railPanel.position.set(0,7.4,5.75); lab.add(railPanel);
 
-      // 9. BIOFABRICATION / 3D BIOPRINTER — gantry + print bed + nozzle.
-      const printer=new THREE.Group(); printer.position.set(-4.6,1.0,-3.8); lab.add(printer); box(printer,[0,.35,0],[3.8,.2,2.9],steel); box(printer,[-1.65,1.9,0],[.18,3.2,2.7],graphite); box(printer,[1.65,1.9,0],[.18,3.2,2.7],graphite); box(printer,[0,3.35,0],[3.5,.18,2.7],graphite); const gantry=box(printer,[0,3.0,0],[2.8,.18,.18],cyan); const nozzle=new THREE.Group(); nozzle.position.set(0,2.65,0); printer.add(nozzle); cyl(nozzle,[0,-.35,0],.13,.7,steel,12); cyl(nozzle,[0,-.78,0],.06,.25,violet,10); box(printer,[0,.6,0],[2.2,.08,1.5],violet);
+      // Separate surgical room for a strong contrast with the laboratory.
+      const surgery = new THREE.Group(); surgery.position.set(-15,0,8); scene.add(surgery);
+      box(surgery,[0,.45,0],[15,.25,11],white); box(surgery,[-7.3,3.8,0],[.22,7.5,11],graphite); box(surgery,[7.3,3.8,0],[.22,7.5,11],graphite); box(surgery,[0,7.4,0],[14.6,.22,11],graphite); box(surgery,[0,3.7,-5.35],[14.4,7.1,.06],glass);
+      const surgeryDoors=doors(surgery,5.4,7,5.5);
+      const joints: THREE.Object3D[]=[]; const tips: THREE.Object3D[]=[];
+      const makeArm=(x:number,z:number,flip:number)=>{const root=new THREE.Group(); root.position.set(x,1.05,z); surgery.add(root); cyl(root,[0,.55,0],.72,1.1,black,22); const s=new THREE.Group(); s.position.y=1; s.rotation.z=flip*.5; root.add(s); sphere(s,[0,0,0],.3,cyan,14); box(s,[0,.9,0],[.4,1.8,.4],steel); const e=new THREE.Group(); e.position.y=1.8; e.rotation.z=-flip*.65; s.add(e); sphere(e,[0,0,0],.28,violet,14); box(e,[0,.82,0],[.34,1.65,.34],steel); const w=new THREE.Group(); w.position.y=1.65; w.rotation.z=flip*.35; e.add(w); sphere(w,[0,0,0],.2,cyan,12); box(w,[0,.5,0],[.25,.9,.25],steel); const tip=cyl(w,[0,.98,0],.06,.48,cyan,10); joints.push(s,e,w); tips.push(tip);};
+      makeArm(-4.7,-3.5,1); makeArm(-4.7,3.5,1); makeArm(4.7,-3.5,-1); makeArm(4.7,3.5,-1);
+      box(surgery,[0,1.3,0],[6.4,.3,2.8],steel); cyl(surgery,[0,6.2,0],.22,1.1,black,18); const lamp=new THREE.Mesh(new THREE.TorusGeometry(1.55,.12,10,48),steel); lamp.rotation.x=Math.PI/2; lamp.position.set(0,6.2,0); surgery.add(lamp); sphere(surgery,[0,6.12,0],1.02,white,22);
+      const surgPanel=panel('SURGICAL ROBOT','4-ARM PRECISION SYSTEM // STERILE OR',7,2.2); surgPanel.position.set(0,5.25,-5.4); surgery.add(surgPanel);
 
-      // 10. ROBOTIC SAMPLE RAIL — moving carriage and articulated manipulator.
-      const rail=new THREE.Group(); rail.position.set(0,0,-5.25); lab.add(rail); box(rail,[0,.75,0],[15,.14,.18],steel); const carriage=new THREE.Group(); carriage.position.set(-3,.9,0); rail.add(carriage); box(carriage,[0,0,0],[.9,.25,.8],robotDark); cyl(carriage,[0,.65,0],.16,1.1,cyan,14); const arm=new THREE.Group(); arm.position.y=1.15; carriage.add(arm); box(arm,[.55,.45,0],[1.2,.18,.18],robot); sphere(arm,[1.1,.45,0],.2,violet,12); box(arm,[1.35,.15,0],[.18,.75,.18],steel); cyl(arm,[1.35,-.35,0],.06,.45,green,10);
+      // CT imaging landmark.
+      const imaging=new THREE.Group(); imaging.position.set(0,0,20); scene.add(imaging); box(imaging,[0,.6,0],[12,.25,8],white);
+      const ct=new THREE.Mesh(new THREE.TorusGeometry(3.1,.42,18,64),black); ct.rotation.y=Math.PI/2; ct.position.set(0,3.6,0); imaging.add(ct); const ctGlow=new THREE.Mesh(new THREE.TorusGeometry(2.65,.12,12,64),cyan); ctGlow.rotation.y=Math.PI/2; ctGlow.position.copy(ct.position); imaging.add(ctGlow);
+      const imgPanel=panel('IMAGING / CT-MRI','3D ANATOMICAL RECONSTRUCTION // LIVE SCAN',7,2.2); imgPanel.position.set(-5,6.4,-3.8); imaging.add(imgPanel);
 
-      // Humanoid lab robot remains central and performs sample handling.
-      const humanoid=new THREE.Group(); humanoid.position.set(-1.9,.55,-.6); lab.add(humanoid); cyl(humanoid,[0,2.05,0],.7,1.45,robot,20); sphere(humanoid,[0,3.15,0],.58,robotDark,20); box(humanoid,[0,3.15,-.54],[.55,.14,.05],cyan); box(humanoid,[0,2.2,-.7],[.32,.42,.05],green);
-      const hL=new THREE.Group(), hR=new THREE.Group(); hL.position.set(-.8,2.45,0); hR.position.set(.8,2.45,0); humanoid.add(hL,hR); box(hL,[0,-.62,0],[.3,1.25,.3],robot); box(hR,[0,-.62,0],[.3,1.25,.3],robot); sphere(hL,[0,-1.28,0],.18,cyan,12); sphere(hR,[0,-1.28,0],.18,cyan,12); box(humanoid,[-.3,.55,0],[.38,1.25,.38],robot); box(humanoid,[.3,.55,0],[.38,1.25,.38],robot);
-      const labPanel=createPanel('ADVANCED BIOMEDICAL LAB','GENOMICS · ANALYSIS · CELL CULTURE · BIOFABRICATION',8.5,2.15); labPanel.position.set(0,6.25,-6.4); lab.add(labPanel);
+      // Entrance branding: the requested name is the only laboratory identity.
+      const entrance=new THREE.Group(); entrance.position.set(0,0,-22); scene.add(entrance); box(entrance,[0,5,0],[26,10,.12],glass); box(entrance,[-13,5,0],[.3,10,5],graphite); box(entrance,[13,5,0],[.3,10,5],graphite); box(entrance,[0,10,0],[26,.3,5],graphite);
+      const entranceDoors=doors(entrance,.08,8.5,7); const title=panel('CEDRIC BIOMEDICAL LAB CENTER','ROBOTICS  ·  AI  ·  IMAGING  ·  GENOMICS  ·  BIOENGINEERING',11,2.8); title.position.set(0,8,-.16); entrance.add(title);
 
-      // IMAGING CENTER
-      const imaging=new THREE.Group(); imaging.position.set(0,0,18); scene.add(imaging); box(imaging,[0,.65,0],[12,.25,7],white); const ct=new THREE.Mesh(new THREE.TorusGeometry(3.2,.42,18,64),robotDark); ct.rotation.y=Math.PI/2; ct.position.set(0,3.5,0); imaging.add(ct); const ctGlow=new THREE.Mesh(new THREE.TorusGeometry(2.7,.12,12,64),cyan); ctGlow.rotation.y=Math.PI/2; ctGlow.position.copy(ct.position); imaging.add(ctGlow); const body=new THREE.Group(); body.position.set(0,3.5,0); imaging.add(body); sphere(body,[0,1.1,0],.42,cyan,16); box(body,[0,0,0],[.75,1.7,.38],cyan); for(let y=-.75;y<=.75;y+=.2){const ring=new THREE.Mesh(new THREE.TorusGeometry(.55,.025,8,32),violet); ring.position.y=y; ring.rotation.x=Math.PI/2; body.add(ring);} const imagingPanel=createPanel('IMAGING / CT-MRI','3D ANATOMICAL RECONSTRUCTION // LIVE SCAN',7,2.2); imagingPanel.position.set(-5.2,6.4,-3.5); imaging.add(imagingPanel);
+      const particlesCount=mobile?55:105; const positions=new Float32Array(particlesCount*3); for(let i=0;i<particlesCount;i++){positions[i*3]=(Math.random()-.5)*66; positions[i*3+1]=.8+Math.random()*14; positions[i*3+2]=(Math.random()-.5)*50;}
+      const pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(positions,3)); const pm=new THREE.PointsMaterial({color:0x76ecff,size:mobile?.04:.055,transparent:true,opacity:.42}); const particles=new THREE.Points(pg,pm); scene.add(particles);
 
-      // AI diagnostics wall
-      const ai=new THREE.Group(); ai.position.set(25,0,-7); scene.add(ai); box(ai,[0,4.2,0],[11,8.4,.22],graphite); const aiPanel=createPanel('AI DIAGNOSTICS','NEURAL ANALYSIS // PATIENT TELEMETRY',9.5,3.1); aiPanel.position.set(0,4.4,-.18); ai.add(aiPanel);
-      for(let i=0;i<14;i++){const x=-4+(i%7)*1.3,y=1.4+Math.floor(i/7)*1.4;sphere(ai,[x,y,-.35],.1,i%2?violet:cyan,8);if(i<7)line(ai,[[x,y,-.34],[x+.9,y+.2,-.34]],cyan);}
-      const patientPanel=createPanel('PATIENT STATUS','REMOTE MONITORING // SECURE BIOMEDICAL LINK',7.2,2.2); patientPanel.position.set(-2.5,6.5,5); patientPanel.rotation.y=.18; scene.add(patientPanel);
-      const genomicPanel=createPanel('GENOMIC ANALYSIS','DNA SEQUENCING // AI MATCH 99.1%',7.2,2.2); genomicPanel.position.set(9,7,-8); genomicPanel.rotation.y=-.2; scene.add(genomicPanel);
-
-      // DNA landmark + research entrance
-      const helix=new THREE.Group(); helix.position.set(-22,.8,-7); scene.add(helix); for(let i=0;i<32;i++){const y=i*.22,a=i*.52,x=Math.cos(a)*1.15,z=Math.sin(a)*1.15;sphere(helix,[x,y,z],.07,cyan,9);sphere(helix,[-x,y,-z],.07,violet,9);if(i%2===0)line(helix,[[x,y,z],[-x,y,-z]],green);}
-      const entrance=new THREE.Group(); entrance.position.set(0,0,-22); scene.add(entrance); box(entrance,[0,5,0],[25,10,.12],glass); box(entrance,[-12.5,5,0],[.3,10,5],graphite); box(entrance,[12.5,5,0],[.3,10,5],graphite); box(entrance,[0,10,0],[25,.3,5],graphite); const entranceDoors=slidingDoors(entrance,.08,8,7); const entrancePanel=createPanel('BIOMEDICAL RESEARCH CENTER','ROBOTICS · AI · IMAGING · BIOENGINEERING',10,2.6); entrancePanel.position.set(0,8,-.15); entrance.add(entrancePanel);
-
-      const particleCount=mobile?65:120; const positions=new Float32Array(particleCount*3); for(let i=0;i<particleCount;i++){positions[i*3]=(Math.random()-.5)*64;positions[i*3+1]=.8+Math.random()*13;positions[i*3+2]=(Math.random()-.5)*48;} const pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(positions,3)); const pm=new THREE.PointsMaterial({color:0x76ecff,size:mobile?.04:.055,transparent:true,opacity:.5}); const particles=new THREE.Points(pg,pm); scene.add(particles);
-
-      const paths:Array<{p:V3;l:V3;fov:number}>=[
-        {p:[0,8,34],l:[0,3.5,14],fov:46},
-        {p:[-25,5.5,14],l:[-13,3.5,8],fov:38},
-        {p:[-13,3.9,19],l:[-13,3.1,8],fov:34},
-        {p:[8,4.4,15],l:[15,3.2,6],fov:34},
-        {p:[14.5,4.0,9],l:[12,2.5,4],fov:31},
-        {p:[18,4.1,2],l:[4,2.4,3],fov:33},
-        {p:[10,3.9,7],l:[7,2.8,4],fov:31},
-        {p:[5,4.4,1],l:[3,2.2,-1],fov:34},
-        {p:[-2,4.5,20],l:[0,3.5,18],fov:36},
-        {p:[24,4.5,-1],l:[25,4,-7],fov:37},
-        {p:[-1,4.8,4],l:[0,3.2,18],fov:43},
-        {p:[0,7.5,-13],l:[0,4.5,-22],fov:40},
-        {p:[0,14,32],l:[0,3.5,4],fov:49},
+      // The tour now holds on close-ups. Each equipment cluster gets a readable shot before moving on.
+      const shots: Shot[]=[
+        {p:[0,7.5,34],l:[0,4,12],fov:46,hold:4},
+        {p:[5,4.2,14],l:[12,3.2,3],fov:39,hold:6},
+        {p:[8,3.0,1],l:[9.5,2.5,-2],fov:32,hold:5},
+        {p:[14,3.1,-2],l:[15,2.7,-1],fov:32,hold:5},
+        {p:[18,3.1,1],l:[19,2.7,3],fov:33,hold:5},
+        {p:[14,3.0,7],l:[14,2.5,8],fov:34,hold:5},
+        {p:[8,3.0,9],l:[9,2.5,8],fov:33,hold:5},
+        {p:[2,3.2,8],l:[0,2.8,7],fov:34,hold:5},
+        {p:[-1,3.3,3],l:[-1,2.8,4],fov:34,hold:5},
+        {p:[-14,4.0,16],l:[-15,3.3,8],fov:37,hold:6},
+        {p:[-15,4.0,3],l:[-15,3.4,8],fov:35,hold:5},
+        {p:[-1,7.5,30],l:[0,3.8,18],fov:47,hold:4},
+        {p:[0,7.5,-12],l:[0,4.5,-22],fov:42,hold:5},
       ];
-      const clock=new THREE.Clock(); const target=new THREE.Vector3(); const look=new THREE.Vector3();
-      const resize=()=>{const width=Math.max(1,mount.clientWidth),height=Math.max(1,mount.clientHeight);camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false);}; window.addEventListener('resize',resize); resize();
+      const clock=new THREE.Clock(); const look=new THREE.Vector3(); const target=new THREE.Vector3();
+      const resize=()=>{const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);};
+      window.addEventListener('resize',resize); resize();
 
-      const animate=()=>{ if(dead)return; const t=clock.getElapsedTime(); const duration=mobile?6.5:5.1; const phase=(t%(paths.length*duration))/duration; const i=Math.floor(phase),n=(i+1)%paths.length,blend=phase-i,e=blend*blend*(3-2*blend); const a=paths[i],b=paths[n];
-        camera.position.set(THREE.MathUtils.lerp(a.p[0],b.p[0],e),THREE.MathUtils.lerp(a.p[1],b.p[1],e)+Math.sin(t*.5)*.12,THREE.MathUtils.lerp(a.p[2],b.p[2],e)); camera.fov=THREE.MathUtils.lerp(a.fov,b.fov,e); camera.updateProjectionMatrix(); target.set(THREE.MathUtils.lerp(a.l[0],b.l[0],e),THREE.MathUtils.lerp(a.l[1],b.l[1],e),THREE.MathUtils.lerp(a.l[2],b.l[2],e)); look.lerp(target,.14); camera.lookAt(look);
-        const door=THREE.MathUtils.smoothstep(Math.sin(t*.42)*.5+.5,.25,.72); surgeryDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.25,door);surgeryDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.25,door);labDoors.left.position.x=THREE.MathUtils.lerp(-1.41,-3.05,door);labDoors.right.position.x=THREE.MathUtils.lerp(1.41,3.05,door);entranceDoors.left.position.x=THREE.MathUtils.lerp(-1.6,-3.7,door);entranceDoors.right.position.x=THREE.MathUtils.lerp(1.6,3.7,door);
-        surgicalJoints.forEach((joint,index)=>{joint.rotation.x=Math.sin(t*.9+index*.65)*.08;joint.rotation.y=Math.sin(t*1.15+index)*.04;}); surgicalTips.forEach((tip,index)=>{tip.position.z=Math.sin(t*1.7+index)*.16;});
-        hL.rotation.z=-.3+Math.sin(t*.75)*.2;hR.rotation.z=.3-Math.sin(t*.75+.7)*.2;humanoid.rotation.y=Math.sin(t*.32)*.12;carousel.rotation.y=t*.65;pipette.rotation.z=Math.sin(t*1.2)*.3;ctGlow.rotation.z=t*1.1;body.rotation.y=t*.7;helix.rotation.y=t*.5;particles.rotation.y=t*.008;
-        seqBars.forEach((bar,index)=>{bar.scale.y=.45+(.5+.5*Math.sin(t*2.2+index))*.9;bar.position.y=2.65+bar.scale.y*.12;});
-        gantry.position.x=Math.sin(t*.7)*.8; nozzle.position.x=Math.sin(t*.7)*.8; carriage.position.x=-4.8+(Math.sin(t*.5)*.5+.5)*9.6; arm.rotation.z=Math.sin(t*1.1)*.28;
-        bsc.children.forEach((child,index)=>{if(index%3===0)child.rotation.y=Math.sin(t*.8+index)*.02;}); cryo.rotation.y=Math.sin(t*.2)*.08; printer.rotation.y=Math.sin(t*.15)*.02;
-        cyanLight.intensity=(mobile?12:22)+Math.sin(t)*2; violetLight.intensity=(mobile?8:15)+Math.cos(t*.8)*1.5;
-        [surgeryPanel,labPanel,imagingPanel,aiPanel,patientPanel,genomicPanel,entrancePanel].forEach((panel,index)=>{const material=panel.userData.material as THREE.MeshBasicMaterial|undefined;if(material)material.opacity=.88+Math.sin(t*2+index)*.06;});
+      const animate=()=>{
+        if(dead)return;
+        const t=clock.getElapsedTime();
+        const segment=mobile?6.4:5.4;
+        const total=shots.reduce((sum,s)=>sum+s.hold,0);
+        let time=(t%total); let idx=0; while(idx<shots.length-1 && time>shots[idx].hold){time-=shots[idx].hold;idx++;}
+        const next=(idx+1)%shots.length; const a=shots[idx],b=shots[next];
+        const transition=Math.min(1,Math.max(0,(time-a.hold*.62)/(a.hold*.38)));
+        const e=transition*transition*(3-2*transition);
+        camera.position.set(THREE.MathUtils.lerp(a.p[0],b.p[0],e),THREE.MathUtils.lerp(a.p[1],b.p[1],e)+Math.sin(t*.45)*.07,THREE.MathUtils.lerp(a.p[2],b.p[2],e));
+        camera.fov=THREE.MathUtils.lerp(a.fov,b.fov,e); camera.updateProjectionMatrix();
+        target.set(THREE.MathUtils.lerp(a.l[0],b.l[0],e),THREE.MathUtils.lerp(a.l[1],b.l[1],e),THREE.MathUtils.lerp(a.l[2],b.l[2],e)); look.lerp(target,.11); camera.lookAt(look);
+
+        const door=THREE.MathUtils.smoothstep(Math.sin(t*.34)*.5+.5,.2,.75); labDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.5,door); labDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.5,door); surgeryDoors.left.position.x=THREE.MathUtils.lerp(-1.54,-3.5,door); surgeryDoors.right.position.x=THREE.MathUtils.lerp(1.54,3.5,door); entranceDoors.left.position.x=THREE.MathUtils.lerp(-1.9,-4.4,door); entranceDoors.right.position.x=THREE.MathUtils.lerp(1.9,4.4,door);
+        carousel.rotation.y=t*.5; pipette.rotation.z=Math.sin(t*1.1)*.28; seqBars.forEach((m,i)=>{m.scale.y=.65+Math.sin(t*2+i*.7)*.35;}); scope.rotation.y=Math.sin(t*.45)*.035; pcr.rotation.y=Math.sin(t*.32)*.025;
+        nozzle.position.x=Math.sin(t*.8)*1.4; gantry.position.x=Math.sin(t*.8)*1.4;
+        arm.position.x=-6+((Math.sin(t*.42)+1)*.5)*12; arm2.rotation.z=Math.sin(t*.9)*.12; gripper.rotation.z=Math.sin(t*1.2)*.18;
+        joints.forEach((j,i)=>{j.rotation.x=Math.sin(t*.8+i*.6)*.08;j.rotation.y=Math.cos(t*1.1+i)*.05;}); tips.forEach((x,i)=>x.position.z=Math.sin(t*1.5+i)*.15);
+        ctGlow.rotation.z=t*1.05; particles.rotation.y=t*.006; cyanLight.intensity=(mobile?10:20)+Math.sin(t)*1.8; violetLight.intensity=(mobile?7:14)+Math.cos(t*.8)*1.2;
+        [labName,seqPanel,scopeScreen,pcrPanel,bscPanel,incPanel,cryoPanel,printPanel,railPanel,surgPanel,imgPanel,title].forEach((p,i)=>{const m=p.userData.material as THREE.MeshBasicMaterial|undefined;if(m)m.opacity=.9+Math.sin(t*1.7+i)*.05;});
         renderer.render(scene,camera); raf=requestAnimationFrame(animate);
       };
       animate();
       return()=>{dead=true;cancelAnimationFrame(raf);window.removeEventListener('resize',resize);pg.dispose();pm.dispose();renderer.dispose();mount.innerHTML='';};
-    } catch(e){console.error('Biomedical future scene failed:',e);setError(true);return()=>{dead=true;cancelAnimationFrame(raf);};}
+    } catch(e) { console.error('Biomedical future scene failed:',e); setError(true); return()=>{dead=true;cancelAnimationFrame(raf);}; }
   },[]);
 
-  return <section className="biomedical-future-scene" aria-label="Biomedical City — futuristic medical technology showcase">
+  return <section className="biomedical-future-scene" aria-label="Cédric Biomedical Lab Center — futuristic medical technology showcase">
     <div ref={mountRef} className="biomedical-future-canvas" />
     <div className="future-scene-overlay">
-      <div className="future-scene-hud future-scene-hud-left"><span>BIOMEDICAL CITY</span><strong>RESEARCH CAMPUS // 2035</strong></div>
-      <div className="future-scene-hud future-scene-hud-right"><span>LIVE SYSTEMS</span><strong>ROBOTICS · AI · IMAGING · BIOENGINEERING</strong></div>
+      <div className="future-scene-hud future-scene-hud-left"><span>CEDRIC BIOMEDICAL LAB CENTER</span><strong>RESEARCH CAMPUS // 2035</strong></div>
+      <div className="future-scene-hud future-scene-hud-right"><span>LIVE SYSTEMS</span><strong>ROBOTICS · AI · IMAGING · GENOMICS</strong></div>
       <div className="future-scene-title"><span>THE FUTURE OF</span><strong>HEALTHCARE</strong></div>
     </div>
-    {error&&<div className="future-scene-error"><strong>BIOMEDICAL CITY</strong><span>Visualisation 3D indisponible — interface médicale de secours active.</span></div>}
+    {error&&<div className="future-scene-error"><strong>CEDRIC BIOMEDICAL LAB CENTER</strong><span>Visualisation 3D indisponible — interface médicale de secours active.</span></div>}
   </section>;
 };
 
