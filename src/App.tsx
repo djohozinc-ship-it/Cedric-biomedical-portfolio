@@ -14,6 +14,7 @@ const Contact = lazy(() => import('./components/Contact'));
 const ProjectDetails = lazy(() => import('./components/ProjectDetails'));
 const SacruroDetails = lazy(() => import('./components/SacruroDetails'));
 const PPGComputerVisionDetails = lazy(() => import('./components/PPGComputerVisionDetails'));
+const MorEyesDetails = lazy(() => import('./components/MorEyesDetails'));
 
 function DeferredSection({ children, minHeight = 320 }: { children: React.ReactNode; minHeight?: number }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -97,6 +98,7 @@ function App() {
     const isProjectPage = hash.startsWith('#/project/');
     const isSacruroPage = hash === '#/project/sacruro';
     const isPPGPage = hash === '#/project/ppg-computer-vision';
+    const isMorEyesPage = hash === '#/project/mor-eyes';
 
     const handleModeChange = () => setMode(mode === 'dark' ? 'light' : 'dark');
 
@@ -120,7 +122,7 @@ function App() {
             <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
             {isProjectPage ? (
                 <Suspense fallback={null}>
-                    {isSacruroPage ? <SacruroDetails /> : isPPGPage ? <PPGComputerVisionDetails /> : <ProjectDetails />}
+                    {isSacruroPage ? <SacruroDetails /> : isPPGPage ? <PPGComputerVisionDetails /> : isMorEyesPage ? <MorEyesDetails /> : <ProjectDetails />}
                 </Suspense>
             ) : (
                 <FadeIn transitionDuration={700}>
