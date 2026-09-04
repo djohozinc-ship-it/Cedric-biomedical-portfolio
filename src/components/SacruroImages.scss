@@ -1,0 +1,196 @@
+/* Images SACRURO : branchement des fichiers réellement présents dans le dépôt. */
+
+.sacruro-hero-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(5,10,18,.28), rgba(5,10,18,.82)),
+    url('../assets/images/sacruro/chd-zou-osmoseur.jpg') center / cover no-repeat !important;
+}
+
+.sacruro-hero-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(80,0,202,.25), rgba(0,0,0,.28));
+  z-index: -1;
+}
+
+.sacruro-hero-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sacruro-media-placeholder {
+  position: relative;
+  overflow: hidden;
+  min-height: 360px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  text-align: left;
+  padding: 24px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-style: solid;
+}
+
+.sacruro-media-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(3,7,12,.04) 25%, rgba(3,7,12,.88) 100%);
+  z-index: 0;
+}
+
+.sacruro-media-placeholder > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sacruro-media-placeholder svg {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  margin: 0;
+  color: rgba(255,255,255,.9);
+}
+
+.sacruro-media-placeholder strong,
+.sacruro-media-placeholder span,
+.sacruro-media-placeholder small {
+  color: #fff !important;
+}
+
+.sacruro-media-placeholder small {
+  font-size: .72rem;
+  opacity: .65;
+}
+
+/* Les fichiers actuels sont en JPG, pas en WEBP. */
+.sacruro-media-placeholder[data-file="sacruro-mesure-tds.webp"] {
+  background-image: url('../assets/images/sacruro/mesure-tds.jpg');
+}
+
+.sacruro-media-placeholder[data-file="sacruro-rapport-laboratoire.webp"] {
+  background-image: url('../assets/images/sacruro/rapport-laboratoire.jpg');
+}
+
+.sacruro-media-placeholder[data-file="sacruro-app-tableau-de-bord.webp"] {
+  background-image: url('../assets/images/sacruro/app-tableau-de-bord.jpg');
+}
+
+.sacruro-media-placeholder[data-file="sacruro-app-synoptique.webp"] {
+  background-image: url('../assets/images/sacruro/app-synoptique.jpg');
+}
+
+.sacruro-media-placeholder[data-file="sacruro-app-historique.webp"] {
+  background-image: url('../assets/images/sacruro/app-historique.jpg');
+}
+
+/* Schéma hydraulique : image réelle du dépôt. */
+.sacruro-section:nth-of-type(9) .diagram-only {
+  min-height: 520px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(3,7,12,.06), rgba(3,7,12,.24)),
+    url('../assets/images/sacruro/schema-hydraulique.png') center / contain no-repeat,
+    rgba(255,255,255,.025);
+  border-style: solid;
+}
+
+.sacruro-section:nth-of-type(9) .diagram-only span,
+.sacruro-section:nth-of-type(9) .diagram-only small {
+  position: relative;
+  z-index: 2;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: rgba(4,8,14,.74);
+  backdrop-filter: blur(6px);
+}
+
+/* Architecture électronique : deux visuels côte à côte. */
+.sacruro-section:nth-of-type(11) .diagram-only {
+  min-height: 560px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 18px;
+  background: transparent;
+  border: 0;
+}
+
+.sacruro-section:nth-of-type(11) .diagram-only::before,
+.sacruro-section:nth-of-type(11) .diagram-only::after {
+  content: '';
+  min-height: 520px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  background-color: rgba(255,255,255,.025);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-shadow: 0 18px 50px rgba(0,0,0,.18);
+}
+
+.sacruro-section:nth-of-type(11) .diagram-only::before {
+  background-image: url('../assets/images/sacruro/architecture-electronique.jpg');
+}
+
+.sacruro-section:nth-of-type(11) .diagram-only::after {
+  background-image: url('../assets/images/sacruro/schema-electrique.PNG');
+}
+
+.sacruro-section:nth-of-type(11) .diagram-only span,
+.sacruro-section:nth-of-type(11) .diagram-only small {
+  display: none;
+}
+
+/* Prototype réel : présentation visuelle après la partie commande. */
+.sacruro-section:nth-of-type(14) .sacruro-section-content::after {
+  content: 'Prototype électronique';
+  display: block;
+  min-height: 420px;
+  margin-top: 28px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(3,7,12,.04), rgba(3,7,12,.18)),
+    url('../assets/images/sacruro/prototype-electronique.jpg') center / contain no-repeat,
+    rgba(255,255,255,.025);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+}
+
+@media (max-width: 800px) {
+  .sacruro-hero-card {
+    min-height: 420px;
+  }
+
+  .sacruro-media-placeholder {
+    min-height: 300px;
+  }
+
+  .sacruro-section:nth-of-type(11) .diagram-only {
+    min-height: 760px;
+    grid-template-columns: 1fr;
+  }
+
+  .sacruro-section:nth-of-type(11) .diagram-only::before,
+  .sacruro-section:nth-of-type(11) .diagram-only::after {
+    min-height: 350px;
+  }
+}
+
+.light-mode .sacruro-media-placeholder::before {
+  background: linear-gradient(180deg, rgba(255,255,255,.04) 20%, rgba(0,0,0,.72) 100%);
+}
