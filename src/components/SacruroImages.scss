@@ -64,8 +64,7 @@
 }
 
 .sacruro-media-placeholder small {
-  font-size: .72rem;
-  opacity: .65;
+  display: none;
 }
 
 /* Les fichiers actuels sont en JPG, pas en WEBP. */
@@ -153,7 +152,6 @@
 /* Prototype réel : présentation visuelle après la partie commande. */
 .sacruro-section:nth-of-type(14) .sacruro-section-content::after {
   content: 'Prototype électronique';
-  display: block;
   min-height: 420px;
   margin-top: 28px;
   padding: 24px;
