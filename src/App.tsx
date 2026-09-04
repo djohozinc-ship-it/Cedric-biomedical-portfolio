@@ -11,6 +11,7 @@ const Expertise = lazy(() => import('./components/Expertise'));
 const Timeline = lazy(() => import('./components/Timeline'));
 const Contact = lazy(() => import('./components/Contact'));
 const ProjectDetails = lazy(() => import('./components/ProjectDetails'));
+const SacruroDetails = lazy(() => import('./components/SacruroDetails'));
 
 function DeferredSection({ children, minHeight = 320 }: { children: React.ReactNode; minHeight?: number }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -22,26 +23,17 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
             setShouldLoad(true);
             return;
         }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setShouldLoad(true);
-                    observer.disconnect();
-                }
-            },
-            { rootMargin: '800px 0px' }
-        );
-
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setShouldLoad(true);
+                observer.disconnect();
+            }
+        }, { rootMargin: '800px 0px' });
         observer.observe(element);
         return () => observer.disconnect();
     }, []);
 
-    return (
-        <div ref={ref} style={{ minHeight: shouldLoad ? undefined : minHeight }}>
-            {shouldLoad && <Suspense fallback={null}>{children}</Suspense>}
-        </div>
-    );
+    return <div ref={ref} style={{ minHeight: shouldLoad ? undefined : minHeight }}>{shouldLoad && <Suspense fallback={null}>{children}</Suspense>}</div>;
 }
 
 function BiomedicalCityViewport() {
@@ -57,47 +49,31 @@ function BiomedicalCityViewport() {
     useEffect(() => {
         if (!isReady) return;
         const element = viewportRef.current;
-
         if (!element || typeof IntersectionObserver === 'undefined') {
             setIsVisible(true);
             return;
         }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => setIsVisible(entry.isIntersecting),
-            { rootMargin: '100px 0px' }
-        );
-
+        const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { rootMargin: '100px 0px' });
         observer.observe(element);
         return () => observer.disconnect();
     }, [isReady]);
 
-    return (
-        <div ref={viewportRef} className="biomedical-city-viewport">
-            {isReady && isVisible && (
-                <Suspense fallback={null}>
-                    <BiomedicalCity />
-                </Suspense>
-            )}
-        </div>
-    );
+    return <div ref={viewportRef} className="biomedical-city-viewport">{isReady && isVisible && <Suspense fallback={null}><BiomedicalCity /></Suspense>}</div>;
 }
 
 function App() {
     const [mode, setMode] = useState<string>('dark');
     const [hash, setHash] = useState(window.location.hash);
     const isProjectPage = hash.startsWith('#/project/');
+    const isSacruroPage = hash === '#/project/sacruro';
 
-    const handleModeChange = () => {
-        setMode(mode === 'dark' ? 'light' : 'dark');
-    };
+    const handleModeChange = () => setMode(mode === 'dark' ? 'light' : 'dark');
 
     useEffect(() => {
         const onHashChange = () => {
             setHash(window.location.hash);
-            window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         };
-
         window.addEventListener('hashchange', onHashChange);
         return () => window.removeEventListener('hashchange', onHashChange);
     }, []);
@@ -107,7 +83,7 @@ function App() {
             <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
             {isProjectPage ? (
                 <Suspense fallback={null}>
-                    <ProjectDetails />
+                    {isSacruroPage ? <SacruroDetails /> : <ProjectDetails />}
                 </Suspense>
             ) : (
                 <FadeIn transitionDuration={700}>
