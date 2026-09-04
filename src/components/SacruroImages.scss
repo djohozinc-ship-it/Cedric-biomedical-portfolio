@@ -30,9 +30,9 @@
   align-items: flex-start;
   text-align: left;
   padding: 24px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
   border-style: solid;
 }
 
@@ -68,23 +68,23 @@
 }
 
 .sacruro-media-placeholder[data-file="sacruro-mesure-tds.webp"] {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/mesure-tds.jpg');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/mesure-tds.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-rapport-laboratoire.webp"] {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/rapport-laboratoire.jpg');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/rapport-laboratoire.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-tableau-de-bord.webp"] {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/app-tableau-de-bord.jpg');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/app-tableau-de-bord.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-synoptique.webp"] {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/app-synoptique.jpg');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/app-synoptique.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-historique.webp"] {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/app-historique.jpg');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/app-historique.jpg') !important;
 }
 
 .sacruro-section:nth-of-type(9) .diagram-only {
@@ -94,7 +94,7 @@
   background:
     linear-gradient(180deg, rgba(3,7,12,.06), rgba(3,7,12,.24)),
     url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/schema-hydraulique.png') center / contain no-repeat,
-    rgba(255,255,255,.025);
+    rgba(255,255,255,.025) !important;
   border-style: solid;
 }
 
@@ -116,7 +116,7 @@
   align-items: stretch;
   justify-content: stretch;
   padding: 18px;
-  background: transparent;
+  background: transparent !important;
   border: 0;
 }
 
@@ -134,11 +134,11 @@
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only::before {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/architecture-electronique.jpg');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/architecture-electronique.jpg') !important;
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only::after {
-  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/schema-electrique.PNG');
+  background-image: url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/schema-electrique.PNG') !important;
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only span,
@@ -156,7 +156,7 @@
   background:
     linear-gradient(180deg, rgba(3,7,12,.04), rgba(3,7,12,.18)),
     url('https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/sacruro/prototype-electronique.jpg') center / contain no-repeat,
-    rgba(255,255,255,.025);
+    rgba(255,255,255,.025) !important;
   color: #fff;
   font-size: 1rem;
   font-weight: 800;
