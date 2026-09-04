@@ -3,23 +3,57 @@
     max-width: 1600px;
     display: flex;
     flex-direction: column;
-    padding: 5% 10%;
+    padding: 7% 10%;
     text-align: left;
+}
+
+.projects-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 42px;
+}
+
+.projects-kicker {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    opacity: .62;
+}
+
+.projects-heading h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: -.04em;
+}
+
+.projects-heading-note {
+    max-width: 420px;
+    margin: 0 0 8px;
+    line-height: 1.6;
+    opacity: .64;
+    text-align: right;
 }
 
 .projects-container .projects-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(28px, 4vw, 50px);
+    gap: clamp(34px, 4vw, 62px) clamp(26px, 3vw, 46px);
 }
 
 .projects-container .projects-grid .project {
     min-width: 0;
     text-align: left;
+    animation: projectRise .7s ease both;
+    animation-delay: calc(var(--project-index, 0) * 70ms);
 }
 
 .project h2 {
-    line-height: 1.25;
+    line-height: 1.22;
+    letter-spacing: -.025em;
 }
 
 .project h2:hover {
@@ -28,46 +62,152 @@
 }
 
 .project p {
-    line-height: 1.6;
+    line-height: 1.65;
+    opacity: .76;
+}
+
+.project-title-button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
 }
 
 .project-visual {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     width: 100%;
-    min-height: 190px;
-    border-radius: 10px;
+    aspect-ratio: 16 / 9;
+    border-radius: 24px;
     margin-bottom: 18px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 30px;
-    background: rgba(127, 127, 127, 0.12);
-    border: 1px solid rgba(127, 127, 127, 0.2);
+    align-items: flex-end;
+    justify-content: space-between;
+    text-align: left;
+    padding: 22px;
+    background-color: #0b1020;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 20px 70px rgba(0,0,0,.18);
     text-decoration: none;
-    transition: transform .2s, border-color .2s;
+    cursor: pointer;
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
 
-.project-visual span {
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    font-weight: 700;
+.project-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(4,8,18,.04) 20%, rgba(4,8,18,.8) 100%);
+    transition: opacity .35s ease;
+}
+
+.project-visual::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    border-radius: 23px;
+    background: linear-gradient(135deg, rgba(255,255,255,.16), transparent 40%, rgba(255,255,255,.04));
+    opacity: .5;
+    pointer-events: none;
+}
+
+.project-visual-shine {
+    position: absolute;
+    inset: -20%;
+    z-index: 0;
+    background: linear-gradient(115deg, transparent 36%, rgba(255,255,255,.2) 48%, transparent 60%);
+    transform: translateX(-70%) rotate(2deg);
+    transition: transform .7s ease;
+    pointer-events: none;
+}
+
+.project-visual-label {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px;
+    background: rgba(3,7,16,.46);
+    backdrop-filter: blur(10px);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    color: #fff;
+}
+
+.project-visual-title {
+    position: relative;
+    z-index: 2;
+    max-width: 78%;
+    color: #fff;
+    font-size: clamp(1.15rem, 2vw, 1.55rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    text-shadow: 0 4px 22px rgba(0,0,0,.5);
+}
+
+.project-visual-arrow {
+    position: relative;
+    z-index: 2;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    color: #fff;
+    backdrop-filter: blur(10px);
+    transition: transform .3s ease, background .3s ease;
 }
 
 .project-visual:hover {
-    transform: translateY(-3px);
-    border-color: rgba(127, 127, 127, 0.5);
+    transform: translateY(-7px) scale(1.012);
+    border-color: rgba(255,255,255,.28);
+    box-shadow: 0 30px 90px rgba(0,0,0,.28);
+}
+
+.project-visual:hover::before {
+    opacity: 1.08;
+}
+
+.project-visual:hover .project-visual-shine {
+    transform: translateX(70%) rotate(2deg);
+}
+
+.project-visual:hover .project-visual-arrow {
+    transform: translateX(4px) rotate(-45deg);
+    background: rgba(255,255,255,.2);
 }
 
 .project-details-link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     min-height: 40px;
+    transition: gap .2s ease, opacity .2s ease;
 }
 
 .project-details-link:hover {
-    text-decoration: underline;
+    gap: 12px;
+    text-decoration: none;
+}
+
+@keyframes projectRise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media screen and (max-width: 900px) {
@@ -76,9 +216,19 @@
         padding-right: 7%;
     }
 
+    .projects-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .projects-heading-note {
+        text-align: left;
+        margin-top: -8px;
+    }
+
     .projects-container .projects-grid {
         grid-template-columns: 1fr;
-        gap: 36px;
+        gap: 40px;
     }
 }
 
@@ -94,9 +244,15 @@
     }
 
     .project-visual {
-        min-height: 165px;
-        padding: 24px;
-        border-radius: 9px;
+        aspect-ratio: 16 / 10;
+        border-radius: 20px;
+        padding: 18px;
+    }
+
+    .project-visual-arrow {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
     }
 }
 
@@ -107,8 +263,10 @@
     }
 
     .project-visual {
-        min-height: 145px;
+        aspect-ratio: 16 / 10;
+        min-height: 0;
         margin-bottom: 14px;
+        border-radius: 18px;
     }
 
     .project h2 {
@@ -117,5 +275,15 @@
 
     .project p {
         font-size: .98rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .projects-container .projects-grid .project,
+    .project-visual,
+    .project-visual-shine,
+    .project-visual-arrow {
+        animation: none;
+        transition: none;
     }
 }
