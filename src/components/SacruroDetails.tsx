@@ -1,10 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faImages } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faImages, faFlask } from '@fortawesome/free-solid-svg-icons';
 import './SacruroDetails.scss';
 
 const imagePlaceholders = [
-  { title: 'Mesure du TDS', file: 'sacruro-mesure-tds.webp', text: 'Photographie du TDS-mètre utilisé lors de la mesure.' },
+  { title: 'Mesure du TDS sur le terrain', file: 'sacruro-mesure-tds.webp', text: 'Photographie du TDS-mètre utilisé directement sur le terrain.' },
+  { title: 'Rapport d’analyses de laboratoire', file: 'sacruro-rapport-laboratoire.webp', text: 'Photographie du rapport présentant les analyses physico-chimiques réalisées au laboratoire.' },
   { title: 'Application mobile', file: 'sacruro-app-tableau-de-bord.webp', text: 'Capture du tableau de bord de supervision.' },
   { title: 'Application mobile — synoptique', file: 'sacruro-app-synoptique.webp', text: 'Capture du synoptique hydraulique.' },
   { title: 'Application mobile — historique', file: 'sacruro-app-historique.webp', text: 'Capture de l’historique des mesures.' },
@@ -71,7 +72,7 @@ export default function SacruroDetails() {
         </Section>
 
         <Section number="04" title="Objectifs spécifiques" icon={faChartLine}>
-          <ul className="sacruro-list"><li>Étudier les possibilités de valorisation du rejet.</li><li>Concevoir l’architecture hydraulique et dimensionner les réservoirs.</li><li>Estimer le volume quotidien rejeté à partir des mesures de terrain.</li><li>Concevoir l’architecture électronique et la commande automatique des actionneurs.</li><li>Assurer la supervision des volumes, paramètres de qualité et alarmes.</li><li>Permettre la surveillance à distance et la continuité locale en cas de perte de communication.</li><li>Évaluer les impacts économiques et environnementaux attendus.</li></ul>
+          <ul className="sacruro-list"><li>Étudier les possibilités de valorisation du rejet.</li><li>Estimer le volume quotidien rejeté à partir des mesures de terrain.</li><li>Caractériser l’eau par des mesures de terrain et des analyses de laboratoire.</li><li>Concevoir l’architecture hydraulique et dimensionner les réservoirs.</li><li>Concevoir l’architecture électronique et la commande automatique des actionneurs.</li><li>Assurer la supervision des volumes, paramètres de qualité et alarmes.</li><li>Permettre la surveillance à distance et la continuité locale en cas de perte de communication.</li><li>Évaluer les impacts économiques et environnementaux attendus.</li></ul>
         </Section>
 
         <Section number="05" title="Principe général de fonctionnement" icon={faNetworkWired}>
@@ -79,26 +80,30 @@ export default function SacruroDetails() {
           <p>Une branche dédiée permet le rétrolavage de la membrane d’ultrafiltration avec la pompe P1 et les électrovannes associées. Des dispositifs de dérivation automatique et manuelle permettent de basculer vers l’eau SONEB lorsque l’eau récupérée est insuffisante ou lorsque le système doit être isolé.</p>
         </Section>
 
-        <Section number="06" title="Architecture hydraulique" icon={faDroplet} className="diagram-section">
-          <div className="diagram-only"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></div>
-        </Section>
-
-        <Section number="07" title="Instrumentation" icon={faGaugeHigh}>
-          <div className="sacruro-grid"><div><strong>Niveau</strong><p>JSN-SR04T ultrasonique étanche, utilisé pour suivre le niveau des réservoirs.</p></div><div><strong>Débit</strong><p>YF-B10 à effet Hall, placé à la sortie du réservoir de stockage.</p></div><div><strong>TDS / conductivité</strong><p>SEN0244 DFRobot pour le suivi de la qualité physico-chimique.</p></div><div><strong>pH</strong><p>SEN0161-V2 pour la mesure du pH.</p></div><div><strong>Température</strong><p>DS18B20 pour la surveillance thermique.</p></div></div>
-        </Section>
-
-        <Section number="08" title="Mesures réalisées sur le terrain" icon={faChartLine}>
-          <p>Les observations de terrain ont permis d’estimer le rejet à partir des cycles de fonctionnement. Une observation expérimentale a relevé 9 L en 3 s, soit 3 L/s. Le 19 juin 2026, 13 événements de débit d’environ 15 s par heure ont été observés, soit 195 s/h et un débit moyen estimé à 585 L/h ; sur une durée de fonctionnement de 10 h/jour, cela correspond à environ 5 850 L/jour. Par ailleurs, le débitmètre intégré à l’osmoseur a indiqué 1 500 L/h côté perméat et 650 L/h côté concentrat, avec un taux de récupération de 70 %. Ces deux valeurs de débit de rejet sont conservées séparément, car elles proviennent de méthodes de mesure différentes.</p>
-        </Section>
-
-        <Section number="09" title="Caractérisation physico-chimique" icon={faDroplet}>
-          <div className="sacruro-table-wrap"><table><thead><tr><th>Paramètre</th><th>Valeur</th></tr></thead><tbody><tr><td>Turbidité</td><td>0,713 NTU</td></tr><tr><td>Calcium</td><td>Pas de trace</td></tr><tr><td>Magnésium</td><td>Pas de trace</td></tr><tr><td>Chlorures</td><td>2,1 mg/L</td></tr><tr><td>Nitrates</td><td>5,75 mg/L</td></tr><tr><td>TDS</td><td>39 ppm</td></tr><tr><td>Conductivité</td><td>47,9 µS/cm</td></tr><tr><td>pH</td><td>6,67</td></tr></tbody></table></div>
-          <p>Le TDS-mètre TDS-3 a été utilisé le 21 mai 2026 à 14 h 09 : eau SONEB 25 ppm, perméat 3 ppm et concentrat 39 ppm. Le pH mesuré à 6,67 se situe dans la plage de surveillance retenue de 6,5 à 8,5, mais reste proche de la limite basse. Le sodium n’a pas pu être analysé en raison des contraintes du laboratoire et la microbiologie n’a pas été réalisée. En conséquence, ces résultats ne constituent pas une validation sanitaire définitive pour un usage direct.</p>
+        <Section number="06" title="Mesures réalisées sur le terrain" icon={faChartLine}>
+          <p>Les observations de terrain ont permis d’estimer le rejet à partir des cycles de fonctionnement. Une observation expérimentale a relevé 9 L en 3 s, soit 3 L/s. Le 19 juin 2026, 13 événements de débit d’environ 15 s par heure ont été observés, soit 195 s/h et un débit moyen estimé à 585 L/h ; sur une durée de fonctionnement de 10 h/jour, cela correspond à environ 5 850 L/jour.</p>
+          <p>Par ailleurs, le débitmètre intégré à l’osmoseur a indiqué 1 500 L/h côté perméat et 650 L/h côté concentrat, avec un taux de récupération de 70 %. Ces deux valeurs de débit de rejet sont conservées séparément, car elles proviennent de méthodes de mesure différentes.</p>
           <div className="sacruro-media-single"><MediaPlaceholder {...imagePlaceholders[0]} /></div>
         </Section>
 
-        <Section number="10" title="Usages envisagés" icon={faDroplet}>
+        <Section number="07" title="Caractérisation physico-chimique" icon={faFlask}>
+          <p>La caractérisation combine les mesures réalisées directement sur le terrain et les analyses effectuées au laboratoire. Le TDS du concentrat a notamment été mesuré sur place avec un TDS-mètre, tandis que plusieurs autres paramètres ont été déterminés à partir d’analyses de laboratoire.</p>
+          <div className="sacruro-table-wrap"><table><thead><tr><th>Paramètre</th><th>Valeur</th><th>Origine</th></tr></thead><tbody><tr><td>Turbidité</td><td>0,713 NTU</td><td>Laboratoire</td></tr><tr><td>Calcium</td><td>Pas de trace</td><td>Laboratoire</td></tr><tr><td>Magnésium</td><td>Pas de trace</td><td>Laboratoire</td></tr><tr><td>Chlorures</td><td>2,1 mg/L</td><td>Laboratoire</td></tr><tr><td>Nitrates</td><td>5,75 mg/L</td><td>Laboratoire</td></tr><tr><td>TDS</td><td>39 ppm</td><td>Terrain</td></tr><tr><td>Conductivité</td><td>47,9 µS/cm</td><td>Mesure disponible</td></tr><tr><td>pH</td><td>6,67</td><td>Mesure disponible</td></tr></tbody></table></div>
+          <p>Le TDS-mètre TDS-3 a été utilisé le 21 mai 2026 à 14 h 09 : eau SONEB 25 ppm, perméat 3 ppm et concentrat 39 ppm. Le pH mesuré à 6,67 se situe dans la plage de surveillance retenue de 6,5 à 8,5, mais reste proche de la limite basse. Le sodium n’a pas pu être analysé en raison des contraintes du laboratoire et la microbiologie n’a pas été réalisée.</p>
+          <div className="sacruro-media-single"><MediaPlaceholder {...imagePlaceholders[1]} /></div>
+          <p>Ces résultats permettent d’appuyer l’étude de valorisation, mais ils ne constituent pas une validation sanitaire définitive pour un usage direct.</p>
+        </Section>
+
+        <Section number="08" title="Usages envisagés" icon={faDroplet}>
           <div className="sacruro-use-grid"><span>Chasse d’eau des toilettes</span><span>Arrosage des plantes et espaces verts</span><span>Nettoyage des sols</span><span>Lavage des véhicules de service</span><span>Usages de lavage non alimentaire, selon validation préalable</span></div>
+        </Section>
+
+        <Section number="09" title="Architecture hydraulique" icon={faDroplet} className="diagram-section">
+          <div className="diagram-only"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></div>
+        </Section>
+
+        <Section number="10" title="Instrumentation" icon={faGaugeHigh}>
+          <div className="sacruro-grid"><div><strong>Niveau</strong><p>JSN-SR04T ultrasonique étanche, utilisé pour suivre le niveau des réservoirs.</p></div><div><strong>Débit</strong><p>YF-B10 à effet Hall, placé à la sortie du réservoir de stockage.</p></div><div><strong>TDS / conductivité</strong><p>SEN0244 DFRobot pour le suivi de la qualité physico-chimique.</p></div><div><strong>pH</strong><p>SEN0161-V2 pour la mesure du pH.</p></div><div><strong>Température</strong><p>DS18B20 pour la surveillance thermique.</p></div></div>
         </Section>
 
         <Section number="11" title="Architecture électronique" icon={faMicrochip} className="diagram-section">
@@ -143,7 +148,7 @@ export default function SacruroDetails() {
 
         <Section number="20" title="Application mobile" icon={faMobileScreenButton}>
           <p>Développée avec React Native et Expo, l’application regroupe les fonctions d’<strong>Appairage</strong>, de <strong>Tableau de bord</strong>, de <strong>Synoptique hydraulique</strong>, d’<strong>Historique</strong>, d’<strong>Assistant conversationnel</strong> et de <strong>Configuration</strong>. Le tableau de bord présente en temps réel le pH, la conductivité, le TDS, le débit, la température, les niveaux et les alarmes. L’historique conserve les 50 dernières valeurs de pH, TDS et débit. L’assistant accepte notamment les commandes <strong>Rapport</strong>, <strong>Alarmes</strong> et <strong>Exporter en PDF</strong>.</p>
-          <div className="sacruro-media-grid">{imagePlaceholders.slice(1).map((item) => <MediaPlaceholder key={item.file} {...item} />)}</div>
+          <div className="sacruro-media-grid">{imagePlaceholders.slice(2).map((item) => <MediaPlaceholder key={item.file} {...item} />)}</div>
         </Section>
 
         <Section number="21" title="Continuité de fonctionnement" icon={faShieldHalved}>
