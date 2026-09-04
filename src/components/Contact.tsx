@@ -78,8 +78,8 @@ function Contact() {
       setEmail('');
       setMessage('');
     } catch (error) {
-      console.error('Erreur EmailJS:', error);
-      setStatus("Une erreur est survenue. Le message n'a pas pu être envoyé.");
+      console.error('Erreur EmailJS :', error);
+      setStatus("Une erreur est survenue. Le message n’a pas pu être envoyé.");
     } finally {
       setSending(false);
     }
@@ -89,10 +89,11 @@ function Contact() {
     <div id="contact">
       <div className="items-container">
         <div className="contact_wrapper">
-          <h1>Contact Me</h1>
+          <h1>Me contacter</h1>
           <p>
-            Got a project waiting to be realized?
-            Let's collaborate and make it happen!
+            Vous avez un projet à concrétiser ?
+            <br />
+            Échangeons pour lui donner vie !
           </p>
 
           <Box
@@ -105,35 +106,35 @@ function Contact() {
           >
             <div className="form-flex">
               <div className="contact-field">
-                <label htmlFor="contact-name" style={labelStyle}>Your Name</label>
+                <label htmlFor="contact-name" style={labelStyle}>Votre nom</label>
                 <input
                   id="contact-name"
                   type="text"
                   name="name"
-                  placeholder="What's your name?"
+                  placeholder="Quel est votre nom ?"
                   value={name}
                   onChange={(e) => { setName(e.target.value); setNameError(false); }}
                   aria-invalid={nameError}
                   style={fieldStyle}
                   autoComplete="name"
                 />
-                {nameError && <small className="contact-error">Please enter your name</small>}
+                {nameError && <small className="contact-error">Veuillez saisir votre nom.</small>}
               </div>
 
               <div className="contact-field">
-                <label htmlFor="contact-email" style={labelStyle}>Email</label>
+                <label htmlFor="contact-email" style={labelStyle}>Adresse e-mail</label>
                 <input
                   id="contact-email"
                   type="email"
                   name="email"
-                  placeholder="How can I reach you?"
+                  placeholder="Comment puis-je vous joindre ?"
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); setEmailError(false); }}
                   aria-invalid={emailError}
                   style={fieldStyle}
                   autoComplete="email"
                 />
-                {emailError && <small className="contact-error">Please enter your email</small>}
+                {emailError && <small className="contact-error">Veuillez saisir votre adresse e-mail.</small>}
               </div>
             </div>
 
@@ -142,17 +143,17 @@ function Contact() {
               <textarea
                 id="contact-message"
                 name="message"
-                placeholder="Send me any inquiries or questions"
+                placeholder="Écrivez votre message ou votre demande."
                 value={message}
                 onChange={(e) => { setMessage(e.target.value); setMessageError(false); }}
                 aria-invalid={messageError}
                 style={messageStyle}
               />
-              {messageError && <small className="contact-error">Please enter your message</small>}
+              {messageError && <small className="contact-error">Veuillez saisir votre message.</small>}
             </div>
 
             <Button type="submit" variant="contained" endIcon={<SendIcon />} disabled={sending}>
-              {sending ? 'Sending...' : 'Send'}
+              {sending ? 'Envoi en cours…' : 'Envoyer'}
             </Button>
 
             {status && <p className="contact-status">{status}</p>}
