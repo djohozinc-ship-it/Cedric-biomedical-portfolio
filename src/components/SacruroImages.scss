@@ -1,19 +1,20 @@
-/* Images SACRURO : chargement local des fichiers inclus dans le build React. */
+/* Images SACRURO : affichage local, sans recadrage agressif. */
 
 .sacruro-hero-card {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  min-height: 520px;
   background:
-    linear-gradient(180deg, rgba(5,10,18,.28), rgba(5,10,18,.82)),
-    url('../assets/images/src/assets/images/sacruro/chd-zou-osmoseur.jpg') center / cover no-repeat !important;
+    linear-gradient(180deg, rgba(5,10,18,.18), rgba(5,10,18,.72)),
+    url('../assets/images/sacruro/chd-zou-osmoseur.jpg') center / cover no-repeat !important;
 }
 
 .sacruro-hero-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(80,0,202,.25), rgba(0,0,0,.28));
+  background: linear-gradient(135deg, rgba(80,0,202,.18), rgba(0,0,0,.18));
   z-index: -1;
 }
 
@@ -25,14 +26,15 @@
 .sacruro-media-placeholder {
   position: relative;
   overflow: hidden;
-  min-height: 360px;
+  min-height: 520px;
   justify-content: flex-end;
   align-items: flex-start;
   text-align: left;
   padding: 24px;
-  background-size: cover !important;
-  background-position: center !important;
+  background-size: contain !important;
+  background-position: center center !important;
   background-repeat: no-repeat !important;
+  background-color: rgba(255,255,255,.025);
   border-style: solid;
 }
 
@@ -40,8 +42,9 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(3,7,12,.04) 25%, rgba(3,7,12,.88) 100%);
+  background: linear-gradient(180deg, rgba(3,7,12,.02) 35%, rgba(3,7,12,.78) 100%);
   z-index: 0;
+  pointer-events: none;
 }
 
 .sacruro-media-placeholder > * {
@@ -61,6 +64,7 @@
 .sacruro-media-placeholder span,
 .sacruro-media-placeholder small {
   color: #fff !important;
+  text-shadow: 0 2px 12px rgba(0,0,0,.55);
 }
 
 .sacruro-media-placeholder small {
@@ -68,32 +72,32 @@
 }
 
 .sacruro-media-placeholder[data-file="sacruro-mesure-tds.webp"] {
-  background-image: url('../assets/images/src/assets/images/sacruro/mesure-tds.jpg') !important;
+  background-image: url('../assets/images/sacruro/mesure-tds.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-rapport-laboratoire.webp"] {
-  background-image: url('../assets/images/src/assets/images/sacruro/rapport-laboratoire.jpg') !important;
+  background-image: url('../assets/images/sacruro/rapport-laboratoire.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-tableau-de-bord.webp"] {
-  background-image: url('../assets/images/src/assets/images/sacruro/app-tableau-de-bord.jpg') !important;
+  background-image: url('../assets/images/sacruro/app-tableau-de-bord.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-synoptique.webp"] {
-  background-image: url('../assets/images/src/assets/images/sacruro/app-synoptique.jpg') !important;
+  background-image: url('../assets/images/sacruro/app-synoptique.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-historique.webp"] {
-  background-image: url('../assets/images/src/assets/images/sacruro/app-historique.jpg') !important;
+  background-image: url('../assets/images/sacruro/app-historique.jpg') !important;
 }
 
 .sacruro-section:nth-of-type(9) .diagram-only {
-  min-height: 520px;
+  min-height: 600px;
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(3,7,12,.06), rgba(3,7,12,.24)),
-    url('../assets/images/src/assets/images/sacruro/schema-hydraulique.png') center / contain no-repeat,
+    linear-gradient(180deg, rgba(3,7,12,.02), rgba(3,7,12,.12)),
+    url('../assets/images/sacruro/schema-hydraulique.png') center / contain no-repeat,
     rgba(255,255,255,.025) !important;
   border-style: solid;
 }
@@ -109,7 +113,7 @@
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only {
-  min-height: 560px;
+  min-height: 660px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
@@ -123,7 +127,7 @@
 .sacruro-section:nth-of-type(11) .diagram-only::before,
 .sacruro-section:nth-of-type(11) .diagram-only::after {
   content: '';
-  min-height: 520px;
+  min-height: 620px;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 20px;
   background-color: rgba(255,255,255,.025);
@@ -134,11 +138,11 @@
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only::before {
-  background-image: url('../assets/images/src/assets/images/sacruro/architecture-electronique.jpg') !important;
+  background-image: url('../assets/images/sacruro/architecture-electronique.jpg') !important;
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only::after {
-  background-image: url('../assets/images/src/assets/images/sacruro/schema-electrique.PNG') !important;
+  background-image: url('../assets/images/sacruro/schema-electrique.PNG') !important;
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only span,
@@ -148,14 +152,14 @@
 
 .sacruro-section:nth-of-type(14) .sacruro-section-content::after {
   content: 'Prototype électronique';
-  min-height: 420px;
+  min-height: 520px;
   margin-top: 28px;
   padding: 24px;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 22px;
   background:
-    linear-gradient(180deg, rgba(3,7,12,.04), rgba(3,7,12,.18)),
-    url('../assets/images/src/assets/images/sacruro/prototype-electronique.jpg') center / contain no-repeat,
+    linear-gradient(180deg, rgba(3,7,12,.02), rgba(3,7,12,.12)),
+    url('../assets/images/sacruro/prototype-electronique.jpg') center / contain no-repeat,
     rgba(255,255,255,.025) !important;
   color: #fff;
   font-size: 1rem;
@@ -163,11 +167,13 @@
   text-align: left;
   display: flex;
   align-items: flex-start;
+  text-shadow: 0 2px 12px rgba(0,0,0,.55);
 }
 
 @media (max-width: 800px) {
-  .sacruro-hero-card { min-height: 420px; }
-  .sacruro-media-placeholder { min-height: 300px; }
+  .sacruro-hero-card { min-height: 440px; }
+  .sacruro-media-placeholder { min-height: 380px; }
+  .sacruro-section:nth-of-type(9) .diagram-only { min-height: 430px; }
   .sacruro-section:nth-of-type(11) .diagram-only {
     min-height: 760px;
     grid-template-columns: 1fr;
@@ -176,8 +182,11 @@
   .sacruro-section:nth-of-type(11) .diagram-only::after {
     min-height: 350px;
   }
+  .sacruro-section:nth-of-type(14) .sacruro-section-content::after {
+    min-height: 380px;
+  }
 }
 
 .light-mode .sacruro-media-placeholder::before {
-  background: linear-gradient(180deg, rgba(255,255,255,.04) 20%, rgba(0,0,0,.72) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,.02) 20%, rgba(0,0,0,.55) 100%);
 }
