@@ -3,21 +3,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faImages, faFlask } from '@fortawesome/free-solid-svg-icons';
 import './SacruroDetails.scss';
 
+const SACRURO_IMAGE_BASE = 'https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/src/assets/images/sacruro';
+
 const imagePlaceholders = [
-  { title: 'Mesure du TDS sur le terrain', file: 'sacruro-mesure-tds.webp', text: 'Photographie du TDS-mètre utilisé directement sur le terrain.' },
-  { title: 'Rapport d’analyses de laboratoire', file: 'sacruro-rapport-laboratoire.webp', text: 'Photographie du rapport présentant les analyses physico-chimiques réalisées au laboratoire.' },
-  { title: 'Application mobile', file: 'sacruro-app-tableau-de-bord.webp', text: 'Capture du tableau de bord de supervision.' },
-  { title: 'Application mobile — synoptique', file: 'sacruro-app-synoptique.webp', text: 'Capture du synoptique hydraulique.' },
-  { title: 'Application mobile — historique', file: 'sacruro-app-historique.webp', text: 'Capture de l’historique des mesures.' },
+  { title: 'Mesure du TDS sur le terrain', file: 'sacruro-mesure-tds.webp', image: `${SACRURO_IMAGE_BASE}/mesure-tds.jpg`, text: 'Photographie du TDS-mètre utilisé directement sur le terrain.' },
+  { title: 'Rapport d’analyses de laboratoire', file: 'sacruro-rapport-laboratoire.webp', image: `${SACRURO_IMAGE_BASE}/rapport-laboratoire.jpg`, text: 'Photographie du rapport présentant les analyses physico-chimiques réalisées au laboratoire.' },
+  { title: 'Application mobile', file: 'sacruro-app-tableau-de-bord.webp', image: `${SACRURO_IMAGE_BASE}/app-tableau-de-bord.jpg`, text: 'Capture du tableau de bord de supervision.' },
+  { title: 'Application mobile — synoptique', file: 'sacruro-app-synoptique.webp', image: `${SACRURO_IMAGE_BASE}/app-synoptique.jpg`, text: 'Capture du synoptique hydraulique.' },
+  { title: 'Application mobile — historique', file: 'sacruro-app-historique.webp', image: `${SACRURO_IMAGE_BASE}/app-historique.jpg`, text: 'Capture de l’historique des mesures.' },
 ];
 
-const MediaPlaceholder = ({ title, file, text }: { title: string; file: string; text: string }) => (
-  <div className="sacruro-media-placeholder" data-file={file}>
+const MediaPlaceholder = ({ title, file, image, text }: { title: string; file: string; image: string; text: string }) => (
+  <button
+    type="button"
+    className="sacruro-media-placeholder"
+    data-file={file}
+    onClick={() => window.open(image, '_blank', 'noopener,noreferrer')}
+    aria-label={`Ouvrir l’image en grand : ${title}`}
+    title="Cliquer pour afficher l’image en grand"
+  >
     <FontAwesomeIcon icon={faImages} />
     <strong>{title}</strong>
     <span>{text}</span>
     <small>{file}</small>
-  </div>
+  </button>
 );
 
 const Section = ({ number, title, icon, children, className = '' }: { number: string; title: string; icon: any; children: React.ReactNode; className?: string }) => (
@@ -49,12 +58,18 @@ export default function SacruroDetails() {
             </div>
             <div className="sacruro-authors"><strong>DJOHOZIN Cédric</strong><span>·</span><strong>SOSSOUNON Médessè Géraldine</strong><br/><small>Licence Professionnelle — Maintenance Biomédicale et Hospitalière · Département de Génie Biomédical · EPAC/UAC</small></div>
           </div>
-          <div className="sacruro-hero-card">
+          <button
+            type="button"
+            className="sacruro-hero-card"
+            onClick={() => window.open(`${SACRURO_IMAGE_BASE}/chd-zou-osmoseur.jpg`, '_blank', 'noopener,noreferrer')}
+            aria-label="Ouvrir la photo de l’osmoseur en grand"
+            title="Cliquer pour afficher la photo en grand"
+          >
             <div className="sacruro-orbit"><FontAwesomeIcon icon={faDroplet} /></div>
             <div className="sacruro-hero-card-label">ÉTUDE DE CONCEPTION & PRÉVALIDATION</div>
             <div className="sacruro-stat"><strong>5 850 L/j</strong><span>rejet estimé sur la base des observations de terrain</span></div>
             <div className="sacruro-stat"><strong>10 000 L</strong><span>capacité du réservoir de stockage étudié</span></div>
-          </div>
+          </button>
         </header>
 
         <Section number="01" title="Contexte" icon={faDroplet}>
@@ -100,7 +115,7 @@ export default function SacruroDetails() {
         </Section>
 
         <Section number="09" title="Architecture hydraulique" icon={faDroplet} className="diagram-section">
-          <div className="diagram-only"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></div>
+          <button type="button" className="diagram-only sacruro-zoomable-diagram" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/schema-hydraulique.png`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma hydraulique en grand" title="Cliquer pour afficher le schéma en grand"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></button>
         </Section>
 
         <Section number="10" title="Instrumentation" icon={faGaugeHigh}>
@@ -108,7 +123,11 @@ export default function SacruroDetails() {
         </Section>
 
         <Section number="11" title="Architecture électronique" icon={faMicrochip} className="diagram-section">
-          <div className="diagram-only"><span>Architecture électronique et schéma électronique complet</span><small>ESP32 · acquisition · extension E/S · watchdog · commande de puissance · alimentation · interfaces locales</small></div>
+          <div className="diagram-only sacruro-electronics-zoom-wrap">
+            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--architecture" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/architecture-electronique.jpg`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir l’architecture électronique en grand" title="Cliquer pour afficher en grand" />
+            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--schema" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/schema-electrique.PNG`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma électronique en grand" title="Cliquer pour afficher en grand" />
+            <span>Architecture électronique et schéma électronique complet</span><small>ESP32 · acquisition · extension E/S · watchdog · commande de puissance · alimentation · interfaces locales</small>
+          </div>
         </Section>
 
         <Section number="12" title="Acquisition analogique" icon={faMicrochip}>
