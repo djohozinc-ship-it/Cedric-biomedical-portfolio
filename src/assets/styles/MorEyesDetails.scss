@@ -1,0 +1,178 @@
+.mor-eyes-page {
+  --mor-ink: #0b1220;
+  --mor-muted: #5e6878;
+  --mor-border: rgba(11, 18, 32, 0.1);
+  --mor-panel: #f5f8fc;
+  background: #fff;
+  color: var(--mor-ink);
+  min-height: 100vh;
+}
+
+.mor-eyes-hero {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(61, 130, 246, 0.2), transparent 28%),
+    radial-gradient(circle at 85% 30%, rgba(117, 220, 255, 0.14), transparent 24%),
+    linear-gradient(135deg, #09111f 0%, #101c31 55%, #142842 100%);
+  color: #fff;
+  padding: 32px 24px 92px;
+}
+
+.mor-eyes-hero-inner,
+.mor-eyes-section {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.mor-eyes-back {
+  appearance: none;
+  border: 0;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font: inherit;
+  transition: transform .2s ease, background .2s ease;
+}
+
+.mor-eyes-back:hover { transform: translateX(-2px); background: rgba(255,255,255,.14); }
+
+.mor-eyes-kicker {
+  margin-top: 88px;
+  font-size: .78rem;
+  letter-spacing: .18em;
+  font-weight: 700;
+  opacity: .78;
+}
+
+.mor-eyes-hero h1 {
+  margin: 14px 0 10px;
+  font-size: clamp(3.2rem, 9vw, 7rem);
+  line-height: .92;
+  letter-spacing: -.05em;
+}
+
+.mor-eyes-tagline {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.55rem);
+  line-height: 1.55;
+  color: rgba(255,255,255,.84);
+}
+
+.mor-eyes-authors {
+  margin: 22px 0 0;
+  color: rgba(255,255,255,.68);
+  font-size: .96rem;
+}
+
+.mor-eyes-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:32px; }
+.mor-eyes-actions a {
+  display:inline-flex; align-items:center; gap:9px; text-decoration:none; color:#fff;
+  border:1px solid rgba(255,255,255,.2); border-radius:999px; padding:11px 16px;
+  background:rgba(255,255,255,.06); transition:background .2s ease, transform .2s ease;
+}
+.mor-eyes-actions a:hover { background:rgba(255,255,255,.12); transform:translateY(-1px); }
+
+.mor-eyes-section { padding: 94px 24px 0; }
+.mor-eyes-section:last-child { padding-bottom: 100px; }
+
+.mor-eyes-section-heading {
+  display:flex; align-items:baseline; gap:18px; margin-bottom:30px;
+}
+.mor-eyes-section-heading span { font-size:.78rem; font-weight:800; letter-spacing:.14em; color:#607085; }
+.mor-eyes-section-heading h2 { margin:0; font-size:clamp(1.8rem,4vw,3rem); letter-spacing:-.035em; }
+.mor-eyes-section-lead,
+.mor-eyes-section > p,
+.mor-eyes-two-column p { color:var(--mor-muted); line-height:1.82; font-size:1.04rem; }
+
+.mor-eyes-two-column { display:grid; grid-template-columns:1.3fr .7fr; gap:34px; align-items:stretch; }
+.mor-eyes-callout { background:var(--mor-panel); border:1px solid var(--mor-border); border-radius:24px; padding:30px; display:flex; flex-direction:column; justify-content:center; }
+.mor-eyes-callout-label { text-transform:uppercase; letter-spacing:.14em; font-size:.72rem; font-weight:800; color:#607085; margin-bottom:15px; }
+.mor-eyes-callout strong { font-size:1.25rem; line-height:1.45; }
+
+.mor-eyes-pillar-grid,
+.mor-eyes-library-grid,
+.mor-eyes-pipeline,
+.mor-eyes-neuro-grid { display:grid; gap:18px; }
+.mor-eyes-pillar-grid { grid-template-columns:repeat(3,1fr); }
+.mor-eyes-pillar-grid article,
+.mor-eyes-library-grid article,
+.mor-eyes-pipeline article { border:1px solid var(--mor-border); border-radius:22px; padding:26px; background:#fff; box-shadow:0 16px 40px rgba(14,28,50,.05); }
+.mor-eyes-pillar-grid svg,
+.mor-eyes-library-grid svg { font-size:1.25rem; margin-bottom:16px; }
+.mor-eyes-pillar-grid h3,
+.mor-eyes-library-grid h3,
+.mor-eyes-pipeline h3 { margin:0 0 10px; font-size:1.08rem; }
+.mor-eyes-pillar-grid p,
+.mor-eyes-library-grid p,
+.mor-eyes-pipeline p { margin:0; color:var(--mor-muted); line-height:1.7; }
+
+.mor-eyes-anatomy { background:var(--mor-panel); width:100%; padding-left:max(24px, calc((100% - 1180px)/2)); padding-right:max(24px, calc((100% - 1180px)/2)); }
+.mor-eyes-neuro-grid { grid-template-columns:repeat(3,1fr); margin-top:28px; padding-bottom:94px; }
+.mor-eyes-neuro-grid > div { border-left:3px solid currentColor; padding:16px 0 16px 18px; }
+.mor-eyes-neuro-grid strong { display:block; font-size:1rem; margin-bottom:7px; }
+.mor-eyes-neuro-grid span { color:var(--mor-muted); line-height:1.6; font-size:.93rem; }
+
+.mor-eyes-pipeline { grid-template-columns:repeat(4,1fr); margin-top:34px; }
+.mor-eyes-pipeline-icon { width:44px; height:44px; border-radius:14px; display:grid; place-items:center; background:#eef4fb; margin-bottom:18px; }
+.mor-eyes-blink-codes { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
+.mor-eyes-blink-codes > div { padding:18px 20px; border-radius:18px; background:#101a2b; color:#fff; }
+.mor-eyes-blink-codes strong { display:block; margin-bottom:5px; }
+.mor-eyes-blink-codes span { color:rgba(255,255,255,.68); font-size:.9rem; }
+
+.mor-eyes-library-grid { grid-template-columns:repeat(5,1fr); }
+.mor-eyes-library-grid article { min-height:178px; }
+
+.mor-eyes-electronics { background:#0e1725; color:#fff; width:100%; padding-left:max(24px, calc((100% - 1180px)/2)); padding-right:max(24px, calc((100% - 1180px)/2)); padding-bottom:94px; }
+.mor-eyes-electronics > p { color:rgba(255,255,255,.7); }
+.mor-eyes-electronics-diagram { margin-top:36px; display:grid; grid-template-columns:1fr 100px 1fr; align-items:center; max-width:760px; }
+.mor-eyes-electronics-diagram > div { border:1px solid rgba(255,255,255,.12); border-radius:22px; padding:24px; background:rgba(255,255,255,.04); }
+.mor-eyes-electronics-diagram svg { margin-right:10px; }
+.mor-eyes-electronics-diagram strong { font-size:1.12rem; }
+.mor-eyes-electronics-diagram span:not(.mor-eyes-line) { display:block; color:rgba(255,255,255,.62); margin-top:8px; font-size:.9rem; }
+.mor-eyes-line { height:2px; background:rgba(255,255,255,.3); }
+
+.mor-eyes-interface-box { display:grid; grid-template-columns:auto 1fr; gap:22px; padding:30px; border:1px solid var(--mor-border); border-radius:24px; background:linear-gradient(135deg,#f7f9fc,#edf3fa); }
+.mor-eyes-interface-box > svg { font-size:1.5rem; margin-top:4px; }
+.mor-eyes-interface-box p { margin:0; color:var(--mor-muted); line-height:1.8; }
+.mor-eyes-interface-tags { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.mor-eyes-interface-tags span { padding:8px 12px; border-radius:999px; background:#fff; border:1px solid var(--mor-border); font-size:.84rem; }
+
+.mor-eyes-gallery-section { padding-bottom: 0; }
+.mor-eyes-gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:30px; }
+.mor-eyes-gallery-card { margin:0; overflow:hidden; border-radius:22px; background:#f4f6fa; border:1px solid var(--mor-border); min-height:220px; }
+.mor-eyes-gallery-card img { display:block; width:100%; height:260px; object-fit:cover; }
+.mor-eyes-gallery-card figcaption { display:flex; align-items:center; gap:10px; padding:14px 16px; font-size:.86rem; color:var(--mor-muted); }
+.mor-eyes-gallery-card figcaption span { font-weight:800; color:var(--mor-ink); }
+.mor-eyes-gallery-card.is-empty { display:grid; place-items:center; position:relative; }
+.mor-eyes-gallery-card.is-empty::before { content:'Photo à intégrer'; color:#788496; font-size:.9rem; }
+.mor-eyes-gallery-card.is-empty figcaption { position:absolute; inset:auto 0 0; background:rgba(255,255,255,.94); }
+
+.mor-eyes-video-card { margin-top:18px; border-radius:24px; overflow:hidden; background:#0d1522; }
+.mor-eyes-video-card video { width:100%; display:block; max-height:650px; background:#080d15; }
+.mor-eyes-video-caption { display:flex; gap:12px; align-items:center; padding:16px 18px; color:rgba(255,255,255,.84); }
+
+.mor-eyes-summary { padding-bottom:100px; }
+.mor-eyes-final-credits { margin-top:32px; padding:24px; border-top:1px solid var(--mor-border); display:flex; flex-direction:column; gap:7px; }
+.mor-eyes-final-credits span { text-transform:uppercase; letter-spacing:.12em; font-size:.72rem; color:#687488; font-weight:800; }
+.mor-eyes-final-credits strong { font-size:1rem; }
+
+@media (max-width: 980px) {
+  .mor-eyes-two-column,
+  .mor-eyes-pillar-grid,
+  .mor-eyes-neuro-grid,
+  .mor-eyes-library-grid,
+  .mor-eyes-pipeline { grid-template-columns:1fr 1fr; }
+  .mor-eyes-gallery-grid { grid-template-columns:1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .mor-eyes-hero { padding:20px 18px 72px; }
+  .mor-eyes-section { padding:72px 18px 0; }
+  .mor-eyes-anatomy, .mor-eyes-electronics { padding-left:18px; padding-right:18px; }
+  .mor-eyes-neuro-grid, .mor-eyes-two-column, .mor-eyes-pillar-grid, .mor-eyes-library-grid, .mor-eyes-pipeline, .mor-eyes-blink-codes, .mor-eyes-gallery-grid { grid-template-columns:1fr; }
+  .mor-eyes-electronics-diagram { grid-template-columns:1fr; gap:15px; }
+  .mor-eyes-line { display:none; }
+  .mor-eyes-hero h1 { font-size:3.7rem; }
+}
