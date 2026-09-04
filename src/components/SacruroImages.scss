@@ -6,7 +6,7 @@
   isolation: isolate;
   background:
     linear-gradient(180deg, rgba(5,10,18,.28), rgba(5,10,18,.82)),
-    url('../assets/images/sacruro/chd-zou-osmoseur.jpg') center / cover no-repeat !important;
+    url('../assets/images/src/assets/images/sacruro/chd-zou-osmoseur.jpg') center / cover no-repeat !important;
 }
 
 .sacruro-hero-card::before {
@@ -68,23 +68,23 @@
 }
 
 .sacruro-media-placeholder[data-file="sacruro-mesure-tds.webp"] {
-  background-image: url('../assets/images/sacruro/mesure-tds.jpg') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/mesure-tds.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-rapport-laboratoire.webp"] {
-  background-image: url('../assets/images/sacruro/rapport-laboratoire.jpg') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/rapport-laboratoire.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-tableau-de-bord.webp"] {
-  background-image: url('../assets/images/sacruro/app-tableau-de-bord.jpg') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/app-tableau-de-bord.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-synoptique.webp"] {
-  background-image: url('../assets/images/sacruro/app-synoptique.jpg') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/app-synoptique.jpg') !important;
 }
 
 .sacruro-media-placeholder[data-file="sacruro-app-historique.webp"] {
-  background-image: url('../assets/images/sacruro/app-historique.jpg') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/app-historique.jpg') !important;
 }
 
 .sacruro-section:nth-of-type(9) .diagram-only {
@@ -93,7 +93,7 @@
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(3,7,12,.06), rgba(3,7,12,.24)),
-    url('../assets/images/sacruro/schema-hydraulique.png') center / contain no-repeat,
+    url('../assets/images/src/assets/images/sacruro/schema-hydraulique.png') center / contain no-repeat,
     rgba(255,255,255,.025) !important;
   border-style: solid;
 }
@@ -134,11 +134,11 @@
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only::before {
-  background-image: url('../assets/images/sacruro/architecture-electronique.jpg') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/architecture-electronique.jpg') !important;
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only::after {
-  background-image: url('../assets/images/sacruro/schema-electrique.PNG') !important;
+  background-image: url('../assets/images/src/assets/images/sacruro/schema-electrique.PNG') !important;
 }
 
 .sacruro-section:nth-of-type(11) .diagram-only span,
@@ -155,7 +155,7 @@
   border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(3,7,12,.04), rgba(3,7,12,.18)),
-    url('../assets/images/sacruro/prototype-electronique.jpg') center / contain no-repeat,
+    url('../assets/images/src/assets/images/sacruro/prototype-electronique.jpg') center / contain no-repeat,
     rgba(255,255,255,.025) !important;
   color: #fff;
   font-size: 1rem;
