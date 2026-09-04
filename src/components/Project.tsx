@@ -9,59 +9,19 @@ type ProjectCard = {
     summary: string;
 };
 
-// Keep only lightweight card data in the main bundle.
-// Full project details are loaded only when a project is opened.
+// Conserver uniquement les données légères des cartes dans le paquet principal.
+// Les détails complets sont chargés uniquement lorsqu’un projet est ouvert.
 const projectCards: ProjectCard[] = [
-    {
-        slug: 'sacruro',
-        title: 'SACRURO',
-        summary: 'Projet de récupération et de valorisation du concentrat rejeté par les unités de dialyse pour des usages non potables.'
-    },
-    {
-        slug: 'carte-donnees-biomedicales',
-        title: 'Carte universelle de données biomédicales',
-        summary: 'Étude d’une carte électronique modulaire pour l’acquisition et l’intégration de données provenant de différents capteurs.'
-    },
-    {
-        slug: 'ppg-computer-vision',
-        title: 'Estimation du rythme cardiaque par PPG et vision par ordinateur',
-        summary: 'Expérimentation d’une méthode sans contact pour estimer le rythme cardiaque à partir d’une vidéo.'
-    },
-    {
-        slug: 'moyes-pro',
-        title: 'Moyes Pro',
-        summary: 'Projet de dispositif d’assistance développé autour d’un besoin fonctionnel et d’une approche de prototypage électronique.'
-    },
-    {
-        slug: 'gmao-hospitaliere',
-        title: 'GMAO hospitalière open source',
-        summary: 'Concept d’une plateforme locale de gestion de maintenance destinée aux techniciens biomédicaux hospitaliers.'
-    },
-    {
-        slug: 'medura',
-        title: 'Medura',
-        summary: 'Prototype numérique orienté vers l’assistance et l’organisation de l’information dans le domaine de la santé.'
-    },
-    {
-        slug: 'gbm-learn',
-        title: 'GBM Learn',
-        summary: 'Projet numérique destiné à structurer des ressources d’apprentissage autour du génie biomédical.'
-    },
-    {
-        slug: 'thermostat-solidworks',
-        title: 'Thermostat – conception CAO',
-        summary: 'Modélisation d’un thermostat dans le cadre d’un exercice de conception assistée par ordinateur.'
-    },
-    {
-        slug: 'arduino-jump-game',
-        title: 'Arduino Jump Game',
-        summary: 'Petit projet embarqué réalisé autour d’Arduino pour expérimenter les entrées, sorties et la logique de jeu.'
-    },
-    {
-        slug: 'blender-tower',
-        title: 'Blender Tower',
-        summary: 'Projet de modélisation 3D réalisé avec Blender pour explorer la conception et la représentation d’un environnement architectural.'
-    }
+    { slug: 'sacruro', title: 'SACRURO', summary: 'Projet de récupération et de valorisation du concentrat rejeté par les unités de dialyse pour des usages non potables.' },
+    { slug: 'carte-donnees-biomedicales', title: 'Carte universelle de données biomédicales', summary: 'Étude d’une carte électronique modulaire pour l’acquisition et l’intégration de données provenant de différents capteurs.' },
+    { slug: 'ppg-computer-vision', title: 'Estimation du rythme cardiaque par PPG et vision par ordinateur', summary: 'Expérimentation d’une méthode sans contact pour estimer le rythme cardiaque à partir d’une vidéo.' },
+    { slug: 'moyes-pro', title: 'Moyes Pro', summary: 'Projet de dispositif d’assistance développé autour d’un besoin fonctionnel et d’une approche de prototypage électronique.' },
+    { slug: 'gmao-hospitaliere', title: 'GMAO hospitalière à code source ouvert', summary: 'Concept d’une plateforme locale de gestion de maintenance destinée aux techniciens biomédicaux hospitaliers.' },
+    { slug: 'medura', title: 'Medura', summary: 'Prototype numérique orienté vers l’assistance et l’organisation de l’information dans le domaine de la santé.' },
+    { slug: 'gbm-learn', title: 'GBM Learn', summary: 'Projet numérique destiné à structurer des ressources d’apprentissage autour du génie biomédical.' },
+    { slug: 'thermostat-solidworks', title: 'Thermostat – conception CAO', summary: 'Modélisation d’un thermostat dans le cadre d’un exercice de conception assistée par ordinateur.' },
+    { slug: 'arduino-jump-game', title: 'Jeu de saut Arduino', summary: 'Petit projet embarqué réalisé autour d’Arduino pour expérimenter les entrées, les sorties et la logique de jeu.' },
+    { slug: 'blender-tower', title: 'Tour modélisée avec Blender', summary: 'Projet de modélisation 3D réalisé avec Blender pour explorer la conception et la représentation d’un environnement architectural.' }
 ];
 
 function Project() {
@@ -87,7 +47,7 @@ function Project() {
 
     return(
     <div className="projects-container" id="projects">
-        <h1>Projects</h1>
+        <h1>Projets</h1>
         <div className="projects-grid">
             {projectCards.map((project) => (
                 <article className="project" key={project.slug}>
