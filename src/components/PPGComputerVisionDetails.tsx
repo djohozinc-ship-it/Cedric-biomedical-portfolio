@@ -4,10 +4,8 @@ import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, f
 import '../assets/styles/PPGComputerVisionDetails.scss';
 
 const mediaItems = [
-    { type: 'image', src: '/images/projects/ppg/interface.png', title: 'Interface de démonstration', caption: 'Vue de l’interface utilisée pendant l’expérimentation.' },
-    { type: 'image', src: '/images/projects/ppg/traitement.png', title: 'Traitement vidéo', caption: 'Capture de la détection du visage et de la région d’intérêt.' },
-    { type: 'image', src: '/images/projects/ppg/signal-ppg.png', title: 'Signal PPG extrait', caption: 'Visualisation du signal temporel obtenu à partir de la vidéo.' },
-    { type: 'image', src: '/images/projects/ppg/resultats.png', title: 'Résultats', caption: 'Espace prévu pour les résultats expérimentaux et leur comparaison.' },
+    { type: 'image', src: '/images/projects/ppg/roi.png', title: 'Région d’intérêt (ROI)', caption: 'Capture de la région du visage sélectionnée pour l’extraction du signal PPG.' },
+    { type: 'image', src: '/images/projects/ppg/signal-ppg-brut.png', title: 'Signal PPG temporel brut', caption: 'Signal extrait dans le domaine temporel, avant détection et repérage des pics.' },
 ];
 
 const pipeline = [
@@ -100,7 +98,7 @@ export default function PPGComputerVisionDetails() {
             <section id="ppg-demo" className="ppg-section">
                 <div className="ppg-section-heading"><span className="ppg-section-kicker">04 — INTERFACE & DÉMONSTRATION</span><h2>Voir le système en fonctionnement</h2></div>
                 <div className="ppg-video-box">
-                    <video controls preload="metadata" poster="/images/projects/ppg/interface.png">
+                    <video controls preload="metadata" poster="/images/projects/ppg/roi.png">
                         <source src="/videos/projects/ppg/demo.mp4" type="video/mp4" />
                         Votre navigateur ne peut pas lire cette vidéo.
                     </video>
@@ -109,7 +107,7 @@ export default function PPGComputerVisionDetails() {
             </section>
 
             <section className="ppg-section">
-                <div className="ppg-section-heading"><span className="ppg-section-kicker">05 — TRAVAIL VISUEL</span><h2>Captures du traitement et visualisations</h2></div>
+                <div className="ppg-section-heading"><span className="ppg-section-kicker">05 — TRAVAIL VISUEL</span><h2>Captures réelles du traitement et visualisations</h2></div>
                 <div className="ppg-media-grid">
                     {mediaItems.map((item) => <figure key={item.src} className="ppg-media-card"><div className="ppg-media-placeholder"><img src={item.src} alt={item.title} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement?.classList.add('is-empty'); }} /><span><FontAwesomeIcon icon={faImages} /> Image à ajouter</span></div><figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption></figure>)}
                 </div>
