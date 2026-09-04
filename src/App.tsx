@@ -63,6 +63,34 @@ function BiomedicalCityViewport() {
     return <div ref={viewportRef} className="biomedical-city-viewport">{isReady && isVisible && <Suspense fallback={null}><BiomedicalCity /></Suspense>}</div>;
 }
 
+function sanitizeSacruroVisitorCopy() {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('.sacruro-page .sacruro-section'));
+    const setHeading = (section: HTMLElement | undefined, title: string) => {
+        const heading = section?.querySelector('h2');
+        if (!heading) return;
+        const icon = heading.querySelector('svg');
+        heading.replaceChildren();
+        if (icon) heading.appendChild(icon);
+        heading.appendChild(document.createTextNode(` ${title}`));
+    };
+
+    const synthesis = sections[29];
+    setHeading(synthesis, 'Synthèse des apports');
+    const synthesisText = synthesis?.querySelector('.sacruro-highlight p');
+    if (synthesisText) {
+        synthesisText.textContent = 'SACRURO met en œuvre une démarche d’ingénierie multidisciplinaire appliquée à un problème concret de gestion de l’eau en milieu hospitalier. L’étude articule mesures de terrain, caractérisation de l’eau, conception hydraulique, électronique, automatisation, IoT, sécurité, gestion des risques, maintenance et évaluation économique.';
+    }
+
+    const summary = sections[31];
+    setHeading(summary, 'Résumé du projet');
+
+    const demonstration = sections[32];
+    const placeholderNote = demonstration?.querySelector('.sacruro-video-placeholder span');
+    const placeholderFile = demonstration?.querySelector('.sacruro-video-placeholder small');
+    if (placeholderNote) placeholderNote.remove();
+    if (placeholderFile) placeholderFile.remove();
+}
+
 function App() {
     const [mode, setMode] = useState<string>('dark');
     const [hash, setHash] = useState(window.location.hash);
@@ -80,6 +108,12 @@ function App() {
         window.addEventListener('hashchange', onHashChange);
         return () => window.removeEventListener('hashchange', onHashChange);
     }, []);
+
+    useEffect(() => {
+        if (!isSacruroPage) return;
+        const timer = window.setTimeout(() => sanitizeSacruroVisitorCopy(), 120);
+        return () => window.clearTimeout(timer);
+    }, [isSacruroPage]);
 
     return (
         <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
