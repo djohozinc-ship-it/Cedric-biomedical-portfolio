@@ -23,9 +23,9 @@ function Timeline() {
             <h3 className="vertical-timeline-element-title">Stagiaire — Centre Hospitalier Départemental du Zou</h3>
             <h4 className="vertical-timeline-element-subtitle">Direction des Équipements et de la Maintenance</h4>
             <p>
-              Participation aux activités de maintenance préventive et corrective, diagnostic et recherche de pannes,
-              installation de dispositifs médicaux, inventaire et tests de fonctionnement des équipements, montage et
-              installation d’échographes EDAN AX3, ainsi que des activités de suivi et de gestion de la maintenance.
+              Participation aux activités de maintenance préventive et corrective, au diagnostic et à la recherche de pannes,
+              à l’installation de dispositifs médicaux, à l’inventaire et aux tests de fonctionnement des équipements, ainsi
+              qu’au montage et à l’installation d’échographes EDAN AX3 et au suivi des activités de maintenance.
             </p>
           </VerticalTimelineElement>
 
@@ -52,7 +52,7 @@ function Timeline() {
             <h3 className="vertical-timeline-element-title">Stagiaire — Hôpital de Zone de Covè</h3>
             <h4 className="vertical-timeline-element-subtitle">Maintenance technique</h4>
             <p>
-              Participation aux activités de maintenance préventive et corrective et installation de dispositifs médicaux.
+              Participation aux activités de maintenance préventive et corrective et à l’installation de dispositifs médicaux.
             </p>
           </VerticalTimelineElement>
 
@@ -65,7 +65,7 @@ function Timeline() {
             <h3 className="vertical-timeline-element-title">Stagiaire — SERIB</h3>
             <h4 className="vertical-timeline-element-subtitle">Service de Rembobinage Industriel et de Bâtiment</h4>
             <p>
-              Montage et démontage de moteurs électriques, entretien des moteurs et initiation aux processus de rembobinage.
+              Montage et démontage de moteurs électriques, entretien des moteurs et initiation aux opérations de rembobinage.
             </p>
           </VerticalTimelineElement>
 
@@ -75,7 +75,7 @@ function Timeline() {
             iconStyle={{ background: '#5000ca', color: 'rgb(39, 40, 34)' }}
             icon={<FontAwesomeIcon icon={faGraduationCap} />}
           >
-            <h3 className="vertical-timeline-element-title">Licence en Maintenance Biomédicale et Hospitalière</h3>
+            <h3 className="vertical-timeline-element-title">Licence professionnelle en Maintenance Biomédicale et Hospitalière</h3>
             <h4 className="vertical-timeline-element-subtitle">École Polytechnique d’Abomey-Calavi (EPAC)</h4>
             <p>
               Formation en maintenance biomédicale et hospitalière, dispositifs médicaux, diagnostic, installation et suivi des équipements de santé.
@@ -108,7 +108,7 @@ function Timeline() {
             iconStyle={{ background: '#5000ca', color: 'rgb(39, 40, 34)' }}
             icon={<FontAwesomeIcon icon={faGraduationCap} />}
           >
-            <h3 className="vertical-timeline-element-title">Certificat d’Aptitude Professionnel (CAP) — Électricité</h3>
+            <h3 className="vertical-timeline-element-title">Certificat d’Aptitude Professionnelle (CAP) — Électricité</h3>
             <h4 className="vertical-timeline-element-subtitle">Lycée Technique et Professionnel de Porto-Novo</h4>
           </VerticalTimelineElement>
 
@@ -118,10 +118,10 @@ function Timeline() {
             iconStyle={{ background: '#5000ca', color: 'rgb(39, 40, 34)' }}
             icon={<FontAwesomeIcon icon={faGraduationCap} />}
           >
-            <h3 className="vertical-timeline-element-title">Formation en Électronique & Électrotechnique</h3>
+            <h3 className="vertical-timeline-element-title">Formation en Électronique et Électrotechnique</h3>
             <h4 className="vertical-timeline-element-subtitle">CFREE — Bohicon</h4>
             <p>
-              Câblage et maintenance électrique, moteurs triphasés, systèmes photovoltaïques et antennes paraboliques.
+              Câblage et maintenance électriques, moteurs triphasés, systèmes photovoltaïques et antennes paraboliques.
             </p>
           </VerticalTimelineElement>
         </VerticalTimeline>
