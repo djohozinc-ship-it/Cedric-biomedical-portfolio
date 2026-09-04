@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Project from "./components/Project";
 import FadeIn from './components/FadeIn';
 import './index.scss';
+import './components/SacruroImages.scss';
 
 const BiomedicalCity = lazy(() => import('./components/BiomedicalFutureScene'));
 const Expertise = lazy(() => import('./components/Expertise'));
