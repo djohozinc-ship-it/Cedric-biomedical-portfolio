@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/PPGComputerVisionDetails.scss';
 
 const publicUrl = process.env.PUBLIC_URL || '';
@@ -34,6 +34,24 @@ const scrollToSection = (id: string) => {
 };
 
 export default function PPGComputerVisionDetails() {
+    const [selectedImage, setSelectedImage] = useState<{ src: string; title: string } | null>(null);
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') setSelectedImage(null);
+        };
+
+        if (selectedImage) {
+            document.body.style.overflow = 'hidden';
+            window.addEventListener('keydown', handleKeyDown);
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedImage]);
+
     return (
         <main id="top" className="ppg-page">
             <section className="ppg-hero">
@@ -65,13 +83,25 @@ export default function PPGComputerVisionDetails() {
 
             <section id="ppg-demo" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">04 — INTERFACE & DÉMONSTRATION</span><h2>Voir le système en fonctionnement</h2></div><div className="ppg-video-box"><video controls preload="metadata" poster={`${publicUrl}/images/projects/ppg/roi.png`}><source src={`${publicUrl}/videos/projects/ppg/demo.mp4`} type="video/mp4" />Votre navigateur ne peut pas lire cette vidéo.</video><div className="ppg-video-overlay"><FontAwesomeIcon icon={faPlayCircle} /><span>Ajoute ta vidéo ici :<strong>/public/videos/projects/ppg/demo.mp4</strong></span></div></div></section>
 
-            <section className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">05 — TRAVAIL VISUEL</span><h2>Captures du traitement et visualisations</h2></div><div className="ppg-media-grid">{mediaItems.map((item) => <figure key={item.src} className="ppg-media-card"><div className="ppg-media-placeholder"><img src={item.src} alt={item.title} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement?.classList.add('is-empty'); }} /><span><FontAwesomeIcon icon={faImages} /> Image à ajouter</span></div><figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption></figure>)}</div></section>
+            <section className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">05 — TRAVAIL VISUEL</span><h2>Captures du traitement et visualisations</h2></div><div className="ppg-media-grid">{mediaItems.map((item) => <figure key={item.src} className="ppg-media-card"><button type="button" className="ppg-media-zoom" onClick={() => setSelectedImage({ src: item.src, title: item.title })} aria-label={`Agrandir : ${item.title}`}><div className="ppg-media-placeholder"><img src={item.src} alt={item.title} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement?.classList.add('is-empty'); }} /><span><FontAwesomeIcon icon={faImages} /> Image à ajouter</span></div><span className="ppg-zoom-hint"><FontAwesomeIcon icon={faImages} /> Cliquer pour agrandir</span></button><figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption></figure>)}</div></section>
 
             <section id="ppg-results" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">06 — RÉSULTATS</span><h2>Résultats obtenus et éléments à documenter</h2></div><div className="ppg-result-grid">{resultCards.map((item) => <article key={item.label}><small>{item.label}</small><strong>{item.value}</strong><p>{item.note}</p></article>)}</div><div className="ppg-results-note"><FontAwesomeIcon icon={faChartLine} /><div><strong>Important</strong><p>Les mesures finales (BPM de référence, BPM estimé, écart, nombre d’essais, durée de capture, etc.) sont volontairement laissées éditables pour que tu puisses renseigner exactement les valeurs issues de tes expériences.</p></div></div></section>
 
             <section className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">07 — ANALYSE</span><h2>Ce que le projet démontre</h2></div><div className="ppg-analysis-grid"><article><h3>Compétence technique</h3><p>Relier vision par ordinateur, extraction de données et traitement du signal dans une même chaîne expérimentale.</p></article><article><h3>Approche expérimentale</h3><p>Observer le comportement réel du signal, identifier les sources de variation et itérer sur la méthode d’extraction.</p></article><article><h3>Limites</h3><p>La lumière, les mouvements, la qualité vidéo, la peau visible et la stabilité de la région analysée influencent fortement le signal extrait.</p></article><article><h3>Perspective</h3><p>Améliorer la robustesse de la chaîne, documenter les mesures comparatives et étudier la reproductibilité sur plusieurs acquisitions.</p></article></div></section>
 
             <section className="ppg-footer-card"><div><span>PROJET PERSONNEL</span><h2>Un projet à l’intersection de la santé, de l’IA et du traitement du signal.</h2></div><div className="ppg-footer-links"><button type="button" onClick={() => scrollToSection('top')}><FontAwesomeIcon icon={faArrowLeft} /> Retour en haut</button></div></section>
+
+            {selectedImage && (
+                <div className="ppg-lightbox" role="dialog" aria-modal="true" aria-label={selectedImage.title} onClick={() => setSelectedImage(null)}>
+                    <button type="button" className="ppg-lightbox-close" onClick={() => setSelectedImage(null)} aria-label="Fermer l’image agrandie">
+                        <FontAwesomeIcon icon={faXmark} />
+                    </button>
+                    <div className="ppg-lightbox-content" onClick={(event) => event.stopPropagation()}>
+                        <img src={selectedImage.src} alt={selectedImage.title} />
+                        <div>{selectedImage.title}</div>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }
