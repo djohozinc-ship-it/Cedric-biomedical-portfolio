@@ -128,7 +128,7 @@ export default function PPGComputerVisionDetails() {
 
             <section className="ppg-footer-card">
                 <div><span>PROJET PERSONNEL</span><h2>Un projet à l’intersection de la santé, de l’IA et du traitement du signal.</h2></div>
-                <div className="ppg-footer-links"><a href="https://github.com/djohozinc-ship-it/Cedric-biomedical-portfolio" target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faCodeBranch} /> Portfolio GitHub</a><a href="#"><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</a></div>
+                <div className="ppg-footer-links"><a href="https://github.com/djohozinc-ship-it/Cedric-biomedical-portfolio" target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faCodeBranch} /> Portfolio GitHub</a><a href="#top"><FontAwesomeIcon icon={faArrowLeft} /> Retour en haut</a></div>
             </section>
         </main>
     );
