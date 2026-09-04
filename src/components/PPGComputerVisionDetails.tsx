@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle, faCodeBranch } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/PPGComputerVisionDetails.scss';
 
 const mediaItems = [
@@ -23,12 +23,17 @@ const resultCards = [
     { label: 'Chaîne vidéo', value: 'Opérationnelle', note: 'Acquisition et traitement image expérimentés.' },
     { label: 'Suivi du visage', value: 'Réalisé', note: 'Détection d’une région stable pour l’extraction.' },
     { label: 'Signal PPG', value: 'Extrait', note: 'Signal temporel visualisable à partir de la vidéo.' },
-    { label: 'BPM / précision', value: 'À renseigner', note: 'Zone volontairement laissée editable avec tes valeurs réelles.' },
+    { label: 'BPM / précision', value: 'À renseigner', note: 'Zone volontairement laissée éditable avec tes valeurs réelles.' },
 ];
+
+const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
 
 export default function PPGComputerVisionDetails() {
     return (
-        <main className="ppg-page">
+        <main id="top" className="ppg-page">
             <section className="ppg-hero">
                 <div className="ppg-hero-copy">
                     <button className="ppg-back" onClick={() => { window.location.hash = ''; }}>
@@ -41,8 +46,8 @@ export default function PPGComputerVisionDetails() {
                         <span>Python</span><span>OpenCV</span><span>MediaPipe</span><span>PPG</span><span>Signal Processing</span>
                     </div>
                     <div className="ppg-hero-actions">
-                        <a href="#ppg-demo"><FontAwesomeIcon icon={faPlayCircle} /> Voir la démonstration</a>
-                        <a href="#ppg-results"><FontAwesomeIcon icon={faChartLine} /> Voir les résultats</a>
+                        <button type="button" onClick={() => scrollToSection('ppg-demo')}><FontAwesomeIcon icon={faPlayCircle} /> Voir la démonstration</button>
+                        <button type="button" onClick={() => scrollToSection('ppg-results')}><FontAwesomeIcon icon={faChartLine} /> Voir les résultats</button>
                     </div>
                 </div>
                 <div className="ppg-hero-card">
@@ -128,7 +133,7 @@ export default function PPGComputerVisionDetails() {
 
             <section className="ppg-footer-card">
                 <div><span>PROJET PERSONNEL</span><h2>Un projet à l’intersection de la santé, de l’IA et du traitement du signal.</h2></div>
-                <div className="ppg-footer-links"><a href="https://github.com/djohozinc-ship-it/Cedric-biomedical-portfolio" target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faCodeBranch} /> Portfolio GitHub</a><a href="#top"><FontAwesomeIcon icon={faArrowLeft} /> Retour en haut</a></div>
+                <div className="ppg-footer-links"><button type="button" onClick={() => scrollToSection('top')}><FontAwesomeIcon icon={faArrowLeft} /> Retour en haut</button></div>
             </section>
         </main>
     );
