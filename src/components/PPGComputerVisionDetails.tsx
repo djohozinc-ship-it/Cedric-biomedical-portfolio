@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/PPGComputerVisionDetails.scss';
 
+const publicUrl = process.env.PUBLIC_URL || '';
+
 const mediaItems = [
-    { src: '/images/projects/ppg/roi.png', title: 'Région d’intérêt (ROI)', caption: 'Zone du visage sélectionnée pour l’extraction des variations photométriques.' },
-    { src: '/images/projects/ppg/signal-ppg-brut.png', title: 'Signal PPG temporel brut', caption: 'Signal extrait avant les étapes ultérieures de traitement et de détection des pics.' },
-    { src: '/images/projects/ppg/interface.png', title: 'Interface de démonstration', caption: 'Capture de l’interface utilisée pendant l’expérimentation.' },
-    { src: '/images/projects/ppg/traitement.png', title: 'Traitement vidéo', caption: 'Capture complémentaire du traitement à ajouter ultérieurement.' },
+    { src: `${publicUrl}/images/projects/ppg/roi.png`, title: 'Région d’intérêt (ROI)', caption: 'Zone du visage sélectionnée pour l’extraction des variations photométriques.' },
+    { src: `${publicUrl}/images/projects/ppg/signal-ppg-brut.png`, title: 'Signal PPG temporel brut', caption: 'Signal extrait avant les étapes ultérieures de traitement et de détection des pics.' },
+    { src: `${publicUrl}/images/projects/ppg/interface.png`, title: 'Interface de démonstration', caption: 'Capture de l’interface utilisée pendant l’expérimentation.' },
+    { src: `${publicUrl}/images/projects/ppg/traitement.png`, title: 'Traitement vidéo', caption: 'Capture complémentaire du traitement à ajouter ultérieurement.' },
 ];
 
 const pipeline = [
@@ -61,7 +63,7 @@ export default function PPGComputerVisionDetails() {
 
             <section className="ppg-section ppg-tech-grid"><div className="ppg-tech-card"><FontAwesomeIcon icon={faLaptopCode} /><span>Vision par ordinateur</span><p>OpenCV pour la lecture, la manipulation et le traitement des images vidéo.</p></div><div className="ppg-tech-card"><FontAwesomeIcon icon={faCogs} /><span>Suivi facial</span><p>MediaPipe pour stabiliser la localisation du visage et de la zone observée.</p></div><div className="ppg-tech-card"><FontAwesomeIcon icon={faChartLine} /><span>Traitement du signal</span><p>Construction d’une série temporelle, analyse des variations et recherche d’une composante périodique exploitable.</p></div></section>
 
-            <section id="ppg-demo" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">04 — INTERFACE & DÉMONSTRATION</span><h2>Voir le système en fonctionnement</h2></div><div className="ppg-video-box"><video controls preload="metadata" poster="/images/projects/ppg/roi.png"><source src="/videos/projects/ppg/demo.mp4" type="video/mp4" />Votre navigateur ne peut pas lire cette vidéo.</video><div className="ppg-video-overlay"><FontAwesomeIcon icon={faPlayCircle} /><span>Ajoute ta vidéo ici :<strong>/public/videos/projects/ppg/demo.mp4</strong></span></div></div></section>
+            <section id="ppg-demo" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">04 — INTERFACE & DÉMONSTRATION</span><h2>Voir le système en fonctionnement</h2></div><div className="ppg-video-box"><video controls preload="metadata" poster={`${publicUrl}/images/projects/ppg/roi.png`}><source src={`${publicUrl}/videos/projects/ppg/demo.mp4`} type="video/mp4" />Votre navigateur ne peut pas lire cette vidéo.</video><div className="ppg-video-overlay"><FontAwesomeIcon icon={faPlayCircle} /><span>Ajoute ta vidéo ici :<strong>/public/videos/projects/ppg/demo.mp4</strong></span></div></div></section>
 
             <section className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">05 — TRAVAIL VISUEL</span><h2>Captures du traitement et visualisations</h2></div><div className="ppg-media-grid">{mediaItems.map((item) => <figure key={item.src} className="ppg-media-card"><div className="ppg-media-placeholder"><img src={item.src} alt={item.title} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement?.classList.add('is-empty'); }} /><span><FontAwesomeIcon icon={faImages} /> Image à ajouter</span></div><figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption></figure>)}</div></section>
 
