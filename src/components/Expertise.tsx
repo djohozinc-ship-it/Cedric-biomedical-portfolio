@@ -11,18 +11,19 @@ const biomedicalSkills = [
     "Installation de dispositifs médicaux",
     "Mise en service",
     "Suivi des équipements hospitaliers",
-    "Maintenance niveau 1",
-    "Inventaire et tests de fonctionnement"
+    "Formation Utilisateur",
+    "Inventaire et réalisation de l'audit d'un service de maintenance"
 ];
 
 const electronicsSkills = [
     "Électronique",
     "Électrotechnique",
     "Câblage industriel",
-    "Conception de schémas électroniques",
+    "Conception de schémas électroniques et électrique",
     "Réalisation de PCB",
     "Moteurs électriques",
     "Systèmes photovoltaïques"
+    "Programmation des API (PLC)"
 ];
 
 const tools = [
@@ -30,6 +31,10 @@ const tools = [
     "SolidWorks",
     "Arduino IDE",
     "VS Code"
+    "Fusion"
+    "MATLAB"
+    "Kate"
+    "github"
 ];
 
 function Expertise() {
@@ -43,7 +48,7 @@ function Expertise() {
                     <h3>Maintenance biomédicale</h3>
                     <p>
                         Compétences pratiques développées au cours de ma formation et de mes stages en milieu hospitalier.
-                        Intervention sur les équipements sous encadrement, avec une approche orientée diagnostic, maintenance et sécurité.
+                        Intervention sur les équipements, avec une approche orientée diagnostic, maintenance et sécurité.
                     </p>
                     <div className="flex-chips">
                         <span className="chip-title">Compétences :</span>
