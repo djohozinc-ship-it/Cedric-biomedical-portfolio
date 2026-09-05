@@ -24,8 +24,7 @@ function Timeline() {
             <h4 className="vertical-timeline-element-subtitle">Direction des Équipements et de la Maintenance</h4>
             <p>
               Participation aux activités de maintenance préventive et corrective, au diagnostic et à la recherche de pannes,
-              à l’installation de dispositifs médicaux, à l’inventaire et aux tests de fonctionnement des équipements, ainsi
-              qu’au montage et à l’installation d’échographes EDAN AX3 et au suivi des activités de maintenance.
+              à l’installation de dispositifs médicaux, à l’inventaire et aux tests de fonctionnement des équipements et au suivi des activités de maintenance.
             </p>
           </VerticalTimelineElement>
 
@@ -36,7 +35,7 @@ function Timeline() {
             icon={<FontAwesomeIcon icon={faBriefcase} />}
           >
             <h3 className="vertical-timeline-element-title">Stagiaire — Centre Hospitalier Départemental du Zou</h3>
-            <h4 className="vertical-timeline-element-subtitle">Maintenance biomédicale et hospitalière</h4>
+            <h4 className="vertical-timeline-element-subtitle">Direction des Équipements et de la Maintenance</h4>
             <p>
               Participation aux interventions de maintenance et à l’installation de dispositifs médicaux, découverte
               de l’environnement hospitalier et participation aux activités administratives liées à la maintenance.
@@ -50,7 +49,7 @@ function Timeline() {
             icon={<FontAwesomeIcon icon={faBriefcase} />}
           >
             <h3 className="vertical-timeline-element-title">Stagiaire — Hôpital de Zone de Covè</h3>
-            <h4 className="vertical-timeline-element-subtitle">Maintenance technique</h4>
+            <h4 className="vertical-timeline-element-subtitle">Service Biomédical</h4>
             <p>
               Participation aux activités de maintenance préventive et corrective et à l’installation de dispositifs médicaux.
             </p>
@@ -77,6 +76,7 @@ function Timeline() {
           >
             <h3 className="vertical-timeline-element-title">Licence professionnelle en Maintenance Biomédicale et Hospitalière</h3>
             <h4 className="vertical-timeline-element-subtitle">École Polytechnique d’Abomey-Calavi (EPAC)</h4>
+            <h5 className="vertical-timeline-element-subtitle">Mention Très Bien</h5>
             <p>
               Formation en maintenance biomédicale et hospitalière, dispositifs médicaux, diagnostic, installation et suivi des équipements de santé.
             </p>
@@ -90,6 +90,7 @@ function Timeline() {
           >
             <h3 className="vertical-timeline-element-title">Baccalauréat Technique — Électrotechnique</h3>
             <h4 className="vertical-timeline-element-subtitle">Lycée Technique et Professionnel de Porto-Novo</h4>
+            <h5 className="vertical-timeline-element-subtitle">Mention Bien</h5>
           </VerticalTimelineElement>
 
           <VerticalTimelineElement
@@ -100,6 +101,7 @@ function Timeline() {
           >
             <h3 className="vertical-timeline-element-title">Diplôme du Technicien Industriel (DTI) — Électrotechnique</h3>
             <h4 className="vertical-timeline-element-subtitle">Lycée Technique et Professionnel de Porto-Novo</h4>
+            <h5 className="vertical-timeline-element-subtitle">Mention Très Bien</h5>
           </VerticalTimelineElement>
 
           <VerticalTimelineElement
@@ -110,6 +112,7 @@ function Timeline() {
           >
             <h3 className="vertical-timeline-element-title">Certificat d’Aptitude Professionnelle (CAP) — Électricité</h3>
             <h4 className="vertical-timeline-element-subtitle">Lycée Technique et Professionnel de Porto-Novo</h4>
+            <h5 className="vertical-timeline-element-subtitle">Mention Bien</h5>
           </VerticalTimelineElement>
 
           <VerticalTimelineElement
