@@ -111,6 +111,30 @@ function App() {
         return () => window.removeEventListener('hashchange', onHashChange);
     }, []);
 
+    // Les ancres internes de MOR-EYES ne doivent pas être interprétées comme des routes React.
+    // Elles font défiler la page sans quitter la fiche projet.
+    useEffect(() => {
+        if (!isMorEyesPage) return;
+
+        const handleMorEyesAnchors = (event: MouseEvent) => {
+            const target = event.target as HTMLElement | null;
+            const link = target?.closest<HTMLAnchorElement>('.mor-eyes-actions a[href^="#mor-eyes-"]');
+            if (!link) return;
+
+            const id = link.getAttribute('href')?.slice(1);
+            if (!id) return;
+
+            const destination = document.getElementById(id);
+            if (!destination) return;
+
+            event.preventDefault();
+            destination.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        document.addEventListener('click', handleMorEyesAnchors);
+        return () => document.removeEventListener('click', handleMorEyesAnchors);
+    }, [isMorEyesPage]);
+
     useEffect(() => {
         if (!isSacruroPage) return;
         const timer = window.setTimeout(() => sanitizeSacruroVisitorCopy(), 120);
