@@ -6,6 +6,7 @@ import Project from "./components/Project";
 import FadeIn from './components/FadeIn';
 import './index.scss';
 import './components/SacruroImages.scss';
+import './assets/styles/MorEyesFixes.scss';
 
 const BiomedicalCity = lazy(() => import('./components/BiomedicalFutureScene'));
 const Expertise = lazy(() => import('./components/Expertise'));
