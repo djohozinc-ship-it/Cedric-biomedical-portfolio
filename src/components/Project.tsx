@@ -7,7 +7,6 @@ type ProjectCard = { slug: string; title: string; summary: string; image: string
 
 const projectCards: ProjectCard[] = [
     { slug: 'sacruro', title: 'SACRURO', summary: 'Projet de récupération et de valorisation du concentrat rejeté par les unités de dialyse pour des usages non potables.', image: `${process.env.PUBLIC_URL}/images/projects/sacruro.svg` },
-    { slug: 'carte-donnees-biomedicales', title: 'Carte universelle de données biomédicales', summary: 'Étude d’une carte électronique modulaire pour l’acquisition et l’intégration de données provenant de différents capteurs.', image: `${process.env.PUBLIC_URL}/images/projects/carte-donnees-biomedicales.svg` },
     { slug: 'ppg-computer-vision', title: 'Estimation du rythme cardiaque par PPG et vision par ordinateur', summary: 'Expérimentation d’une méthode sans contact pour estimer le rythme cardiaque à partir d’une vidéo.', image: `${process.env.PUBLIC_URL}/images/projects/ppg-computer-vision.svg` },
     { slug: 'mor-eyes', title: 'MOR-EYES COM V1.0', summary: 'Système de suppléance oratoire assisté par vision artificielle pour transformer des clignements volontaires en commandes et en parole.', image: `${process.env.PUBLIC_URL}/images/projects/mor-eyes.svg` },
     { slug: 'moyes-pro', title: 'Moyes Pro', summary: 'Projet de dispositif d’assistance développé autour d’un besoin fonctionnel et d’une approche de prototypage électronique.', image: `${process.env.PUBLIC_URL}/images/projects/moyes-pro.svg` },
