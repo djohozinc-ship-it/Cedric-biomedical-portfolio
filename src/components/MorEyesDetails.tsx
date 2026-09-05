@@ -70,7 +70,15 @@ function MorEyesDetails() {
             <p>La présentation de la V1.0 met en avant une situation particulièrement critique : la communication rompue avec le personnel soignant peut accentuer la détresse psychologique et représenter un enjeu important pour la prise en charge.</p>
             <p>Le projet MOR-EYES COM part alors d’une possibilité fonctionnelle : exploiter les mouvements oculaires et palpébraux lorsqu’ils restent disponibles afin de créer un canal de communication alternatif.</p>
           </div>
-          <aside className="mor-eyes-problem-card"><div className="problem-icon"><FontAwesomeIcon icon={faPersonCircleQuestion} /></div><span>QUESTION DE CONCEPTION</span><strong>Comment permettre à une personne sévèrement privée de parole de transmettre un message à son entourage uniquement à partir de mouvements oculaires volontaires ?</strong></aside>
+          <aside className="mor-eyes-problem-card">
+            <div className="mor-eyes-corner-video" aria-hidden="true">
+              <div className="mor-eyes-corner-video-loader"><span /></div>
+              <video autoPlay muted loop playsInline preload="none" poster={`${publicUrl}/images/projects/mor-eyes/video-poster.jpg`}>
+                <source src={`${publicUrl}/images/projects/mor-eyes/hero-clip.mp4`} type="video/mp4" />
+              </video>
+            </div>
+            <div className="problem-icon"><FontAwesomeIcon icon={faPersonCircleQuestion} /></div><span>QUESTION DE CONCEPTION</span><strong>Comment permettre à une personne sévèrement privée de parole de transmettre un message à son entourage uniquement à partir de mouvements oculaires volontaires ?</strong>
+          </aside>
         </div>
         <div className="mor-eyes-context-grid">
           <div><b>01</b><span>Expression orale limitée</span><p>La communication verbale peut devenir difficile ou impossible.</p></div>
