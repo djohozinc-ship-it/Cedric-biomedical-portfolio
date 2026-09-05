@@ -19,6 +19,18 @@
     color: rgb(39, 40, 34);
 }
 
+/* Affichage clair et visible des mentions académiques */
+.vertical-timeline-element h5.vertical-timeline-element-subtitle {
+    display: block;
+    margin: 0.45rem 0 0.8rem;
+    color: #5000ca;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+    opacity: 1;
+}
+
 .vertical-timeline-element span {
     color: rgb(39, 40, 34);
 }
