@@ -22,7 +22,7 @@ const electronicsSkills = [
     "Conception de schémas électroniques et électrique",
     "Réalisation de PCB",
     "Moteurs électriques",
-    "Systèmes photovoltaïques"
+    "Systèmes photovoltaïques",
     "Programmation des API (PLC)"
 ];
 
@@ -30,10 +30,10 @@ const tools = [
     "KiCad",
     "SolidWorks",
     "Arduino IDE",
-    "VS Code"
-    "Fusion"
-    "MATLAB"
-    "Kate"
+    "VS Code",
+    "Fusion",
+    "MATLAB",
+    "Kate",
     "github"
 ];
 
