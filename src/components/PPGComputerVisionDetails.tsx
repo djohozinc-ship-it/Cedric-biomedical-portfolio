@@ -62,14 +62,22 @@ export default function PPGComputerVisionDetails() {
                     <span className="ppg-kicker">PROJET • VISION PAR ORDINATEUR • TRAITEMENT DU SIGNAL</span>
                     <h1>Estimation du rythme cardiaque par <span>PPG</span> et vision par ordinateur</h1>
                     <p className="ppg-lead">Une expérimentation de photopléthysmographie à distance visant à extraire une information physiologique à partir d’une simple vidéo, sans capteur placé sur le corps.</p>
-                    <div className="ppg-tags"><span>Python</span><span>OpenCV</span><span>MediaPipe</span><span>PPG</span><span>Signal Processing</span></div>
+                    <div className="ppg-tags"><span>Python</span><span>OpenCV</span><span>MediaPipe</span><span>PPG</span><span>Traitement du signal</span></div>
                     <div className="ppg-hero-actions">
                         <button type="button" onClick={() => scrollToSection('ppg-demo')}><FontAwesomeIcon icon={faPlayCircle} /> Voir la démonstration</button>
                         <button type="button" onClick={() => scrollToSection('ppg-results')}><FontAwesomeIcon icon={faChartLine} /> Voir les résultats</button>
                     </div>
                 </div>
-                <div className="ppg-hero-card">
-                    <div className="ppg-monitor-grid" aria-hidden="true"></div><div className="ppg-wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div className="ppg-bpm">BPM<br /><strong>—</strong></div><div className="ppg-face-frame"><i></i></div><small>LIVE • VIDEO SIGNAL</small>
+                <div className="ppg-hero-card" aria-label="Visualisation animée du signal PPG">
+                    <div className="ppg-monitor-grid" aria-hidden="true"></div>
+                    <div className="ppg-scan-beam" aria-hidden="true"></div>
+                    <div className="ppg-bpm">BPM<br /><strong>—</strong></div>
+                    <div className="ppg-signal-status"><i></i> SIGNAL PHYSIOLOGIQUE</div>
+                    <div className="ppg-face-frame"><i></i><b></b></div>
+                    <div className="ppg-roi-box"><span>ROI</span></div>
+                    <div className="ppg-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                    <div className="ppg-signal-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                    <small>SIGNAL VIDÉO EN DIRECT</small>
                 </div>
             </section>
 
