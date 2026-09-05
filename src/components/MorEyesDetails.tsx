@@ -1,8 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faArrowLeft, faEye, faMicrophone, faCamera, faBrain, faCode,
-  faDatabase, faMicrochip, faPlayCircle, faImages, faWaveSquare,
+  faArrowLeft, faEye, faCamera, faBrain, faCode,
+  faDatabase, faPlayCircle, faImages, faWaveSquare,
   faCircleCheck, faLightbulb, faVolumeHigh, faKeyboard, faGear,
   faCircleNodes, faMessage, faPersonCircleQuestion
 } from '@fortawesome/free-solid-svg-icons';
