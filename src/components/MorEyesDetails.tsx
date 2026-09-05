@@ -36,18 +36,37 @@ function MorEyesDetails() {
       <section className="mor-eyes-hero">
         <div className="mor-eyes-hero-glow glow-one" />
         <div className="mor-eyes-hero-glow glow-two" />
+        <div className="mor-eyes-hero-grid" />
         <div className="mor-eyes-hero-inner">
           <button type="button" className="mor-eyes-back" onClick={() => { window.location.hash = ''; }}>
             <FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets
           </button>
-          <div className="mor-eyes-hero-content">
-            <div className="mor-eyes-kicker"><span>MOR-EYES COM</span> · VERSION 1.0 · SECTEUR BIOMÉDICAL</div>
-            <h1>Redonner une voix<br /><em>au regard.</em></h1>
-            <p className="mor-eyes-tagline">Système de suppléance oratoire assisté par vision artificielle, conçu pour transformer des mouvements oculaires volontaires en commandes puis en parole.</p>
-            <div className="mor-eyes-authors"><span>Projet réalisé par</span> Cédric DJOHOZIN · Caleb HOUNYO · Smiss Dossou LAWISSA</div>
-            <div className="mor-eyes-actions">
-              <a href="#mor-eyes-pipeline"><FontAwesomeIcon icon={faWaveSquare} /> Comprendre le fonctionnement</a>
-              <a href="#mor-eyes-gallery"><FontAwesomeIcon icon={faImages} /> Voir le prototype</a>
+          <div className="mor-eyes-hero-layout">
+            <div className="mor-eyes-hero-content">
+              <div className="mor-eyes-kicker"><span>MOR-EYES COM</span><b>01</b> · VERSION 1.0 · SECTEUR BIOMÉDICAL</div>
+              <h1>Redonner une voix<br /><em>au regard.</em></h1>
+              <p className="mor-eyes-tagline">Système de suppléance oratoire assisté par vision artificielle, conçu pour transformer des mouvements oculaires volontaires en commandes puis en parole.</p>
+              <div className="mor-eyes-authors"><span>Projet réalisé par</span> Cédric DJOHOZIN · Caleb HOUNYO · Smiss Dossou LAWISSA</div>
+              <div className="mor-eyes-actions">
+                <a href="#mor-eyes-pipeline"><FontAwesomeIcon icon={faWaveSquare} /> Comprendre le fonctionnement</a>
+                <a href="#mor-eyes-gallery"><FontAwesomeIcon icon={faImages} /> Voir le prototype</a>
+              </div>
+            </div>
+
+            <div className="mor-eyes-hero-visual" aria-label="Visualisation du système MOR-EYES">
+              <div className="hero-visual-orbit orbit-a" />
+              <div className="hero-visual-orbit orbit-b" />
+              <div className="hero-visual-core">
+                <div className="hero-eye">
+                  <span className="hero-eye-lid" />
+                  <span className="hero-eye-iris"><i /></span>
+                </div>
+                <div className="hero-scan-line" />
+              </div>
+              <div className="hero-data-chip chip-top"><b>BLINK</b><span>98.4%</span></div>
+              <div className="hero-data-chip chip-right"><b>VISION</b><span>ACTIVE</span></div>
+              <div className="hero-data-chip chip-bottom"><b>VOICE</b><span>READY</span></div>
+              <div className="hero-visual-label"><span>CANAL OCULAIRE</span><strong>REGARD → COMMANDE → VOIX</strong></div>
             </div>
           </div>
           <div className="mor-eyes-hero-metric"><strong>V1.0</strong><span>Prototype fonctionnel</span></div>
