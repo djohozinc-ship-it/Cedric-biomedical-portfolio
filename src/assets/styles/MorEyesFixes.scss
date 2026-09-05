@@ -1,0 +1,55 @@
+/* Correctifs ciblés MOR-EYES : navigation visible et ancres internes */
+
+.mor-eyes-page .mor-eyes-back {
+  position: relative !important;
+  z-index: 30 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: #dff9ff !important;
+  background: rgba(8, 20, 35, .72) !important;
+  border: 1px solid rgba(104, 232, 255, .38) !important;
+  border-radius: 999px !important;
+  padding: 11px 18px !important;
+  min-height: 42px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .28), 0 0 22px rgba(104, 232, 255, .08) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+
+.mor-eyes-page .mor-eyes-back:hover {
+  color: #fff !important;
+  border-color: rgba(104, 232, 255, .75) !important;
+  background: rgba(10, 32, 52, .9) !important;
+  transform: translateX(4px) !important;
+}
+
+.mor-eyes-page .mor-eyes-actions {
+  position: relative;
+  z-index: 20;
+}
+
+.mor-eyes-page .mor-eyes-actions a {
+  position: relative;
+  z-index: 21;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+/* Évite qu'une couche décorative du hero intercepte les clics. */
+.mor-eyes-page .mor-eyes-hero-glow,
+.mor-eyes-page .mor-eyes-hero-grid,
+.mor-eyes-page .mor-eyes-hero-layout:after {
+  pointer-events: none !important;
+}
+
+@media (max-width: 700px) {
+  .mor-eyes-page .mor-eyes-back {
+    padding: 10px 15px !important;
+    font-size: .82rem !important;
+  }
+}
