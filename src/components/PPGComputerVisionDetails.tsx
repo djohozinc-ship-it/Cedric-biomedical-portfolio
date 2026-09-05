@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/PPGComputerVisionDetails.scss';
+import '../assets/styles/PPGPremiumAnimations.scss';
 
 const publicUrl = process.env.PUBLIC_URL || '';
 
