@@ -109,7 +109,7 @@ function ProjectDetails() {
             <button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</button>
             <section className="project-hero-premium">
                 <div className="project-hero-copy"><span className="project-category">{project.category}</span><h1>{project.title}</h1><p>{project.summary}</p><div className="project-hero-meta"><span><FontAwesomeIcon icon={faBullseye} /> Projet personnel / académique</span><span><FontAwesomeIcon icon={faCogs} /> Conception & prototypage</span></div></div>
-                <div className="project-hero-visual">{project.media?.find((media) => media.type === 'image') ? <img className="project-hero-image" src={project.media.find((media) => media.type === 'image')!.src} alt={project.media.find((media) => media.type === 'image')!.alt} /> : <><div className="hero-grid" /><div className="hero-orb"><FontAwesomeIcon icon={faMicrochip} /></div><span>PROJECT<br />CASE STUDY</span></>}</div>
+                <div className="project-hero-visual">{project.media?.find((media) => media.type === 'image') ? <img className="project-hero-image" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} src={project.media.find((media) => media.type === 'image')!.src} alt={project.media.find((media) => media.type === 'image')!.alt} /> : <><div className="hero-grid" /><div className="hero-orb"><FontAwesomeIcon icon={faMicrochip} /></div><span>PROJECT<br />CASE STUDY</span></>}</div>
             </section>
 
             <div className="project-story">
