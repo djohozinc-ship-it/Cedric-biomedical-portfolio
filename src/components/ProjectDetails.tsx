@@ -84,6 +84,19 @@ export const projects: ProjectData[] = [
         summary: 'Projet de modélisation 3D réalisé avec Blender pour développer les bases de conception et de représentation numérique.',
         description: 'Blender est utilisé pour construire progressivement la structure 3D à partir d’éléments géométriques, les positionner puis les assembler afin d’obtenir la forme finale. Le travail porte sur la transformation d’une référence ou d’une idée en objets numériques manipulables, puis sur leur organisation dans une scène. Le rendu permet enfin de vérifier visuellement les volumes, les proportions et la composition globale du modèle.',
         context: 'Projet personnel de découverte et de pratique de la modélisation 3D.', problem: 'Comment construire et représenter un objet ou une structure en environnement 3D ?', solution: 'Création et assemblage d’éléments 3D dans Blender.', architecture: 'Référence → modélisation → assemblage → rendu', hardware: [], software: ['Blender'], results: ['Modèle 3D réalisé', 'Pratique de la modélisation et du rendu développée'], role: 'Modélisation et réalisation du projet 3D.', technologies: ['Blender', 'Modélisation 3D'], features: ['Modélisation', 'Assemblage', 'Rendu']
+    },
+    {
+        slug: 'mor-eyes', title: 'MOR-EYES COM V1.0', category: 'Technologie d’assistance · Vision artificielle · Communication',
+        summary: 'Système de suppléance oratoire assisté par vision artificielle pour transformer des clignements volontaires en commandes et en parole.',
+        description: 'MOR-EYES COM V1.0 explore une interface de communication destinée à transformer des clignements volontaires en commandes interprétables par un système informatique. La caméra observe les yeux, un module de vision artificielle détecte les événements de clignement et la logique embarquée ou logicielle associe ces événements à des commandes. Les commandes peuvent ensuite être converties en actions de communication, notamment par synthèse vocale. L’objectif est de proposer une chaîne complète allant de l’interaction humaine à la sortie communicante.',
+        context: 'Projet de technologie d’assistance visant à explorer une interface de communication alternative pour des personnes pouvant avoir des difficultés à utiliser une interface classique.', problem: 'Comment exploiter un mouvement volontaire des yeux comme moyen de commande pour faciliter la communication ?', solution: 'Détection de clignements par vision artificielle, interprétation des séquences de clignements et association à des commandes de communication.', architecture: 'Caméra → détection des yeux → clignement → interprétation → commande → sortie vocale', hardware: ['Caméra', 'Ordinateur / système de traitement', 'Prototype électronique'], software: ['Python', 'OpenCV', 'MediaPipe', 'Vision par ordinateur', 'Synthèse vocale'], results: ['Principe d’interface de communication exploré', 'Détection des événements de clignement étudiée', 'Chaîne vision → commande → communication définie'], role: 'Conception du concept, développement de la logique de traitement et expérimentation du système.', technologies: ['Python', 'OpenCV', 'MediaPipe', 'Vision par ordinateur', 'Traitement d’image'], features: ['Détection des yeux', 'Détection des clignements', 'Interprétation des commandes', 'Communication assistée', 'Sortie vocale'], media: [
+            { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/hero..jpg`, alt: 'Vue principale du projet MOR-EYES COM V1.0' },
+            { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/prototype.jpg`, alt: 'Prototype du système MOR-EYES' },
+            { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/electronique.jpg`, alt: 'Électronique du projet MOR-EYES' },
+            { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/camera.jpg`, alt: 'Caméra utilisée pour MOR-EYES' },
+            { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/utilisation.jpg`, alt: 'Utilisation du système MOR-EYES' },
+            { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/test.jpg`, alt: 'Tests du système MOR-EYES' }
+        ]
     }
 ];
 
@@ -99,14 +112,6 @@ function ProjectDetails() {
 
     const slug = hash.startsWith('#/project/') ? hash.replace('#/project/', '').split('?')[0] : '';
     const project = useMemo(() => projects.find((item) => item.slug === slug), [slug]);
-    const projectMedia = project?.media?.length ? project.media : project?.slug === 'mor-eyes' ? [
-        { type: 'image' as const, src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/hero..jpg`, alt: 'Vue principale du prototype MOR-EYES' },
-        { type: 'image' as const, src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/prototype.jpg`, alt: 'Prototype MOR-EYES' },
-        { type: 'image' as const, src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/electronique.jpg`, alt: 'Électronique du système MOR-EYES' },
-        { type: 'image' as const, src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/camera.jpg`, alt: 'Caméra utilisée par MOR-EYES' },
-        { type: 'image' as const, src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/utilisation.jpg`, alt: 'Utilisation du dispositif MOR-EYES' },
-        { type: 'image' as const, src: `${process.env.PUBLIC_URL}/images/projects/mor-eyes/test.jpg`, alt: 'Test du système MOR-EYES' }
-    ] : [];
 
     if (!project) {
         return <main className="project-details-page"><button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</button><div className="project-not-found"><h1>Projet introuvable</h1><p>Ce projet n’existe pas ou son identifiant a changé.</p></div></main>;
@@ -117,7 +122,7 @@ function ProjectDetails() {
             <button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</button>
             <section className="project-hero-premium">
                 <div className="project-hero-copy"><span className="project-category">{project.category}</span><h1>{project.title}</h1><p>{project.summary}</p><div className="project-hero-meta"><span><FontAwesomeIcon icon={faBullseye} /> Projet personnel / académique</span><span><FontAwesomeIcon icon={faCogs} /> Conception & prototypage</span></div></div>
-                <div className="project-hero-visual">{projectMedia[0]?.type === 'image' ? <img className="project-hero-image" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} src={projectMedia[0].src} alt={projectMedia[0].alt} /> : <><div className="hero-grid" /><div className="hero-orb"><FontAwesomeIcon icon={faMicrochip} /></div><span>PROJECT<br />CASE STUDY</span></>}</div>
+                <div className="project-hero-visual">{project.media?.find((media) => media.type === 'image') ? <img className="project-hero-image" src={project.media.find((media) => media.type === 'image')!.src} alt={project.media.find((media) => media.type === 'image')!.alt} /> : <><div className="hero-grid" /><div className="hero-orb"><FontAwesomeIcon icon={faMicrochip} /></div><span>PROJECT<br />CASE STUDY</span></>}</div>
             </section>
 
             <div className="project-story">
@@ -132,7 +137,7 @@ function ProjectDetails() {
                 <section className="project-story-section"><div className="section-kicker">09 · MON RÔLE</div><h2>Contribution au projet</h2><p>{project.role}</p></section>
                 <section className="project-story-section"><div className="section-kicker">10 · TECHNOLOGIES</div><h2>Technologies utilisées</h2><div className="project-chips">{project.technologies.map(tech => <Chip key={tech} label={tech} />)}</div></section>
                 <section className="project-story-section"><div className="section-kicker">11 · FONCTIONNALITÉS</div><h2>Points clés</h2><div className="software-list">{project.features.map(item => <div key={item}><span className="number-dot">✓</span>{item}</div>)}</div></section>
-                {projectMedia.length ? <section className="project-story-section media-section"><div className="section-kicker">12 · MÉDIAS</div><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><div className="project-media-grid">{projectMedia.map((media, index) => media.type === 'image' ? <figure key={`${media.src}-${index}`}><img src={media.src} alt={media.alt} loading="lazy" /></figure> : <figure key={`${media.src}-${index}`} className="video-placeholder"><FontAwesomeIcon icon={faPlayCircle} /><figcaption>{media.alt}</figcaption></figure>)}</div></section> : null}
+                {project.media?.length ? <section className="project-story-section media-section"><div className="section-kicker">12 · MÉDIAS</div><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><div className="project-media-grid">{project.media.map((media, index) => media.type === 'image' ? <figure key={`${media.src}-${index}`}><img src={media.src} alt={media.alt} loading="lazy" /></figure> : <figure key={`${media.src}-${index}`} className="video-placeholder"><FontAwesomeIcon icon={faPlayCircle} /><figcaption>{media.alt}</figcaption></figure>)}</div></section> : null}
             </div>
         </main>
     );
