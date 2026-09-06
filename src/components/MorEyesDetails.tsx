@@ -143,9 +143,9 @@ function MorEyesDetails() {
 
       <section id="mor-eyes-gallery" className="mor-eyes-section mor-eyes-gallery-section">
         <div className="mor-eyes-section-heading"><span>07</span><div><small>PREUVES VISUELLES</small><h2>Prototype & démonstration</h2></div></div>
-        <p className="mor-eyes-section-lead">La galerie est prête à recevoir les six photographies du projet. Une vidéo permet également de présenter le prototype en fonctionnement.</p>
+        <p className="mor-eyes-section-lead">La galerie est prête à recevoir les six photographies du projet. La vidéo YouTube ci-dessous présente directement le prototype MOR-EYES COM V1.0 en fonctionnement.</p>
         <div className="mor-eyes-gallery-grid">{gallery.map((item, index) => <figure key={item.src}><img src={item.src} alt={item.alt} loading="lazy" /><figcaption><b>{String(index + 1).padStart(2, '0')}</b><span>Vue du prototype MOR-EYES COM</span></figcaption></figure>)}</div>
-        <div className="mor-eyes-video-card"><div className="video-heading"><div><span>DÉMONSTRATION</span><h3>MOR-EYES COM V1.0 en fonctionnement</h3></div><FontAwesomeIcon icon={faPlayCircle} /></div><video controls preload="metadata" poster={`${publicUrl}/images/projects/mor-eyes/video-poster.jpg`}><source src={`${publicUrl}/images/projects/mor-eyes/demo.mp4`} type="video/mp4" /></video></div>
+        <div className="mor-eyes-video-card"><div className="video-heading"><div><span>DÉMONSTRATION</span><h3>MOR-EYES COM V1.0 en fonctionnement</h3></div><FontAwesomeIcon icon={faPlayCircle} /></div><div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:'inherit'}}><iframe src="https://www.youtube.com/embed/qimwWCac6hs" title="Démonstration MOR-EYES COM V1.0" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:0}} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div></div>
       </section>
 
       <section className="mor-eyes-section mor-eyes-conclusion">
