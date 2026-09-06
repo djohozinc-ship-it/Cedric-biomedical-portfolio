@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Chip from '@mui/material/Chip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faCodeBranch, faImages, faPlayCircle, faMicrochip, faLaptopCode, faLightbulb, faBullseye, faCogs, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCodeBranch, faImages, faMicrochip, faLaptopCode, faLightbulb, faBullseye, faCogs, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import PremiumMediaGallery from './PremiumMediaGallery';
 import '../assets/styles/ProjectDetails.scss';
 
 type ProjectData = {
@@ -137,7 +138,7 @@ function ProjectDetails() {
                 <section className="project-story-section"><div className="section-kicker">09 · MON RÔLE</div><h2>Contribution au projet</h2><p>{project.role}</p></section>
                 <section className="project-story-section"><div className="section-kicker">10 · TECHNOLOGIES</div><h2>Technologies utilisées</h2><div className="project-chips">{project.technologies.map(tech => <Chip key={tech} label={tech} />)}</div></section>
                 <section className="project-story-section"><div className="section-kicker">11 · FONCTIONNALITÉS</div><h2>Points clés</h2><div className="software-list">{project.features.map(item => <div key={item}><span className="number-dot">✓</span>{item}</div>)}</div></section>
-                {project.media?.length ? <section className="project-story-section media-section"><div className="section-kicker">12 · MÉDIAS</div><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><div className="project-media-grid">{project.media.map((media, index) => media.type === 'image' ? <figure key={`${media.src}-${index}`}><img src={media.src} alt={media.alt} loading="lazy" /></figure> : <figure key={`${media.src}-${index}`} className="video-placeholder"><FontAwesomeIcon icon={faPlayCircle} /><figcaption>{media.alt}</figcaption></figure>)}</div></section> : null}
+                {project.media?.length ? <section className="project-story-section media-section"><div className="section-kicker">12 · MÉDIAS</div><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><PremiumMediaGallery media={project.media} /></section> : null}
             </div>
         </main>
     );
