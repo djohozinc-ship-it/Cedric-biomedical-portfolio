@@ -44,9 +44,9 @@ export default function SacruroDetails() {
           <div className="sacruro-hero-copy">
             <span className="sacruro-eyebrow">PROJET DE FIN D’ÉTUDES · 22 JUILLET 2026</span>
             <h1>SACRURO</h1>
-            <h3>Système Automatique Connecté de Récupération et de Valorisation des Rejets d’Osmoseur</h3>
-            <p className="sacruro-lead">Étude et conception d’un système automatique connecté destiné à récupérer et valoriser les rejets d’un osmoseur d’une unité de dialyse du Centre Hospitalier Départemental du Zou pour des usages non médicaux et non alimentaires.</p>
-            <div className="sacruro-meta"><span>Génie biomédical</span><span>Automatisation</span><span>Électronique</span><span>IoT</span><span>Gestion de l’eau</span></div>
+            <h3>Système Automatique Connecté de Récupération et de Valorisation des Rejets d’Osmoseur au CHD/Zou</h3>
+            <p className="sacruro-lead">Étude et conception d’un système automatique connecté destiné à récupérer et valoriser les rejets de l'osmoseur de l'unité de dialyse du Centre Hospitalier Départemental du Zou pour des usages non médicaux et non alimentaires dans le cadre de mon projet de fin d'etude en licence de génie Biomédical option Maintenance Biomédicale et hospitaliere.</p>
+            <div className="sacruro-meta"><span>Génie biomédical</span><span>Automatisation</span><span>Électronique</span><span>IoT</span><span>Gestion de l’eau</span><span>Protection de l'environnement</span></div>
             <div className="sacruro-authors"><strong>DJOHOZIN Cédric</strong><span>·</span><strong>SOSSOUNON Médessè Géraldine</strong><br/><small>Licence Professionnelle — Maintenance Biomédicale et Hospitalière · Département de Génie Biomédical · EPAC/UAC</small></div>
           </div>
           <button type="button" className="sacruro-hero-card" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/chd-zou-osmoseur.jpg`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir la photo de l’osmoseur en grand" title="Cliquer pour afficher la photo en grand">
@@ -58,15 +58,15 @@ export default function SacruroDetails() {
         </header>
 
         <Section number="01" title="Contexte" icon={faDroplet}>
-          <p>Dans l’unité de dialyse du CHD-Zou, l’osmose inverse produit une eau traitée destinée au fonctionnement des générateurs de dialyse et un concentrat rejeté. Ce rejet est évacué alors qu’il représente un volume d’eau potentiellement valorisable pour des usages non médicaux. L’étude SACRURO part de ce constat afin de proposer une solution automatique de récupération, de surveillance et de distribution.</p>
+          <p>Dans l’unité de dialyse du CHD-Zou, l’osmoseur permettant de produire de l'eau adéquat pour la dialyse produit une eau traitée destinée au fonctionnement des générateurs de dialyse et un concentrat rejeté. Ce rejet est évacué alors qu’il représente un volume d’eau potentiellement valorisable pour des usages non médicaux. L’étude SACRURO part de ce constat afin de proposer une solution automatique de récupération, de surveillance et de distribution.</p>
           <p>Le fonctionnement observé concerne 10 générateurs de dialyse, utilisés approximativement 10 heures par jour, du lundi au samedi.</p>
         </Section>
         <Section number="02" title="Problématique" icon={faTriangleExclamation}>
-          <div className="sacruro-highlight"><p>Comment récupérer, surveiller et distribuer les rejets de l’osmoseur de manière contrôlée, tout en respectant les contraintes techniques, sanitaires et opérationnelles d’un environnement hospitalier&nbsp;?</p></div>
+          <div className="sacruro-highlight"><p>Comment récupérer, surveiller et distribuer de facon responsable les rejets de l’osmoseur de manière contrôlée, tout en respectant les contraintes techniques, sanitaires et opérationnelles d’un environnement hospitalier&nbsp;?</p></div>
           <p>Le rejet actuellement évacué contribue au gaspillage d’eau et peut participer aux débordements fréquents du puisard, à l’humidité persistante et à la dégradation des abords du local de traitement d’eau.</p>
         </Section>
         <Section number="03" title="Objectif général" icon={faCircleCheck}>
-          <p>Concevoir un système automatique, connecté et sécurisé permettant de récupérer les rejets de l’osmoseur du CHD-Zou pour des usages non médicaux, tout en contribuant à la réduction du gaspillage d’eau et à la protection de l’environnement et des infrastructures autour du local de traitement d’eau.</p>
+          <p>Faire une caracterisation du rejet afin d'en deduire les usages possible et Concevoir un système automatique, connecté et sécurisé permettant de récupérer les rejets de l’osmoseur du CHD-Zou pour des usages non médicaux, tout en contribuant à la réduction du gaspillage d’eau et à la protection de l’environnement et des infrastructures autour du local de traitement d’eau.</p>
         </Section>
         <Section number="04" title="Objectifs spécifiques" icon={faChartLine}>
           <ul className="sacruro-list"><li>Étudier les possibilités de valorisation du rejet.</li><li>Estimer le volume quotidien rejeté à partir des mesures de terrain.</li><li>Caractériser l’eau par des mesures de terrain et des analyses de laboratoire.</li><li>Concevoir l’architecture hydraulique et dimensionner les réservoirs.</li><li>Concevoir l’architecture électronique et la commande automatique des actionneurs.</li><li>Assurer la supervision des volumes, paramètres de qualité et alarmes.</li><li>Permettre la surveillance à distance et la continuité locale en cas de perte de communication.</li><li>Évaluer les impacts économiques et environnementaux attendus.</li></ul>
@@ -89,7 +89,7 @@ export default function SacruroDetails() {
           <p>Ces résultats permettent d’appuyer l’étude de valorisation, mais ils ne constituent pas une validation sanitaire définitive pour un usage direct.</p>
         </Section>
         <Section number="08" title="Usages envisagés" icon={faDroplet}>
-          <div className="sacruro-use-grid"><span>Chasse d’eau des toilettes</span><span>Arrosage des plantes et espaces verts</span><span>Nettoyage des sols</span><span>Lavage des véhicules de service</span><span>Usages de lavage non alimentaire, selon validation préalable</span></div>
+          <div className="sacruro-use-grid"><span>Chasse d’eau des toilettes</span><span>Arrosage des plantes et espaces verts</span><span>Nettoyage des sols</span><span>Lavage des véhicules de service</span></div>
         </Section>
         <Section number="09" title="Architecture hydraulique" icon={faDroplet} className="diagram-section">
           <button type="button" className="diagram-only sacruro-zoomable-diagram" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/schema-hydraulique.png`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma hydraulique en grand" title="Cliquer pour afficher le schéma en grand"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></button>
@@ -115,10 +115,10 @@ export default function SacruroDetails() {
           <div className="sacruro-chips"><span>E1 · NF · 24 V</span><span>E2 · NF · 24 V</span><span>E3 · NO · 24 V</span><span>E4 · NO · 24 V</span><span>E5 · NO · 24 V</span><span>E6 · NF · 24 V</span></div>
         </Section>
         <Section number="15" title="Interface locale" icon={faMobileScreenButton}>
-          <p>L’interface locale associe un avertisseur sonore, des voyants d’état et un afficheur LCD 16×2 via I²C. Le vert indique un fonctionnement normal, le jaune une situation de vigilance et le rouge une situation critique. Un voyant vert dédié signale l’appairage. Cinq boutons permettent les commandes <strong>Valider</strong>, <strong>Haut</strong>, <strong>Bas</strong>, <strong>Retour</strong> et <strong>Appairage</strong>.</p>
+          <p>L’interface locale associe un avertisseur sonore, des voyants d’état et un afficheur LCD 16×2 via I²C. Le vert indique un fonctionnement normal, le jaune une situation de vigilance et le rouge une situation critique. Un voyant vert dédié signale l’appairage qui constitue une mesure de sécurité. Cinq boutons permettent les commandes <strong>Valider</strong>, <strong>Haut</strong>, <strong>Bas</strong>, <strong>Retour</strong> et <strong>Appairage</strong>.</p>
         </Section>
         <Section number="16" title="Automatisation" icon={faScrewdriverWrench}>
-          <p>Le système gère automatiquement le remplissage, la filtration, l’ultrafiltration, la distribution et le rétrolavage selon les niveaux, mesures et états des actionneurs. La pompe de distribution est arrêtée lorsque le niveau du réservoir tampon devient insuffisant afin d’éviter un fonctionnement à sec. À niveau maximal, l’électrovanne E1 est fermée automatiquement pour limiter le risque de débordement.</p>
+          <p>Le système gère automatiquement le remplissage, l’ultrafiltration, la distribution et le rétrolavage selon les niveaux, mesures et états des actionneurs. La pompe de distribution est arrêtée lorsque le niveau du réservoir tampon devient insuffisant afin d’éviter un fonctionnement à sec. À niveau maximal, l’électrovanne E1 est fermée automatiquement pour limiter le risque de débordement.</p>
           <p>Le dérivatif automatique repose sur E4 et E5 : lorsque l’eau récupérée est insuffisante, E4 se ferme et E5 s’ouvre afin d’alimenter le réseau depuis la SONEB ; lorsque le volume récupéré redevient suffisant, E5 se ferme et E4 s’ouvre. Le dérivatif manuel V3/V4 permet une isolation en cas de maintenance, de panne ou de diagnostic.</p>
         </Section>
         <Section number="17" title="Seuils de surveillance" icon={faShieldHalved}>
@@ -153,7 +153,7 @@ export default function SacruroDetails() {
           <p>SACRURO constitue une étude de conception et de prévalidation. Elle ne modifie pas la chaîne existante de traitement de l’eau de dialyse, ne vise pas les usages médicaux ou alimentaires, ne comporte pas d’analyse microbiologique approfondie et ne traite pas d’autres osmoseurs. Les résultats physico-chimiques disponibles ne permettent donc pas, à eux seuls, de déclarer l’eau directement réutilisable sans validations complémentaires.</p>
         </Section>
         <Section number="26" title="Perspectives" icon={faLeaf}>
-          <ul className="sacruro-list"><li>Réaliser les analyses microbiologiques nécessaires avant toute mise en œuvre réelle.</li><li>Obtenir les autorisations environnementales et sanitaires appropriées.</li><li>Étudier l’intégration éventuelle de panneaux solaires.</li><li>Évaluer une étape complémentaire de réduction des sels dissous, par exemple la déionisation capacitive ou une technologie équivalente.</li><li>Étudier la reproductibilité du concept dans d’autres établissements hospitaliers.</li></ul>
+          <ul className="sacruro-list"><li>Réaliser les analyses microbiologiques nécessaires avant toute mise en œuvre réelle.</li><li>Obtenir les autorisations environnementales et sanitaires appropriées.</li><li>Étudier l’intégration éventuelle de panneaux solaires.</li><li>Évaluer une étape complémentaire de réduction des sels dissous, par exemple la déionisation capacitive ou une technologie équivalente.</li><li>Étudier la reproductibilité du concept dans d’autres établissements hospitaliers de la zone.</li></ul>
         </Section>
         <Section number="27" title="Technologies utilisées" icon={faMicrochip}>
           <div className="sacruro-techs">{['ESP32','C/C++','ADS1115','MCP23017','TLC555','JSN-SR04T','YF-B10','SEN0244','SEN0161-V2','DS18B20','MQTT','WSS/TLS','React Native','Expo','KiCad'].map(t => <span key={t}>{t}</span>)}</div>
