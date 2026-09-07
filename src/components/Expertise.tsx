@@ -48,7 +48,7 @@ function Expertise() {
                     <h3>Maintenance biomédicale</h3>
                     <p>
                         Compétences pratiques développées au cours de ma formation et de mes stages en milieu hospitalier.
-                        Intervention sur les équipements, avec une approche orientée diagnostic, maintenance et sécurité.
+                        Maintient en exploitation optimal et sécuritaire du plateau technique hospitalier, avec une approche préventive et orientée vers la maintenance 4.0
                     </p>
                     <div className="flex-chips">
                         <span className="chip-title">Compétences :</span>
@@ -62,8 +62,8 @@ function Expertise() {
                     <FontAwesomeIcon icon={faMicrochip} size="3x"/>
                     <h3>Électronique & électrotechnique</h3>
                     <p>
-                        Base technique acquise en électrotechnique et en électronique, complétée par la pratique du câblage,
-                        des moteurs électriques et de la conception de systèmes électroniques.
+                        Base technique acquise en électrotechnique et en électronique, complétée par la pratique du câblage
+                        des moteurs électriques, realisation des schémmas electriques pour système industriel et de la conception de systèmes électroniques.
                     </p>
                     <div className="flex-chips">
                         <span className="chip-title">Compétences :</span>
