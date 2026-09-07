@@ -19,7 +19,7 @@ function Main() {
             <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedInIcon/></a>
           </div>
           <h1>Cédric DJOHOZIN</h1>
-          <p>Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Technologies embarquées</p>
+          <p>Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Biorobotique • Technologies embarquées</p>
 
           <div className="mobile_social_icons">
             <a href="https://github.com/djohozinc-ship-it" target="_blank" rel="noreferrer" aria-label="GitHub"><GitHubIcon/></a>
