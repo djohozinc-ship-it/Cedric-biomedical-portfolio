@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../assets/styles/VisitCounter.scss';
+import './VisitCounter.scss';
 
 const VISIT_STORAGE_KEY = 'cedric-biomedical-portfolio-visit-count';
 const ANIMATION_DURATION = 900;
