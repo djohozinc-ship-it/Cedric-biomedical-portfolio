@@ -2,6 +2,7 @@ import React from "react";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import '../assets/styles/Main.scss';
+import VisitCounter from './VisitCounter';
 
 function Main() {
   return (
@@ -11,6 +12,9 @@ function Main() {
           <img
             src={`${process.env.PUBLIC_URL}/images/cedric.png`}
             alt="Cédric Djohozin"
+            width="150"
+            height="150"
+            decoding="async"
           />
         </div>
         <div className="content">
@@ -20,6 +24,7 @@ function Main() {
           </div>
           <h1>Cédric DJOHOZIN</h1>
           <p>Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Biorobotique • Technologies embarquées</p>
+          <VisitCounter />
 
           <div className="mobile_social_icons">
             <a href="https://github.com/djohozinc-ship-it" target="_blank" rel="noreferrer" aria-label="GitHub"><GitHubIcon/></a>
