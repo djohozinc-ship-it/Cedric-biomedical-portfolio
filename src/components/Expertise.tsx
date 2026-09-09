@@ -23,7 +23,7 @@ const electronicsSkills = [
     "Réalisation de PCB",
     "Moteurs électriques",
     "Systèmes photovoltaïques",
-    "Programmation des API (PLC)"
+    "Programmation des API (Grafcet)"
 ];
 
 const tools = [
@@ -63,7 +63,7 @@ function Expertise() {
                     <h3>Électronique & électrotechnique</h3>
                     <p>
                         Base technique acquise en électrotechnique et en électronique, complétée par la pratique du câblage
-                        des moteurs électriques, realisation des schémas electriques pour système industriel et de la conception de systèmes électroniques.
+                        des moteurs électriques, realisation des schémas électriques pour système industriel et de la conception de systèmes électroniques.
                     </p>
                     <div className="flex-chips">
                         <span className="chip-title">Compétences :</span>
