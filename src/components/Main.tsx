@@ -16,6 +16,7 @@ function Main() {
             height="150"
             decoding="async"
           />
+          <VisitCounter />
         </div>
 
         <div className="content">
@@ -33,8 +34,6 @@ function Main() {
           <p>
             Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Biorobotique • Technologies embarquées
           </p>
-
-          <VisitCounter />
 
           <div className="mobile_social_icons">
             <a href="https://github.com/djohozinc-ship-it" target="_blank" rel="noreferrer" aria-label="GitHub">
