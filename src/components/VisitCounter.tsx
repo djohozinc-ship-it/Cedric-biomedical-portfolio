@@ -1,95 +1,81 @@
 import React, { useEffect, useState } from 'react';
 import './VisitCounter.scss';
 
-const VISIT_STORAGE_KEY = 'cedric-biomedical-portfolio-visit-count';
-const ANIMATION_DURATION = 900;
-
-function readAndIncrementVisits() {
-  try {
-    const stored = Number.parseInt(
-      window.localStorage.getItem(VISIT_STORAGE_KEY) ?? '0',
-      10
-    );
-
-    const visits = Number.isFinite(stored) && stored >= 0
-      ? stored + 1
-      : 1;
-
-    window.localStorage.setItem(VISIT_STORAGE_KEY, String(visits));
-    return visits;
-  } catch {
-    return 1;
-  }
-}
+const VISITOR_API = 'https://visitor.6developer.com/visit';
+const PORTFOLIO_DOMAIN = window.location.hostname;
 
 function VisitCounter() {
-  const [visits, setVisits] = useState(0);
-  const [displayedVisits, setDisplayedVisits] = useState(0);
+  const [visitors, setVisitors] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setVisits(readAndIncrementVisits());
-  }, []);
+    let cancelled = false;
 
-  useEffect(() => {
-    if (!visits) return;
+    const registerVisitor = async () => {
+      try {
+        const response = await fetch(VISITOR_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            domain: PORTFOLIO_DOMAIN,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            page_path: window.location.pathname,
+            page_title: document.title,
+            referrer: document.referrer,
+          }),
+        });
 
-    const reduceMotion =
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!response.ok) throw new Error('Visitor counter request failed');
 
-    if (reduceMotion) {
-      setDisplayedVisits(visits);
-      return;
-    }
+        const data = await response.json();
 
-    const start = performance.now();
-    let animationFrame = 0;
-
-    const animate = (now: number) => {
-      const progress = Math.min(
-        (now - start) / ANIMATION_DURATION,
-        1
-      );
-
-      const eased = 1 - Math.pow(1 - progress, 4);
-      setDisplayedVisits(Math.round(visits * eased));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
+        if (!cancelled && Number.isFinite(data.totalCount)) {
+          setVisitors(data.totalCount);
+        }
+      } catch {
+        if (!cancelled) setVisitors(null);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
+    registerVisitor();
 
-    return () => cancelAnimationFrame(animationFrame);
-  }, [visits]);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const formattedVisitors = visitors?.toLocaleString('fr-FR') ?? '—';
 
   return (
     <section
       className="visit-counter"
-      aria-label={`${visits} visites de ce portfolio depuis ce navigateur`}
+      aria-label={
+        visitors === null
+          ? 'Compteur de visiteurs du portfolio'
+          : `${formattedVisitors} visiteurs du portfolio`
+      }
     >
-      <div className="visit-counter-orbit" aria-hidden="true">
+      <div className="visit-counter-icon" aria-hidden="true">
+        <span />
+        <span />
         <span />
       </div>
 
       <div className="visit-counter-copy">
-        <span className="visit-counter-label">VOTRE PARCOURS ICI</span>
+        <span className="visit-counter-label">VISITEURS DU PORTFOLIO</span>
 
-        <strong>{displayedVisits.toLocaleString('fr-FR')}</strong>
+        <strong aria-live="polite">
+          {loading ? '…' : formattedVisitors}
+        </strong>
 
         <span className="visit-counter-description">
-          {visits === 1
-            ? 'première visite depuis ce navigateur'
-            : 'visites depuis ce navigateur'}
+          visiteurs enregistrés depuis toutes les plateformes
         </span>
       </div>
 
-      <div className="visit-counter-signal" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </div>
+      <span className="visit-counter-status" aria-hidden="true" />
     </section>
   );
 }
