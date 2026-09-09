@@ -43,6 +43,27 @@ code {
   background-color: #0d1116;
 }
 
+.biomedical-city-launch {
+  display: grid;
+  min-height: min(46vw, 440px);
+  padding: clamp(2rem, 7vw, 6rem) 15%;
+  place-items: end start;
+  background:
+    radial-gradient(circle at 75% 35%, rgba(53, 149, 169, .22), transparent 26rem),
+    linear-gradient(120deg, #050b0f, #0a1920 55%, #071014);
+}
+
+.biomedical-city-launch > div { max-width: 700px; }
+.biomedical-city-launch span { color: #8adbe5; font-size: .72rem; font-weight: 800; letter-spacing: .18em; }
+.biomedical-city-launch h2 { margin: .75rem 0; font-size: clamp(1.9rem, 4.2vw, 3.8rem); line-height: 1.05; }
+.biomedical-city-launch p { max-width: 610px; color: #b7c9cd; line-height: 1.55; }
+.biomedical-city-launch button { margin-top: .65rem; padding: .75rem 1rem; border: 1px solid rgba(138, 219, 229, .65); border-radius: 999px; background: rgba(9, 32, 40, .85); color: #effdff; cursor: pointer; font-weight: 700; }
+.biomedical-city-launch button:hover { background: #123b46; }
+
+@media (max-width: 768px) {
+  .biomedical-city-launch { min-height: 310px; padding: 2rem 7%; }
+}
+
 a {
   text-decoration: none;
 }

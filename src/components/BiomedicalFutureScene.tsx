@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import './BiomedicalFutureScene.scss';
 
 type V3 = [number, number, number];
@@ -17,37 +21,46 @@ const BiomedicalCity: React.FC = () => {
     let dead = false;
     try {
       const mobile = window.matchMedia('(max-width: 768px)').matches;
+      const device = navigator as Navigator & { deviceMemory?: number };
+      const canUsePostProcessing = !mobile && device.hardwareConcurrency >= 8 && (device.deviceMemory ?? 8) >= 8;
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x06151d);
-      scene.fog = new THREE.Fog(0x06151d, 32, 118);
-      const camera = new THREE.PerspectiveCamera(mobile ? 54 : 47, 1, .1, 150);
+      scene.background = new THREE.Color(0x020609);
+      scene.fog = new THREE.FogExp2(0x061018, mobile ? .018 : .014);
+      const camera = new THREE.PerspectiveCamera(mobile ? 52 : 43, 1, .1, 150);
       const renderer = new THREE.WebGLRenderer({ antialias: !mobile, powerPreference: 'high-performance' });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.1 : 1.35));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.1));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = .92;
       renderer.shadowMap.enabled = !mobile;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture;
+      pmrem.dispose();
       mount.innerHTML = '';
       mount.appendChild(renderer.domElement);
 
-      scene.add(new THREE.HemisphereLight(0xd9fbff, 0x071017, 2.7));
-      const key = new THREE.DirectionalLight(0xffffff, 4.2); key.position.set(-18,25,20); key.castShadow=!mobile; scene.add(key);
-      const cyanLight = new THREE.PointLight(0x21e8ff, mobile?10:20, 60); cyanLight.position.set(10,8,4); scene.add(cyanLight);
-      const violetLight = new THREE.PointLight(0x775cff, mobile?7:14, 55); violetLight.position.set(-14,8,8); scene.add(violetLight);
-      const greenLight = new THREE.PointLight(0x51ffb1, mobile?5:9, 45); greenLight.position.set(16,5,-8); scene.add(greenLight);
+      scene.add(new THREE.HemisphereLight(0xc5e7f0, 0x03070a, 1.35));
+      const key = new THREE.DirectionalLight(0xdff8ff, 3.4); key.position.set(-18,25,20); key.castShadow=!mobile; key.shadow.mapSize.set(512,512); key.shadow.bias=-.00015; scene.add(key);
+      const cyanLight = new THREE.PointLight(0x5ddff0, mobile?8:16, 45, 2); cyanLight.position.set(10,8,4); scene.add(cyanLight);
+      const violetLight = new THREE.PointLight(0x6571c6, mobile?4:9, 38, 2); violetLight.position.set(-14,8,8); scene.add(violetLight);
+      const greenLight = new THREE.PointLight(0x5bc9a3, mobile?3:6, 30, 2); greenLight.position.set(16,5,-8); scene.add(greenLight);
+      const clinicalLight = new THREE.RectAreaLight(0xe6f7ff, mobile?3:7, 13, 3); clinicalLight.position.set(4,12,9); clinicalLight.lookAt(4,0,5); scene.add(clinicalLight);
 
       const mat=(color:number,metalness=.3,roughness=.4,emissive=0,intensity=0)=>new THREE.MeshStandardMaterial({color,metalness,roughness,emissive,emissiveIntensity:intensity});
-      const steel=mat(0xdce8e9,.88,.2), white=mat(0xf4f9f8,.18,.48), dark=mat(0x10262e,.9,.3), graphite=mat(0x29464f,.75,.34);
-      const cyan=mat(0x36eaff,.35,.17,0x0bd3ec,5), violet=mat(0x987dff,.42,.2,0x5a3de8,4), green=mat(0x58ffb7,.3,.2,0x1bd88a,4);
-      const amber=mat(0xffd25a,.28,.25,0xd99100,3), red=mat(0xff5576,.2,.3,0xc91f43,3), black=mat(0x081116,.96,.16);
-      const glass=new THREE.MeshPhysicalMaterial({color:0x73eaff,transmission:.5,opacity:.16,transparent:true,roughness:.06,metalness:.08,side:THREE.DoubleSide,depthWrite:false,emissive:0x0b4552,emissiveIntensity:1.2});
-      const doorGlass=new THREE.MeshPhysicalMaterial({color:0x9af4ff,transmission:.62,opacity:.25,transparent:true,roughness:.04,metalness:.05,side:THREE.DoubleSide,depthWrite:false,emissive:0x0a6070,emissiveIntensity:1.7});
+      const steel=mat(0xa7b9bf,.92,.22), white=mat(0xdde7e8,.12,.34), dark=mat(0x091318,.88,.32), graphite=mat(0x1b2a30,.82,.38);
+      const cyan=mat(0x58d9e8,.25,.23,0x0a3842,1.5), violet=mat(0x8790c8,.28,.28,0x1f214c,1), green=mat(0x67c9a9,.2,.3,0x103b30,1.2);
+      const amber=mat(0xf2b665,.22,.28,0x5a3106,1.5), red=mat(0xe27782,.15,.34,0x541018,1.2), black=mat(0x05090b,.96,.19);
+      const glass=new THREE.MeshPhysicalMaterial({color:0x9ed5df,transmission:.88,opacity:.3,transparent:true,roughness:.12,metalness:.08,ior:1.45,thickness:.12,side:THREE.DoubleSide,depthWrite:false});
+      const doorGlass=new THREE.MeshPhysicalMaterial({color:0xc1e7eb,transmission:.9,opacity:.38,transparent:true,roughness:.08,metalness:.04,ior:1.45,thickness:.1,side:THREE.DoubleSide,depthWrite:false});
       const box=(parent:THREE.Object3D,p:V3,s:V3,m:THREE.Material)=>{const x=new THREE.Mesh(new THREE.BoxGeometry(...s),m);x.position.set(...p);x.castShadow=!mobile;x.receiveShadow=true;parent.add(x);return x;};
       const cyl=(parent:THREE.Object3D,p:V3,r:number,h:number,m:THREE.Material,seg=18)=>{const x=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg),m);x.position.set(...p);x.castShadow=!mobile;x.receiveShadow=true;parent.add(x);return x;};
       const sphere=(parent:THREE.Object3D,p:V3,r:number,m:THREE.Material,seg=16)=>{const x=new THREE.Mesh(new THREE.SphereGeometry(r,seg,Math.max(8,seg-4)),m);x.position.set(...p);x.castShadow=!mobile;x.receiveShadow=true;parent.add(x);return x;};
 
-      box(scene,[0,-.7,0],[76,1.2,60],dark); box(scene,[0,-.05,0],[74,.08,58],graphite);
-      for(let x=-35;x<=35;x+=4)box(scene,[x,.01,0],[.012,.012,56],cyan);
-      for(let z=-27;z<=27;z+=4)box(scene,[0,.01,z],[72,.012,.012],cyan);
+      box(scene,[0,-.7,0],[76,1.2,60],dark); box(scene,[0,-.05,0],[74,.08,58],new THREE.MeshPhysicalMaterial({color:0x111c20,metalness:.72,roughness:.3,clearcoat:.22,clearcoatRoughness:.28}));
+      for(let x=-35;x<=35;x+=4)box(scene,[x,.012,0],[.025,.01,56],black);
+      for(let z=-27;z<=27;z+=4)box(scene,[0,.012,z],[72,.01,.025],black);
+      for(let z=-24;z<=24;z+=12)box(scene,[0,.06,z],[68,.025,.08],new THREE.MeshBasicMaterial({color:0x183e45,transparent:true,opacity:.3}));
 
       const panel=(title:string,subtitle:string,w:number,h:number)=>{const g=new THREE.Group();const c=document.createElement('canvas');c.width=1024;c.height=360;const ctx=c.getContext('2d');if(ctx){ctx.fillStyle='rgba(3,23,31,.92)';ctx.fillRect(0,0,1024,360);ctx.strokeStyle='#70efff';ctx.lineWidth=5;ctx.strokeRect(5,5,1014,350);ctx.font='700 48px Arial';ctx.fillStyle='#8af2ff';ctx.fillText(title,38,68);ctx.font='600 24px Arial';ctx.fillStyle='#d7f6fa';ctx.fillText(subtitle,38,108);ctx.strokeStyle='#43e7ff';ctx.lineWidth=3;ctx.beginPath();const ecg:Array<[number,number]>=[[0,0],[18,0],[28,-30],[40,18],[54,0],[76,0],[90,-23],[103,10],[120,0],[148,0],[162,-28],[176,14],[195,0],[225,0]];ecg.forEach(([x,y],i)=>i?ctx.lineTo(45+x*2.7,190+y):ctx.moveTo(45+x*2.7,190+y));ctx.stroke();ctx.font='700 25px Arial';ctx.fillStyle='#55ffb5';ctx.fillText('HR 72 BPM',38,302);ctx.fillText('SpO₂ 98%',270,302);ctx.fillStyle='#a28aff';ctx.fillText('AI CONFIDENCE 97.4%',500,302);}const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;const pm=new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:.96,side:THREE.DoubleSide,depthWrite:false});g.add(new THREE.Mesh(new THREE.PlaneGeometry(w,h),pm));g.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w,h,.03)),new THREE.LineBasicMaterial({color:0x73efff,transparent:true,opacity:.9})));g.userData.material=pm;return g;};
       const doors=(parent:THREE.Object3D,z:number,width:number,height:number):Door=>{box(parent,[0,height+.08,z],[width,.08,.12],steel);const left=box(parent,[-width*.22,height/2,z],[width*.4,height,.08],doorGlass);const right=box(parent,[width*.22,height/2,z],[width*.4,height,.08],doorGlass);box(parent,[-width*.43,height/2,z-.05],[.06,height,.1],cyan);box(parent,[width*.43,height/2,z-.05],[.06,height,.1],cyan);return{left,right};};
@@ -74,7 +87,17 @@ const BiomedicalCity: React.FC = () => {
       makeArm(-4.7,-3.5,1);makeArm(-4.7,3.5,1);makeArm(4.7,-3.5,-1);makeArm(4.7,3.5,-1);box(surgery,[0,1.3,0],[6.4,.3,2.8],steel);cyl(surgery,[0,6.2,0],.22,1.1,black,18);const lamp=new THREE.Mesh(new THREE.TorusGeometry(1.55,.12,10,48),steel);lamp.rotation.x=Math.PI/2;lamp.position.set(0,6.2,0);surgery.add(lamp);sphere(surgery,[0,6.12,0],1.02,white,22);const surgPanel=panel('SURGICAL ROBOT','4-ARM PRECISION SYSTEM // STERILE OR',7,2.2);surgPanel.position.set(0,5.25,-5.4);surgery.add(surgPanel);
       const imaging=new THREE.Group();imaging.position.set(0,0,20);scene.add(imaging);box(imaging,[0,.6,0],[12,.25,8],white);const ct=new THREE.Mesh(new THREE.TorusGeometry(3.1,.42,18,64),black);ct.rotation.y=Math.PI/2;ct.position.set(0,3.6,0);imaging.add(ct);const ctGlow=new THREE.Mesh(new THREE.TorusGeometry(2.65,.12,12,64),cyan);ctGlow.rotation.y=Math.PI/2;ctGlow.position.copy(ct.position);imaging.add(ctGlow);const imgPanel=panel('IMAGING / CT-MRI','3D ANATOMICAL RECONSTRUCTION // LIVE SCAN',7,2.2);imgPanel.position.set(-5,6.4,-3.8);imaging.add(imgPanel);
       const entrance=new THREE.Group();entrance.position.set(0,0,-22);scene.add(entrance);box(entrance,[0,5,0],[26,10,.12],glass);box(entrance,[-13,5,0],[.3,10,5],graphite);box(entrance,[13,5,0],[.3,10,5],graphite);box(entrance,[0,10,0],[26,.3,5],graphite);const entranceDoors=doors(entrance,.08,8.5,7);const title=panel('CEDRIC BIOMEDICAL LAB CENTER','ROBOTICS  ·  AI  ·  IMAGING  ·  GENOMICS  ·  BIOENGINEERING',11,2.8);title.position.set(0,8,-.16);entrance.add(title);
-      const count=mobile?55:105;const positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*66;positions[i*3+1]=.8+Math.random()*14;positions[i*3+2]=(Math.random()-.5)*50;}const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(positions,3));const pm=new THREE.PointsMaterial({color:0x76ecff,size:mobile?.04:.055,transparent:true,opacity:.42});const particles=new THREE.Points(pg,pm);scene.add(particles);
+      // A deterministic scene makes the same camera tour suitable for later MP4/WebM capture.
+      const seeded=(index:number,axis:number)=>{const value=Math.sin(index*12.9898+axis*78.233)*43758.5453;return value-Math.floor(value);};
+      const count=mobile?55:105;const positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(seeded(i,0)-.5)*66;positions[i*3+1]=.8+seeded(i,1)*14;positions[i*3+2]=(seeded(i,2)-.5)*50;}const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(positions,3));const pm=new THREE.PointsMaterial({color:0x76ecff,size:mobile?.04:.055,transparent:true,opacity:.42});const particles=new THREE.Points(pg,pm);scene.add(particles);
+
+      // Bloom is reserved for capable desktops. The base PBR render remains cinematic
+      // without post-processing on lower-powered devices.
+      const composer = canUsePostProcessing ? new EffectComposer(renderer) : null;
+      if (composer) {
+        composer.addPass(new RenderPass(scene, camera));
+        composer.addPass(new UnrealBloomPass(new THREE.Vector2(1, 1), .16, .8, .9));
+      }
 
       // Wider, slower camera tour: equipment stays readable instead of filling the frame.
       const shots:Shot[]=[
@@ -100,10 +123,17 @@ const BiomedicalCity: React.FC = () => {
       const offset=new THREE.Vector3();
       let currentFov=shots[0].fov;
 
-      const resize=()=>{const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);};window.addEventListener('resize',resize);resize();
+      const resize=()=>{const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);composer?.setSize(w,h);};window.addEventListener('resize',resize);resize();
 
-      const animate=()=>{
-        if(dead)return;
+      // The visual is decorative, so a capped frame rate preserves battery and keeps
+      // scrolling responsive while remaining fluid on high-refresh-rate screens.
+      const frameInterval=1000/(mobile?20:24);
+      let lastFrameTime=0;
+      const animate=(now=performance.now())=>{
+        raf=0;
+        if(dead||document.hidden)return;
+        if(now-lastFrameTime<frameInterval){raf=requestAnimationFrame(animate);return;}
+        lastFrameTime=now;
         const rawDelta=clock.getDelta();
         const delta=Math.min(rawDelta,.05);
         const t=clock.elapsedTime;
@@ -182,15 +212,20 @@ const BiomedicalCity: React.FC = () => {
 
         [labName,seqPanel,scopeScreen,pcrPanel,bscPanel,incPanel,cryoPanel,printPanel,railPanel,surgPanel,imgPanel,title].forEach((p,i)=>{const m=p.userData.material as THREE.MeshBasicMaterial|undefined;if(m)m.opacity=.9+Math.sin(t*1.15+i*.55)*.035;});
 
-        renderer.render(scene,camera);
+        if(composer) composer.render(); else renderer.render(scene,camera);
         raf=requestAnimationFrame(animate);
       };
+      const onVisibilityChange=()=>{
+        if(document.hidden){cancelAnimationFrame(raf);raf=0;return;}
+        if(!dead&&!raf){lastFrameTime=0;clock.getDelta();raf=requestAnimationFrame(animate);}
+      };
+      document.addEventListener('visibilitychange',onVisibilityChange);
       animate();
-      return()=>{dead=true;cancelAnimationFrame(raf);window.removeEventListener('resize',resize);pg.dispose();pm.dispose();renderer.dispose();mount.innerHTML='';};
+      return()=>{dead=true;cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',onVisibilityChange);window.removeEventListener('resize',resize);composer?.dispose();scene.traverse((object)=>{const mesh=object as THREE.Mesh;if(!mesh.isMesh)return;mesh.geometry.dispose();const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];materials.forEach((material)=>{Object.values(material).forEach((value)=>{if(value instanceof THREE.Texture)value.dispose();});material.dispose();});});scene.environment?.dispose();renderer.dispose();mount.innerHTML='';};
     }catch(e){console.error('Biomedical future scene failed:',e);setError(true);return()=>{dead=true;cancelAnimationFrame(raf);};}
   },[]);
 
-  return <section className="biomedical-future-scene" aria-label="Cédric Biomedical Lab Center — futuristic medical technology showcase"><div ref={mountRef} className="biomedical-future-canvas"/><div className="future-scene-overlay"><div className="future-scene-hud future-scene-hud-left"><span>CEDRIC BIOMEDICAL LAB CENTER</span><strong>RESEARCH CAMPUS // 2035</strong></div><div className="future-scene-hud future-scene-hud-right"><span>LIVE SYSTEMS</span><strong>ROBOTICS · AI · IMAGING · GENOMICS</strong></div><div className="future-scene-title"><span>THE FUTURE OF</span><strong>HEALTHCARE</strong></div></div>{error&&<div className="future-scene-error"><strong>CEDRIC BIOMEDICAL LAB CENTER</strong><span>Visualisation 3D indisponible — interface médicale de secours active.</span></div>}</section>;
+  return <section className="biomedical-future-scene" aria-label="Cédric Biomedical Lab Center — cinematic biomedical laboratory"><div ref={mountRef} className="biomedical-future-canvas"/><div className="future-scene-overlay"><div className="future-scene-hud future-scene-hud-left"><span>CÉDRIC BIOMEDICAL</span><strong>ADVANCED CLINICAL ENGINEERING</strong></div><div className="future-scene-hud future-scene-hud-right"><span>RESEARCH CAMPUS</span><strong>ROBOTICS · IMAGING · GENOMICS</strong></div><div className="future-scene-title"><span>ENGINEERING IN SERVICE OF</span><strong>HEALTH</strong></div></div>{error&&<div className="future-scene-error"><strong>CÉDRIC BIOMEDICAL LAB CENTER</strong><span>Visualisation 3D indisponible — interface médicale de secours active.</span></div>}</section>;
 };
 
 export default BiomedicalCity;
