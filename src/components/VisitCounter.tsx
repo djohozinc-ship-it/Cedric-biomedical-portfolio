@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './VisitCounter.scss';
 
 const VISITOR_API = 'https://visitor.6developer.com/visit';
+const FALLBACK_COUNTER_API =
+  'https://countapi.mileshilliard.com/api/v1/hit/cedric-biomedical-portfolio-visits';
 const PORTFOLIO_DOMAIN = window.location.hostname;
 
 function VisitCounter() {
@@ -25,15 +27,38 @@ function VisitCounter() {
           }),
         });
 
-        if (!response.ok) throw new Error('Visitor counter request failed');
+        if (!response.ok) throw new Error('Primary visitor API failed');
 
         const data = await response.json();
+        const totalCount = Number(data.totalCount);
 
-        if (!cancelled && Number.isFinite(data.totalCount)) {
-          setVisitors(data.totalCount);
+        if (!Number.isFinite(totalCount)) {
+          throw new Error('Primary visitor API returned an invalid count');
         }
+
+        if (!cancelled) setVisitors(totalCount);
       } catch {
-        if (!cancelled) setVisitors(null);
+        // Fallback for when the primary visitor service is unavailable.
+        // This counter is a persistent page-visit counter and does not use localStorage.
+        try {
+          const fallbackResponse = await fetch(FALLBACK_COUNTER_API, {
+            method: 'GET',
+            cache: 'no-store',
+          });
+
+          if (!fallbackResponse.ok) throw new Error('Fallback counter failed');
+
+          const fallbackData = await fallbackResponse.json();
+          const fallbackCount = Number(fallbackData.value);
+
+          if (!Number.isFinite(fallbackCount)) {
+            throw new Error('Fallback counter returned an invalid count');
+          }
+
+          if (!cancelled) setVisitors(fallbackCount);
+        } catch {
+          if (!cancelled) setVisitors(null);
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -66,9 +91,7 @@ function VisitCounter() {
       <div className="visit-counter-copy">
         <span className="visit-counter-label">VISITEURS DU PORTFOLIO</span>
 
-        <strong aria-live="polite">
-          {loading ? '…' : formattedVisitors}
-        </strong>
+        <strong aria-live="polite">{loading ? '…' : formattedVisitors}</strong>
 
         <span className="visit-counter-description">
           visiteurs enregistrés depuis toutes les plateformes
