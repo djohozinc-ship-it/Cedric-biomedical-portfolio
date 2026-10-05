@@ -2,15 +2,24 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faImages, faFlask } from '@fortawesome/free-solid-svg-icons';
 import './SacruroDetails.scss';
+import osmoseurImg from '../assets/images/sacruro/chd-zou-osmoseur.jpg';
+import tdsImg from '../assets/images/sacruro/mesure-tds.jpg';
+import labImg from '../assets/images/sacruro/rapport-laboratoire.jpg';
+import dashboardImg from '../assets/images/sacruro/app-tableau-de-bord.jpg';
+import synopticImg from '../assets/images/sacruro/app-synoptique.jpg';
+import historyImg from '../assets/images/sacruro/app-historique.jpg';
+import hydraulicImg from '../assets/images/sacruro/schema-hydraulique.png';
+import architectureImg from '../assets/images/sacruro/architecture-electronique.jpg';
+import electricalImg from '../assets/images/sacruro/schema-electrique.png';
 
-const SACRURO_IMAGE_BASE = 'https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/src/assets/images/src/assets/images/sacruro';
+
 
 const imagePlaceholders = [
-  { title: 'Mesure du TDS sur le terrain', file: 'sacruro-mesure-tds.webp', image: `${SACRURO_IMAGE_BASE}/mesure-tds.jpg`, text: 'Photographie du TDS-mètre utilisé directement sur le terrain.' },
-  { title: 'Rapport d’analyses de laboratoire', file: 'sacruro-rapport-laboratoire.webp', image: `${SACRURO_IMAGE_BASE}/rapport-laboratoire.jpg`, text: 'Photographie du rapport présentant les analyses physico-chimiques réalisées au laboratoire.' },
-  { title: 'Application mobile', file: 'sacruro-app-tableau-de-bord.webp', image: `${SACRURO_IMAGE_BASE}/app-tableau-de-bord.jpg`, text: 'Capture du tableau de bord de supervision.' },
-  { title: 'Application mobile — synoptique', file: 'sacruro-app-synoptique.webp', image: `${SACRURO_IMAGE_BASE}/app-synoptique.jpg`, text: 'Capture du synoptique hydraulique.' },
-  { title: 'Application mobile — historique', file: 'sacruro-app-historique.webp', image: `${SACRURO_IMAGE_BASE}/app-historique.jpg`, text: 'Capture de l’historique des mesures.' },
+  { title: 'Mesure du TDS sur le terrain', file: 'sacruro-mesure-tds.webp', image: tdsImg, text: 'Photographie du TDS-mètre utilisé directement sur le terrain.' },
+  { title: 'Rapport d’analyses de laboratoire', file: 'sacruro-rapport-laboratoire.webp', image: labImg, text: 'Photographie du rapport présentant les analyses physico-chimiques réalisées au laboratoire.' },
+  { title: 'Application mobile', file: 'sacruro-app-tableau-de-bord.webp', image: dashboardImg, text: 'Capture du tableau de bord de supervision.' },
+  { title: 'Application mobile — synoptique', file: 'sacruro-app-synoptique.webp', image: synopticImg, text: 'Capture du synoptique hydraulique.' },
+  { title: 'Application mobile — historique', file: 'sacruro-app-historique.webp', image: historyImg, text: 'Capture de l’historique des mesures.' },
 ];
 
 const MediaPlaceholder = ({ title, file, image, text }: { title: string; file: string; image: string; text: string }) => (
@@ -49,7 +58,7 @@ export default function SacruroDetails() {
             <div className="sacruro-meta"><span>Génie biomédical</span><span>Automatisation</span><span>Électronique</span><span>IoT</span><span>Gestion de l’eau</span><span>Protection de l'environnement</span></div>
             <div className="sacruro-authors"><strong>DJOHOZIN Cédric</strong><span>·</span><strong>SOSSOUNON Médessè Géraldine</strong><br/><small>Licence Professionnelle — Maintenance Biomédicale et Hospitalière · Département de Génie Biomédical · EPAC/UAC</small></div>
           </div>
-          <button type="button" className="sacruro-hero-card" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/chd-zou-osmoseur.jpg`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir la photo de l’osmoseur en grand" title="Cliquer pour afficher la photo en grand">
+          <button type="button" className="sacruro-hero-card" onClick={() => window.open(osmoseurImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir la photo de l’osmoseur en grand" title="Cliquer pour afficher la photo en grand">
             <div className="sacruro-orbit"><FontAwesomeIcon icon={faDroplet} /></div>
             <div className="sacruro-hero-card-label">ÉTUDE DE CONCEPTION & PRÉVALIDATION</div>
             <div className="sacruro-stat"><strong>5 850 L/j</strong><span>rejet estimé sur la base des observations de terrain</span></div>
@@ -92,15 +101,15 @@ export default function SacruroDetails() {
           <div className="sacruro-use-grid"><span>Chasse d’eau des toilettes</span><span>Arrosage des plantes et espaces verts</span><span>Nettoyage des sols</span><span>Lavage des véhicules de service</span></div>
         </Section>
         <Section number="09" title="Architecture hydraulique" icon={faDroplet} className="diagram-section">
-          <button type="button" className="diagram-only sacruro-zoomable-diagram" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/schema-hydraulique.png`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma hydraulique en grand" title="Cliquer pour afficher le schéma en grand"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></button>
+          <button type="button" className="diagram-only sacruro-zoomable-diagram" onClick={() => window.open(hydraulicImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma hydraulique en grand" title="Cliquer pour afficher le schéma en grand"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></button>
         </Section>
         <Section number="10" title="Instrumentation" icon={faGaugeHigh}>
           <div className="sacruro-grid"><div><strong>Niveau</strong><p>JSN-SR04T ultrasonique étanche, utilisé pour suivre le niveau des réservoirs.</p></div><div><strong>Débit</strong><p>YF-B10 à effet Hall, placé à la sortie du réservoir de stockage.</p></div><div><strong>TDS / conductivité</strong><p>SEN0244 DFRobot pour le suivi de la qualité physico-chimique.</p></div><div><strong>pH</strong><p>SEN0161-V2 pour la mesure du pH.</p></div><div><strong>Température</strong><p>DS18B20 pour la surveillance thermique.</p></div></div>
         </Section>
         <Section number="11" title="Architecture électronique" icon={faMicrochip} className="diagram-section">
           <div className="diagram-only sacruro-electronics-zoom-wrap">
-            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--architecture" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/architecture-electronique.jpg`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir l’architecture électronique en grand" title="Cliquer pour afficher en grand" />
-            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--schema" onClick={() => window.open(`${SACRURO_IMAGE_BASE}/schema-electrique.PNG`, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma électronique en grand" title="Cliquer pour afficher en grand" />
+            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--architecture" onClick={() => window.open(architectureImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir l’architecture électronique en grand" title="Cliquer pour afficher en grand" />
+            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--schema" onClick={() => window.open(electricalImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma électronique en grand" title="Cliquer pour afficher en grand" />
             <span>Architecture électronique et schéma électronique complet</span><small>ESP32 · acquisition · extension E/S · watchdog · commande de puissance · alimentation · interfaces locales</small>
           </div>
         </Section>
@@ -164,13 +173,13 @@ export default function SacruroDetails() {
         <Section number="29" title="Contribution au projet" icon={faScrewdriverWrench}>
           <p>Travail réalisé en binôme dans le cadre du mémoire. Le projet couvre l’étude du besoin, la conception du système, l’électronique, le firmware, la logique de contrôle, la communication IoT, l’application mobile, l’analyse des risques, la maintenance et l’évaluation économique.</p>
         </Section>
-        <Section number="30" title="Ce que le projet démontre" icon={faCircleCheck}>
-          <div className="sacruro-highlight"><p>SACRURO n’est pas seulement un prototype autour d’un ESP32. C’est une étude d’ingénierie multidisciplinaire appliquée à un problème réel de gestion de l’eau en milieu hospitalier, reliant données de terrain, caractérisation de l’eau, conception hydraulique, électronique, automatisation, IoT, sécurité, gestion des risques, maintenance et évaluation économique.</p></div>
+        <Section number="30" title="Synthèse des apports" icon={faCircleCheck}>
+          <div className="sacruro-highlight"><p>SACRURO met en œuvre une démarche d’ingénierie multidisciplinaire appliquée à un problème concret de gestion de l’eau en milieu hospitalier, reliant données de terrain, caractérisation de l’eau, conception hydraulique, électronique, automatisation, IoT, sécurité, gestion des risques, maintenance et évaluation économique.</p></div>
         </Section>
         <Section number="31" title="Mots-clés" icon={faNetworkWired}>
           <div className="sacruro-techs"><span>Génie biomédical</span><span>Osmose inverse</span><span>Réutilisation de l’eau</span><span>ESP32</span><span>Automatisation</span><span>IoT</span><span>MQTT</span><span>Ultrafiltration</span><span>React Native</span><span>Maintenance hospitalière</span></div>
         </Section>
-        <Section number="32" title="Résumé court pour la page d’accueil" icon={faCircleCheck}>
+        <Section number="32" title="Résumé du projet" icon={faCircleCheck}>
           <p className="sacruro-home-summary">SACRURO est une étude de conception d’un système automatique et connecté destiné à récupérer et valoriser les rejets d’un osmoseur d’une unité de dialyse du CHD-Zou. Le projet combine hydraulique, électronique embarquée, automatisation, IoT, supervision mobile et analyse des risques afin de proposer une solution de réutilisation pour des usages non médicaux.</p>
         </Section>
         <Section number="33" title="Démonstration de la supervision en temps réel" icon={faVideo}>

@@ -23,9 +23,12 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
 
     useEffect(() => {
         const element = ref.current;
+        // Le menu demande de tout charger avant de défiler vers une section encore absente du DOM.
+        const forceLoad = () => setShouldLoad(true);
+        window.addEventListener('portfolio:preload', forceLoad);
         if (!element || typeof IntersectionObserver === 'undefined') {
             setShouldLoad(true);
-            return;
+            return () => window.removeEventListener('portfolio:preload', forceLoad);
         }
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
@@ -34,7 +37,10 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
             }
         }, { rootMargin: '800px 0px' });
         observer.observe(element);
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('portfolio:preload', forceLoad);
+        };
     }, []);
 
     return <div ref={ref} style={{ minHeight: shouldLoad ? undefined : minHeight }}>{shouldLoad && <Suspense fallback={null}>{children}</Suspense>}</div>;
@@ -65,43 +71,25 @@ function BiomedicalCityViewport() {
     return <div ref={viewportRef} className="biomedical-city-viewport">{isReady && isVisible && <Suspense fallback={null}><BiomedicalCity /></Suspense>}</div>;
 }
 
-function sanitizeSacruroVisitorCopy() {
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('.sacruro-page .sacruro-section'));
-    const setHeading = (section: HTMLElement | undefined, title: string) => {
-        const heading = section?.querySelector('h2');
-        if (!heading) return;
-        const icon = heading.querySelector('svg');
-        heading.replaceChildren();
-        if (icon) heading.appendChild(icon);
-        heading.appendChild(document.createTextNode(` ${title}`));
-    };
-
-    const synthesis = sections[29];
-    setHeading(synthesis, 'Synthèse des apports');
-    const synthesisText = synthesis?.querySelector('.sacruro-highlight p');
-    if (synthesisText) {
-        synthesisText.textContent = 'SACRURO met en œuvre une démarche d’ingénierie multidisciplinaire appliquée à un problème concret de gestion de l’eau en milieu hospitalier. L’étude articule mesures de terrain, caractérisation de l’eau, conception hydraulique, électronique, automatisation, IoT, sécurité, gestion des risques, maintenance et évaluation économique.';
-    }
-
-    const summary = sections[31];
-    setHeading(summary, 'Résumé du projet');
-
-    const demonstration = sections[32];
-    const placeholderNote = demonstration?.querySelector('.sacruro-video-placeholder span');
-    const placeholderFile = demonstration?.querySelector('.sacruro-video-placeholder small');
-    if (placeholderNote) placeholderNote.remove();
-    if (placeholderFile) placeholderFile.remove();
-}
-
 function App() {
-    const [mode, setMode] = useState<string>('dark');
+    const [mode, setMode] = useState<string>(() => {
+        try {
+            return window.localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
+        } catch {
+            return 'dark';
+        }
+    });
     const [hash, setHash] = useState(window.location.hash);
     const isProjectPage = hash.startsWith('#/project/');
     const isSacruroPage = hash === '#/project/sacruro';
     const isPPGPage = hash === '#/project/ppg-computer-vision';
     const isMorEyesPage = hash === '#/project/mor-eyes';
 
-    const handleModeChange = () => setMode(mode === 'dark' ? 'light' : 'dark');
+    const handleModeChange = () => {
+        const next = mode === 'dark' ? 'light' : 'dark';
+        setMode(next);
+        try { window.localStorage.setItem('portfolio-theme', next); } catch { /* stockage indisponible : on ignore */ }
+    };
 
     useEffect(() => {
         const onHashChange = () => {
@@ -135,12 +123,6 @@ function App() {
         document.addEventListener('click', handleMorEyesAnchors);
         return () => document.removeEventListener('click', handleMorEyesAnchors);
     }, [isMorEyesPage]);
-
-    useEffect(() => {
-        if (!isSacruroPage) return;
-        const timer = window.setTimeout(() => sanitizeSacruroVisitorCopy(), 120);
-        return () => window.clearTimeout(timer);
-    }, [isSacruroPage]);
 
     return (
         <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faPlayCircle, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBullseye, faChartLine, faCogs, faImages, faLaptopCode, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/PPGComputerVisionDetails.scss';
 import '../assets/styles/PPGPremiumAnimations.scss';
 
@@ -9,8 +9,6 @@ const publicUrl = process.env.PUBLIC_URL || '';
 const mediaItems = [
     { src: `${publicUrl}/images/projects/ppg/roi.png`, title: 'Région d’intérêt (ROI)', caption: 'Zone du visage sélectionnée pour l’extraction des variations photométriques.' },
     { src: `${publicUrl}/images/projects/ppg/signal-ppg-brut.png`, title: 'Signal PPG temporel brut', caption: 'Signal extrait avant les étapes ultérieures de traitement et de détection des pics.' },
-    { src: `${publicUrl}/images/projects/ppg/interface.png`, title: 'Interface de démonstration', caption: 'Capture de l’interface utilisée pendant l’expérimentation.' },
-    { src: `${publicUrl}/images/projects/ppg/traitement.png`, title: 'Traitement vidéo', caption: 'Capture complémentaire du traitement à ajouter ultérieurement.' },
 ];
 
 const pipeline = [
@@ -65,7 +63,7 @@ export default function PPGComputerVisionDetails() {
                     <p className="ppg-lead">Une expérimentation de photopléthysmographie à distance visant à extraire une information physiologique à partir d’une simple vidéo, sans capteur placé sur le corps.</p>
                     <div className="ppg-tags"><span>Python</span><span>OpenCV</span><span>MediaPipe</span><span>PPG</span><span>Traitement du signal</span></div>
                     <div className="ppg-hero-actions">
-                        <button type="button" onClick={() => scrollToSection('ppg-demo')}><FontAwesomeIcon icon={faPlayCircle} /> Voir la démonstration</button>
+                        <button type="button" onClick={() => scrollToSection('ppg-captures')}><FontAwesomeIcon icon={faImages} /> Voir les captures</button>
                         <button type="button" onClick={() => scrollToSection('ppg-results')}><FontAwesomeIcon icon={faChartLine} /> Voir les résultats</button>
                     </div>
                 </div>
@@ -90,9 +88,7 @@ export default function PPGComputerVisionDetails() {
 
             <section className="ppg-section ppg-tech-grid"><div className="ppg-tech-card"><FontAwesomeIcon icon={faLaptopCode} /><span>Vision par ordinateur</span><p>OpenCV pour la lecture, la manipulation et le traitement des images vidéo.</p></div><div className="ppg-tech-card"><FontAwesomeIcon icon={faCogs} /><span>Suivi facial</span><p>MediaPipe pour stabiliser la localisation du visage et de la zone observée.</p></div><div className="ppg-tech-card"><FontAwesomeIcon icon={faChartLine} /><span>Traitement du signal</span><p>Construction d’une série temporelle, analyse des variations et recherche d’une composante périodique exploitable.</p></div></section>
 
-            <section id="ppg-demo" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">04 — INTERFACE & DÉMONSTRATION</span><h2>Voir le système en fonctionnement</h2></div><div className="ppg-video-box"><video controls preload="metadata" poster={`${publicUrl}/images/projects/ppg/roi.png`}><source src={`${publicUrl}/videos/projects/ppg/demo.mp4`} type="video/mp4" />Votre navigateur ne peut pas lire cette vidéo.</video><div className="ppg-video-overlay"><FontAwesomeIcon icon={faPlayCircle} /><span>Ajoute ta vidéo ici :<strong>/public/videos/projects/ppg/demo.mp4</strong></span></div></div></section>
-
-            <section className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">05 — TRAVAIL VISUEL</span><h2>Captures du traitement et visualisations</h2></div><div className="ppg-media-grid">{mediaItems.map((item) => <figure key={item.src} className="ppg-media-card"><button type="button" className="ppg-media-zoom" onClick={() => setSelectedImage({ src: item.src, title: item.title })} aria-label={`Agrandir : ${item.title}`}><div className="ppg-media-placeholder"><img src={item.src} alt={item.title} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement?.classList.add('is-empty'); }} /><span><FontAwesomeIcon icon={faImages} /> Image à ajouter</span></div><span className="ppg-zoom-hint"><FontAwesomeIcon icon={faImages} /> Cliquer pour agrandir</span></button><figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption></figure>)}</div></section>
+            <section id="ppg-captures" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">04 — TRAVAIL VISUEL</span><h2>Captures du traitement et visualisations</h2></div><div className="ppg-media-grid">{mediaItems.map((item) => <figure key={item.src} className="ppg-media-card"><button type="button" className="ppg-media-zoom" onClick={() => setSelectedImage({ src: item.src, title: item.title })} aria-label={`Agrandir : ${item.title}`}><div className="ppg-media-placeholder"><img src={item.src} alt={item.title} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement?.classList.add('is-empty'); }} /><span><FontAwesomeIcon icon={faImages} /> Image à ajouter</span></div><span className="ppg-zoom-hint"><FontAwesomeIcon icon={faImages} /> Cliquer pour agrandir</span></button><figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption></figure>)}</div></section>
 
             <section id="ppg-results" className="ppg-section"><div className="ppg-section-heading"><span className="ppg-section-kicker">06 — RÉSULTATS</span><h2>Résultats obtenus et éléments à documenter</h2></div><div className="ppg-result-grid">{resultCards.map((item) => <article key={item.label}><small>{item.label}</small><strong>{item.value}</strong><p>{item.note}</p></article>)}</div><div className="ppg-results-note"><FontAwesomeIcon icon={faChartLine} /><div><strong>Important</strong><p>Les mesures finales (BPM de référence, BPM estimé, écart, nombre d’essais, durée de capture, etc.) sont volontairement laissées éditables pour que tu puisses renseigner exactement les valeurs issues de tes expériences.</p></div></div></section>
 

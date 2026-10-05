@@ -10,10 +10,14 @@ import '../assets/styles/MorEyesDetails.scss';
 
 const publicUrl = process.env.PUBLIC_URL || '';
 
-const gallery = Array.from({ length: 6 }, (_, i) => ({
-  src: `${publicUrl}/images/projects/mor-eyes/photo-${i + 1}.jpg`,
-  alt: `MOR-EYES COM V1.0 — photographie ${i + 1}`,
-}));
+const gallery = [
+  { file: 'hero.jpg', alt: 'Vue d’ensemble du système MOR-EYES COM V1.0', caption: 'Vue d’ensemble du système' },
+  { file: 'prototype.jpg', alt: 'Prototype du système MOR-EYES COM V1.0', caption: 'Le prototype assemblé' },
+  { file: 'electronique.jpg', alt: 'Montage électronique LED et LDR du projet MOR-EYES', caption: 'Montage électronique LED / LDR' },
+  { file: 'camera.jpg', alt: 'Caméra utilisée pour l’acquisition du regard', caption: 'Acquisition par caméra' },
+  { file: 'utilisation.jpg', alt: 'Utilisation du système MOR-EYES par un utilisateur', caption: 'Mise en situation d’usage' },
+  { file: 'test.jpg', alt: 'Phase de test du système MOR-EYES', caption: 'Phase de test' },
+].map((item) => ({ ...item, src: `${publicUrl}/images/projects/mor-eyes/${item.file}` }));
 
 const pipeline = [
   { icon: faCamera, number: '01', title: 'Acquisition du signal visuel', text: 'Une caméra standard placée face à l’utilisateur capture en temps réel les mouvements du visage et des yeux. Le flux vidéo est transmis au module de traitement afin de conserver une interaction naturelle et une latence minimale.' },
@@ -90,12 +94,6 @@ function MorEyesDetails() {
             <p>Le projet MOR-EYES COM part alors d’une possibilité fonctionnelle : exploiter les mouvements oculaires et palpébraux lorsqu’ils restent disponibles afin de créer un canal de communication alternatif.</p>
           </div>
           <aside className="mor-eyes-problem-card">
-            <div className="mor-eyes-corner-video" aria-hidden="true">
-              <div className="mor-eyes-corner-video-loader"><span /></div>
-              <video autoPlay muted loop playsInline preload="none" poster={`${publicUrl}/images/projects/mor-eyes/video-poster.jpg`}>
-                <source src={`${publicUrl}/images/projects/mor-eyes/hero-clip.mp4`} type="video/mp4" />
-              </video>
-            </div>
             <div className="problem-icon"><FontAwesomeIcon icon={faPersonCircleQuestion} /></div><span>QUESTION DE CONCEPTION</span><strong>Comment permettre à une personne sévèrement privée de parole de transmettre un message à son entourage uniquement à partir de mouvements oculaires volontaires ?</strong>
           </aside>
         </div>
@@ -144,7 +142,7 @@ function MorEyesDetails() {
       <section id="mor-eyes-gallery" className="mor-eyes-section mor-eyes-gallery-section">
         <div className="mor-eyes-section-heading"><span>07</span><div><small>PREUVES VISUELLES</small><h2>Prototype & démonstration</h2></div></div>
         <p className="mor-eyes-section-lead">La galerie est prête à recevoir les six photographies du projet. La vidéo YouTube ci-dessous présente directement le prototype MOR-EYES COM V1.0 en fonctionnement.</p>
-        <div className="mor-eyes-gallery-grid">{gallery.map((item, index) => <figure key={item.src}><img src={item.src} alt={item.alt} loading="lazy" /><figcaption><b>{String(index + 1).padStart(2, '0')}</b><span>Vue du prototype MOR-EYES COM</span></figcaption></figure>)}</div>
+        <div className="mor-eyes-gallery-grid">{gallery.map((item, index) => <figure key={item.src}><img src={item.src} alt={item.alt} loading="lazy" /><figcaption><b>{String(index + 1).padStart(2, '0')}</b><span>{item.caption}</span></figcaption></figure>)}</div>
         <div className="mor-eyes-video-card"><div className="video-heading"><div><span>DÉMONSTRATION</span><h3>MOR-EYES COM V1.0 en fonctionnement</h3></div><FontAwesomeIcon icon={faPlayCircle} /></div><div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:'inherit'}}><iframe src="https://www.youtube.com/embed/qimwWCac6hs" title="Démonstration MOR-EYES COM V1.0" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:0}} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div></div>
       </section>
 

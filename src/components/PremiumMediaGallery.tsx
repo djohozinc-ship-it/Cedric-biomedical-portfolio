@@ -12,21 +12,8 @@ type PremiumMediaGalleryProps = {
     media: GalleryMedia[];
 };
 
-const resolveMediaSrc = (src: string) => {
-    if (src.startsWith('https://raw.githubusercontent.com/') || src.startsWith('data:') || src.startsWith('blob:')) {
-        return src;
-    }
-
-    if (src.startsWith('/Cedric-biomedical-portfolio/')) {
-        return `https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/public${src.replace('/Cedric-biomedical-portfolio', '')}`;
-    }
-
-    if (src.startsWith('/images/')) {
-        return `https://raw.githubusercontent.com/djohozinc-ship-it/Cedric-biomedical-portfolio/master/public${src}`;
-    }
-
-    return src;
-};
+// Les médias sont servis depuis /public avec PUBLIC_URL : plus besoin de les relire depuis GitHub.
+const resolveMediaSrc = (src: string) => src;
 
 function PremiumMediaGallery({ media }: PremiumMediaGalleryProps) {
     const images = useMemo(() => media.filter((item) => item.type === 'image'), [media]);

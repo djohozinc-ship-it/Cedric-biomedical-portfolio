@@ -232,3 +232,15 @@ h1, h2, h3, h4, h5, p {
     line-height: 1.6;
   }
 }
+
+/* Évite que la barre de navigation fixe masque le titre de la section ciblée. */
+#expertise,
+#history,
+#projects,
+#contact {
+  scroll-margin-top: 72px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

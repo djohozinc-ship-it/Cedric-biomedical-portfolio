@@ -42,11 +42,30 @@ function Navigation({parentToChild, modeChange}: any) {
   }, []);
 
   const scrollToSection = (section: string) => {
-    const sectionElement = document.getElementById(section);
-    if (sectionElement) {
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
+    // Les sections lourdes sont chargées à la demande : on les force à se monter,
+    // puis on attend que l’élément existe avant de défiler.
+    const goToSection = () => {
+      let attempts = 0;
+      const tryScroll = () => {
+        const element = document.getElementById(section);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (attempts++ < 40) {
+          window.setTimeout(tryScroll, 75);
+        }
+      };
+      tryScroll();
+    };
+
+    window.dispatchEvent(new Event('portfolio:preload'));
+
+    if (window.location.hash.startsWith('#/project/')) {
+      // Depuis une fiche projet, on revient d’abord à l’accueil.
+      try { sessionStorage.removeItem('projects-scroll-position'); } catch { /* ignore */ }
+      window.location.hash = '';
+      window.setTimeout(goToSection, 200);
     } else {
-      console.error(`Élément avec l’identifiant « ${section} » introuvable.`);
+      goToSection();
     }
   };
 
@@ -80,11 +99,14 @@ function Navigation({parentToChild, modeChange}: any) {
           >
             <MenuIcon />
           </IconButton>
-          {mode === 'dark' ? (
-            <LightModeIcon onClick={() => modeChange()} aria-label="Activer le mode clair"/>
-          ) : (
-            <DarkModeIcon onClick={() => modeChange()} aria-label="Activer le mode sombre"/>
-          )}
+          <IconButton
+            color="inherit"
+            onClick={() => modeChange()}
+            aria-label={mode === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'}
+            title={mode === 'dark' ? 'Mode clair' : 'Mode sombre'}
+          >
+            {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item[0]} onClick={() => scrollToSection(item[1])} sx={{ color: '#fff' }}>
