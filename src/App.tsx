@@ -11,6 +11,7 @@ import './assets/styles/MorEyesFixes.scss';
 const BiomedicalCity = lazy(() => import('./components/BiomedicalFutureScene'));
 const Expertise = lazy(() => import('./components/Expertise'));
 const Timeline = lazy(() => import('./components/Timeline'));
+const Gallery = lazy(() => import('./components/Gallery'));
 const Contact = lazy(() => import('./components/Contact'));
 const ProjectDetails = lazy(() => import('./components/ProjectDetails'));
 const SacruroDetails = lazy(() => import('./components/SacruroDetails'));
@@ -138,6 +139,7 @@ function App() {
                     <DeferredSection minHeight={520}><Expertise /></DeferredSection>
                     <DeferredSection minHeight={620}><Timeline /></DeferredSection>
                     <Project/>
+                    <DeferredSection minHeight={640}><Gallery /></DeferredSection>
                     <DeferredSection minHeight={520}><Contact /></DeferredSection>
                 </FadeIn>
             )}

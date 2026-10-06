@@ -67,9 +67,6 @@ const featuredProjects: FeaturedProject[] = [
 
 const shortProjects: ShortProject[] = [
     { slug: 'medura', title: 'Medura', summary: 'Prototype numérique pour organiser l’information et assister dans le domaine de la santé.', tags: 'React, TypeScript' },
-    { slug: 'gbm-learn', title: 'GBM Learn', summary: 'Ressources d’apprentissage structurées autour du génie biomédical.', tags: 'React, TypeScript' },
-    { slug: 'arduino-jump-game', title: 'Jeu de saut Arduino', summary: 'Un petit jeu embarqué pour pratiquer les entrées, les sorties et la logique de jeu.', tags: 'Arduino, C/C++, électronique' },
-    { slug: 'blender-tower', title: 'Tour modélisée avec Blender', summary: 'Modélisation 3D d’une structure architecturale.', tags: 'Blender, modélisation 3D' }
 ];
 
 function Project() {
@@ -119,7 +116,7 @@ function Project() {
         <div className="projects-container" id="projects">
             <header className="projects-heading">
                 <h1>Projets</h1>
-                <p>Trois projets présentés en détail, puis des réalisations plus courtes.</p>
+                <p>Trois projets présentés en détail, puis une réalisation plus courte.</p>
             </header>
 
             {renderFeatured(featuredProjects[0], 'pj-feature')}

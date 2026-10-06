@@ -1,0 +1,327 @@
+/*
+  Galerie : grille « maçonnerie » (les photos gardent leur format), filtres par catégorie,
+  apparition progressive, et visionneuse plein écran.
+  Règles préfixées par .gallery-container pour passer devant les couleurs globales.
+*/
+
+.gallery-container {
+    --gl-fg: #f2f4f8;
+    --gl-muted: rgba(242, 244, 248, .72);
+    --gl-line: rgba(255, 255, 255, .18);
+    --gl-accent: #b9a6ff;
+    --gl-chip-active-bg: #f2f4f8;
+    --gl-chip-active-fg: #0d1116;
+    --gl-gap: clamp(14px, 1.8vw, 24px);
+
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(64px, 9vw, 120px) clamp(20px, 7vw, 120px);
+    text-align: left;
+    color: var(--gl-fg);
+}
+
+.light-mode .gallery-container {
+    --gl-fg: #0d1116;
+    --gl-muted: rgba(13, 17, 22, .72);
+    --gl-line: rgba(13, 17, 22, .2);
+    --gl-accent: #5000ca;
+    --gl-chip-active-bg: #0d1116;
+    --gl-chip-active-fg: #f7f8fb;
+}
+
+/* ---------- En-tête et filtres ---------- */
+
+.gallery-container .gl-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px 48px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(24px, 3vw, 40px);
+}
+
+.gallery-container .gl-heading h1 {
+    margin: 0;
+    color: var(--gl-fg);
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    line-height: 1;
+}
+
+.gallery-container .gl-heading p {
+    margin: 0;
+    max-width: 36ch;
+    color: var(--gl-muted);
+    font-size: 1.05rem;
+    line-height: 1.55;
+}
+
+.gallery-container .gl-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: clamp(24px, 3vw, 40px);
+}
+
+.gallery-container .gl-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    border: 1px solid var(--gl-line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--gl-fg);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.gallery-container .gl-chip:hover {
+    border-color: var(--gl-accent);
+}
+
+.gallery-container .gl-chip[aria-pressed="true"] {
+    background: var(--gl-chip-active-bg);
+    border-color: var(--gl-chip-active-bg);
+    color: var(--gl-chip-active-fg);
+}
+
+.gallery-container .gl-chip:focus-visible {
+    outline: 2px solid var(--gl-accent);
+    outline-offset: 3px;
+}
+
+.gallery-container .gl-chip-count {
+    color: inherit;
+    font-size: .85rem;
+    opacity: .65;
+}
+
+/* ---------- Grille maçonnerie ---------- */
+
+.gallery-container .gl-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    column-count: 3;
+    column-gap: var(--gl-gap);
+}
+
+.gallery-container .gl-item {
+    break-inside: avoid;
+    margin: 0 0 var(--gl-gap);
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+}
+
+.gallery-container .gl-item.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+.gallery-container .gl-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--gl-line);
+    border-radius: 6px;
+    background: rgba(127, 127, 127, .14);
+    cursor: zoom-in;
+    line-height: 0;
+}
+
+.gallery-container .gl-tile img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+
+.gallery-container .gl-tile:hover img,
+.gallery-container .gl-tile:focus-visible img {
+    transform: scale(1.05);
+}
+
+.gallery-container .gl-tile:focus-visible {
+    outline: 2px solid var(--gl-accent);
+    outline-offset: 3px;
+}
+
+/* Légende : toujours visible sur écran tactile, révélée au survol sur ordinateur */
+.gallery-container .gl-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 56px 18px 16px;
+    background: linear-gradient(to top, rgba(5, 7, 10, .86), rgba(5, 7, 10, 0));
+    text-align: left;
+    line-height: 1.3;
+    pointer-events: none;
+}
+
+.gallery-container .gl-caption-category,
+.gl-lightbox .gl-caption-category {
+    color: #cdbfff;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.gallery-container .gl-caption-title {
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+@media (hover: hover) {
+    .gallery-container .gl-caption {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .gallery-container .gl-tile:hover .gl-caption,
+    .gallery-container .gl-tile:focus-visible .gl-caption {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .gallery-container .gl-grid { column-count: 2; }
+}
+
+@media screen and (max-width: 560px) {
+    .gallery-container .gl-grid { column-count: 1; }
+}
+
+/* ---------- Visionneuse plein écran (rendue dans <body>, donc hors de .gallery-container) ---------- */
+
+.gl-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: rgba(5, 7, 10, .95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    animation: glFade .25s ease;
+    color: #fff;
+}
+
+.gl-lightbox-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px clamp(14px, 3vw, 32px);
+}
+
+.gl-lightbox-count {
+    color: rgba(255, 255, 255, .75);
+    font-size: .95rem;
+    letter-spacing: .06em;
+}
+
+.gl-lightbox-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(255, 255, 255, .28);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease;
+}
+
+.gl-lightbox-btn:hover {
+    background: rgba(255, 255, 255, .16);
+    border-color: rgba(255, 255, 255, .6);
+}
+
+.gl-lightbox-btn:focus-visible {
+    outline: 2px solid #cdbfff;
+    outline-offset: 3px;
+}
+
+.gl-lightbox .gl-prev,
+.gl-lightbox .gl-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.gl-lightbox .gl-prev { left: clamp(10px, 2.5vw, 32px); }
+.gl-lightbox .gl-next { right: clamp(10px, 2.5vw, 32px); }
+
+.gl-lightbox-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 0;
+    margin: 0;
+    padding: 0 clamp(64px, 9vw, 120px) clamp(16px, 3vw, 32px);
+}
+
+.gl-lightbox-stage img {
+    max-width: 100%;
+    max-height: calc(100vh - 170px);
+    max-height: calc(100dvh - 170px);
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+    animation: glZoomIn .35s cubic-bezier(.2, .7, .2, 1);
+}
+
+.gl-lightbox-stage figcaption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
+
+.gl-lightbox-title {
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 640px) {
+    .gl-lightbox-stage { padding-left: 12px; padding-right: 12px; }
+    .gl-lightbox .gl-prev,
+    .gl-lightbox .gl-next {
+        top: auto;
+        bottom: 18px;
+        transform: none;
+        width: 42px;
+        height: 42px;
+    }
+    .gl-lightbox-stage { padding-bottom: 76px; }
+}
+
+@keyframes glFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes glZoomIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .gallery-container .gl-item { opacity: 1; transform: none; transition: none; }
+    .gallery-container .gl-tile img,
+    .gallery-container .gl-caption { transition: none; }
+    .gallery-container .gl-tile:hover img { transform: none; }
+    .gl-lightbox, .gl-lightbox-stage img { animation: none; }
+}

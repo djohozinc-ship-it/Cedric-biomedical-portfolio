@@ -17,7 +17,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 
 const drawerWidth = 240;
-const navItems = [['Expertise', 'expertise'], ['Parcours', 'history'], ['Projets', 'projects'], ['Contact', 'contact']];
+const navItems = [['Expertise', 'expertise'], ['Parcours', 'history'], ['Projets', 'projects'], ['Galerie', 'gallery'], ['Contact', 'contact']];
 
 function Navigation({parentToChild, modeChange}: any) {
   const {mode} = parentToChild;
@@ -45,16 +45,35 @@ function Navigation({parentToChild, modeChange}: any) {
     // Les sections lourdes sont chargées à la demande : on les force à se monter,
     // puis on attend que l’élément existe avant de défiler.
     const goToSection = () => {
+      // Les sections au-dessus de la cible finissent de se charger pendant le défilement et
+      // décalent la page : on recale donc la position jusqu’à ce qu’elle soit stable.
+      const wanted = 72; // doit correspondre à scroll-margin-top dans index.scss
       let attempts = 0;
-      const tryScroll = () => {
+      let stableChecks = 0;
+      let started = false;
+      let lastY = window.scrollY;
+      const tick = () => {
         const element = document.getElementById(section);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (attempts++ < 40) {
-          window.setTimeout(tryScroll, 75);
+        if (!element) {
+          if (attempts++ < 60) window.setTimeout(tick, 75);
+          return;
         }
+        // Tant que la page défile encore, on ne touche à rien : on attend qu’elle se pose.
+        const moving = started && Math.abs(window.scrollY - lastY) > 1;
+        lastY = window.scrollY;
+        const offset = element.getBoundingClientRect().top - wanted;
+        if (moving) {
+          stableChecks = 0;
+        } else if (Math.abs(offset) <= 24) {
+          stableChecks += 1;
+        } else {
+          stableChecks = 0;
+          started = true;
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        if (stableChecks < 3 && attempts++ < 40) window.setTimeout(tick, 250);
       };
-      tryScroll();
+      tick();
     };
 
     window.dispatchEvent(new Event('portfolio:preload'));
