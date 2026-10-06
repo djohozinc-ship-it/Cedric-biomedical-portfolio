@@ -1,3 +1,8 @@
+:root {
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -54,7 +59,12 @@ a:hover {
 
 p, a, h1, h2, h3, h4, h5, label, button {
   color: white;
-  font-family: "Lato", sans-serif;
+  font-family: var(--font-body);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 h1, h2, h3, h4, h5, p {
@@ -70,7 +80,7 @@ h1, h2, h3, h4, h5, p {
 
   button {
     font-size: 1.05rem;
-    font-family: "Lato", sans-serif;
+    font-family: var(--font-body);
     text-transform: initial;
     padding: 6px 10px;
   }
@@ -95,7 +105,7 @@ h1, h2, h3, h4, h5, p {
 
   span, p {
     color: #0d1116;
-    font-family: "Lato", sans-serif;
+    font-family: var(--font-body);
   }
 
   .MuiListItemButton-root {

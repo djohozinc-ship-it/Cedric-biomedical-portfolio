@@ -17,7 +17,7 @@ const fieldStyle: React.CSSProperties = {
   border: '1px solid #777',
   borderRadius: '4px',
   padding: '16.5px 14px',
-  fontFamily: 'Lato, sans-serif',
+  fontFamily: 'var(--font-body)',
   fontSize: '1rem',
   outline: 'none',
 };
@@ -34,7 +34,7 @@ const labelStyle: React.CSSProperties = {
   marginBottom: '7px',
   color: '#050f0b',
   fontSize: '1.05rem',
-  fontFamily: 'DomaineDispNar-Medium, sans-serif',
+  fontFamily: 'var(--font-display)',
 };
 
 function Contact() {
