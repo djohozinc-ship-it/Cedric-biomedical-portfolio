@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import './BiomedicalFutureScene.scss';
 
 type V3 = [number, number, number];
@@ -22,10 +23,12 @@ const BiomedicalCity: React.FC = () => {
       scene.fog = new THREE.Fog(0x06151d, 32, 118);
       const camera = new THREE.PerspectiveCamera(mobile ? 54 : 47, 1, .1, 150);
       const renderer = new THREE.WebGLRenderer({ antialias: !mobile, powerPreference: 'high-performance' });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.1 : 1.35));
+      let pixelRatio=Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.25);
+      renderer.setPixelRatio(pixelRatio);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.shadowMap.enabled = !mobile;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.shadowMap.autoUpdate = false;
       mount.innerHTML = '';
       mount.appendChild(renderer.domElement);
 
@@ -39,8 +42,8 @@ const BiomedicalCity: React.FC = () => {
       const steel=mat(0xdce8e9,.88,.2), white=mat(0xf4f9f8,.18,.48), dark=mat(0x10262e,.9,.3), graphite=mat(0x29464f,.75,.34);
       const cyan=mat(0x36eaff,.35,.17,0x0bd3ec,5), violet=mat(0x987dff,.42,.2,0x5a3de8,4), green=mat(0x58ffb7,.3,.2,0x1bd88a,4);
       const amber=mat(0xffd25a,.28,.25,0xd99100,3), red=mat(0xff5576,.2,.3,0xc91f43,3), black=mat(0x081116,.96,.16);
-      const glass=new THREE.MeshPhysicalMaterial({color:0x73eaff,transmission:.5,opacity:.16,transparent:true,roughness:.06,metalness:.08,side:THREE.DoubleSide,depthWrite:false,emissive:0x0b4552,emissiveIntensity:1.2});
-      const doorGlass=new THREE.MeshPhysicalMaterial({color:0x9af4ff,transmission:.62,opacity:.25,transparent:true,roughness:.04,metalness:.05,side:THREE.DoubleSide,depthWrite:false,emissive:0x0a6070,emissiveIntensity:1.7});
+      const glass=new THREE.MeshStandardMaterial({color:0x73eaff,opacity:.2,transparent:true,roughness:.06,metalness:.08,side:THREE.DoubleSide,depthWrite:false,emissive:0x0b4552,emissiveIntensity:1.2});
+      const doorGlass=new THREE.MeshStandardMaterial({color:0x9af4ff,opacity:.3,transparent:true,roughness:.04,metalness:.05,side:THREE.DoubleSide,depthWrite:false,emissive:0x0a6070,emissiveIntensity:1.7});
       const box=(parent:THREE.Object3D,p:V3,s:V3,m:THREE.Material)=>{const x=new THREE.Mesh(new THREE.BoxGeometry(...s),m);x.position.set(...p);x.castShadow=!mobile;x.receiveShadow=true;parent.add(x);return x;};
       const cyl=(parent:THREE.Object3D,p:V3,r:number,h:number,m:THREE.Material,seg=18)=>{const x=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg),m);x.position.set(...p);x.castShadow=!mobile;x.receiveShadow=true;parent.add(x);return x;};
       const sphere=(parent:THREE.Object3D,p:V3,r:number,m:THREE.Material,seg=16)=>{const x=new THREE.Mesh(new THREE.SphereGeometry(r,seg,Math.max(8,seg-4)),m);x.position.set(...p);x.castShadow=!mobile;x.receiveShadow=true;parent.add(x);return x;};
@@ -68,7 +71,7 @@ const BiomedicalCity: React.FC = () => {
       analyzer(lab,[5.8,1.2,2.9],'HEMATOLOGY ANALYZER',red);analyzer(lab,[9.1,1.2,4.9],'BIOCHEMISTRY ANALYZER',amber);
       const cryo=new THREE.Group();cryo.position.set(7.4,1.05,8);lab.add(cryo);cyl(cryo,[0,1.7,0],1.65,3.4,steel,28);cyl(cryo,[0,3.45,0],1.42,.28,black,28);cyl(cryo,[0,3.7,0],.9,.25,cyan,24);for(let i=0;i<6;i++)cyl(cryo,[Math.cos(i*Math.PI/3)*.9,2.2,Math.sin(i*Math.PI/3)*.9],.12,1.3,i%2?violet:green,10);const cryoPanel=panel('CRYOBIOBANK','−196 °C // SAMPLE STORAGE',3.9,1.25);cryoPanel.position.set(0,4.7,-1.5);cryo.add(cryoPanel);
       const printer=new THREE.Group();printer.position.set(-3.1,1,8);lab.add(printer);box(printer,[0,.35,0],[5.2,.3,3.7],black);box(printer,[-2.3,2.7,0],[.18,4.7,3.5],steel);box(printer,[2.3,2.7,0],[.18,4.7,3.5],steel);box(printer,[0,4.9,0],[4.7,.18,3.5],steel);const gantry=box(printer,[0,4.5,0],[3.8,.22,.22],cyan);const nozzle=new THREE.Group();nozzle.position.set(0,4.05,0);printer.add(nozzle);box(nozzle,[0,-.25,0],[.32,.55,.32],steel);cyl(nozzle,[0,-.6,0],.09,.3,green,12);box(printer,[0,.58,0],[3.9,.12,2.6],white);const printPanel=panel('BIOFABRICATION','3D BIOPRINTING // TISSUE ENGINEERING',4.8,1.25);printPanel.position.set(0,5.8,-1.9);printer.add(printPanel);
-      box(lab,[0,6.4,5.9],[19,.12,.12],steel);const arm=new THREE.Group();arm.position.set(-6,0,5.9);lab.add(arm);box(arm,[0,2.9,0],[.3,5.6,.3],black);sphere(arm,[0,5.7,0],.32,cyan,12);const arm2=new THREE.Group();arm2.position.y=5.5;arm.add(arm2);box(arm2,[1.3,0,0],[2.6,.28,.28],steel);sphere(arm2,[2.6,0,0],.3,violet,12);const gripper=new THREE.Group();gripper.position.set(2.75,-.15,0);arm2.add(gripper);box(gripper,[.15,-.28,0],[.08,.55,.08],green);box(gripper,[-.15,-.28,0],[.08,.55,.08],green);const railPanel=panel('ROBOTIC SAMPLE HANDLER','AUTONOMOUS TRANSFER // RAIL R-01',5.2,1.25);railPanel.position.set(0,7.4,5.75);lab.add(railPanel);
+      box(lab,[0,6.4,5.9],[19,.12,.12],steel);const arm=new THREE.Group();arm.position.set(-6,0,5.9);lab.add(arm);box(arm,[0,2.9,0],[.3,5.6,.3],black);sphere(arm,[0,5.7,0],.32,cyan,12);const arm2=new THREE.Group();arm2.position.y=5.5;arm.add(arm2);box(arm2,[1.3,0,0],[2.6,.28,.28],steel);sphere(arm2,[2.6,0,0],.3,violet,12);const gripper=new THREE.Group();gripper.position.set(2.75,-.15,0);arm2.add(gripper);box(gripper,[.15,-.28,0],[.08,.55,.08],green);box(gripper,[-.15,-.28,0],[.08,.55,.08],green);const railPanel=panel('ROBOTIC SAMPLE HANDLER','AUTONOMOUS TRANSFER // RAIL R-01',5.2,1.25);railPanel.position.set(-7.7,7.4,5.75);lab.add(railPanel);
       const surgery=new THREE.Group();surgery.position.set(-15,0,8);scene.add(surgery);box(surgery,[0,.45,0],[15,.25,11],white);box(surgery,[-7.3,3.8,0],[.22,7.5,11],graphite);box(surgery,[7.3,3.8,0],[.22,7.5,11],graphite);box(surgery,[0,7.4,0],[14.6,.22,11],graphite);box(surgery,[0,3.7,-5.35],[14.4,7.1,.06],glass);const surgeryDoors=doors(surgery,5.4,7,5.5);const joints:THREE.Object3D[]=[];const tips:THREE.Object3D[]=[];
       const makeArm=(x:number,z:number,flip:number)=>{const root=new THREE.Group();root.position.set(x,1.05,z);surgery.add(root);cyl(root,[0,.55,0],.72,1.1,black,22);const s=new THREE.Group();s.position.y=1;s.rotation.z=flip*.5;root.add(s);sphere(s,[0,0,0],.3,cyan,14);box(s,[0,.9,0],[.4,1.8,.4],steel);const e=new THREE.Group();e.position.y=1.8;e.rotation.z=-flip*.65;s.add(e);sphere(e,[0,0,0],.28,violet,14);box(e,[0,.82,0],[.34,1.65,.34],steel);const w=new THREE.Group();w.position.y=1.65;w.rotation.z=flip*.35;e.add(w);sphere(w,[0,0,0],.2,cyan,12);box(w,[0,.5,0],[.25,.9,.25],steel);const tip=cyl(w,[0,.98,0],.06,.48,cyan,10);joints.push(s,e,w);tips.push(tip);};
       makeArm(-4.7,-3.5,1);makeArm(-4.7,3.5,1);makeArm(4.7,-3.5,-1);makeArm(4.7,3.5,-1);box(surgery,[0,1.3,0],[6.4,.3,2.8],steel);cyl(surgery,[0,6.2,0],.22,1.1,black,18);const lamp=new THREE.Mesh(new THREE.TorusGeometry(1.55,.12,10,48),steel);lamp.rotation.x=Math.PI/2;lamp.position.set(0,6.2,0);surgery.add(lamp);sphere(surgery,[0,6.12,0],1.02,white,22);const surgPanel=panel('SURGICAL ROBOT','4-ARM PRECISION SYSTEM // STERILE OR',7,2.2);surgPanel.position.set(0,5.25,-5.4);surgery.add(surgPanel);
@@ -105,13 +108,15 @@ const BiomedicalCity: React.FC = () => {
       const carried=new THREE.Group();carried.position.set(0,-.62,0);carried.scale.setScalar(.55);gripper.add(carried);
       carried.add(new THREE.Mesh(tubeShellGeo,tubeShellMat));{const cl=new THREE.Mesh(tubeLiquidGeo,mat(0x58ffb7,.2,.25,0x1bd88a,2.2));cl.position.y=-.16;carried.add(cl);}
       // hélice d'ADN holographique au-dessus du séquenceur
-      const helix=new THREE.Group();helix.position.set(-2.2,6.55,-4.4);lab.add(helix);
-      {const R=.6,N=22,H=2.3,dot=new THREE.SphereGeometry(.1,10,8),rung=new THREE.CylinderGeometry(.025,.025,R*2,6);
+      const helix=new THREE.Group();helix.position.set(-5.6,4.7,-4.4);lab.add(helix);
+      {const R=.5,N=20,H=1.9,dotA:THREE.BufferGeometry[]=[],dotB:THREE.BufferGeometry[]=[],rungs:THREE.BufferGeometry[]=[];
        const rungMat=new THREE.MeshBasicMaterial({color:0xbff6ff,transparent:true,opacity:.55,depthWrite:false});
        for(let k=0;k<N;k++){const a=k*.52,y=-H/2+k*H/(N-1);
-         const d1=new THREE.Mesh(dot,cyan);d1.position.set(Math.cos(a)*R,y,Math.sin(a)*R);helix.add(d1);
-         const d2=new THREE.Mesh(dot,violet);d2.position.set(-Math.cos(a)*R,y,-Math.sin(a)*R);helix.add(d2);
-         const r=new THREE.Mesh(rung,rungMat);r.position.set(0,y,0);r.rotation.z=Math.PI/2;r.rotation.y=-a;helix.add(r);}}
+         const g1=new THREE.SphereGeometry(.1,10,8);g1.translate(Math.cos(a)*R,y,Math.sin(a)*R);dotA.push(g1);
+         const g2=new THREE.SphereGeometry(.1,10,8);g2.translate(-Math.cos(a)*R,y,-Math.sin(a)*R);dotB.push(g2);
+         const g3=new THREE.CylinderGeometry(.025,.025,R*2,6);g3.rotateZ(Math.PI/2);g3.rotateY(-a);g3.translate(0,y,0);rungs.push(g3);}
+       const addMerged=(geos:THREE.BufferGeometry[],m:THREE.Material)=>{const g=mergeGeometries(geos,false);geos.forEach((x)=>x.dispose());if(g)helix.add(new THREE.Mesh(g,m));};
+       addMerged(dotA,cyan);addMerged(dotB,violet);addMerged(rungs,rungMat);}
       // microscope : platine, faisceau et ligne de balayage
       box(scope,[.55,1.35,0],[1.2,.07,1.0],steel);box(scope,[.55,1.41,0],[.7,.025,.28],glass);
       const scopeBeam=new THREE.Mesh(new THREE.CylinderGeometry(.06,.3,.67,16,1,true),new THREE.MeshBasicMaterial({color:0x6af0ff,transparent:true,opacity:.28,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
@@ -145,7 +150,7 @@ const BiomedicalCity: React.FC = () => {
         const sp=(Math.sin(t*.4)+1)/2;carousel.rotation.y+=(.3+3.2*sp*sp)*delta;
         // séquenceur : barres qui montent et descendent en cascade
         seqBars.forEach((m,i)=>{const h=.18+.62*((Math.sin(t*2.4-i*.65)+1)/2)*((Math.sin(t*.9+i*1.3)+3)/4);m.scale.y=h;m.position.y=1.3+h/2;});
-        helix.rotation.y=t*.9;helix.position.y=6.55+Math.sin(t*.8)*.08;
+        helix.rotation.y=t*.9;helix.position.y=4.7+Math.sin(t*.8)*.06;
         // microscope
         scopeBeam.material.opacity=.26+Math.sin(t*9)*.05;scanLine.position.z=Math.sin(t*1.3)*.4;
         // PCR : dénaturation (rouge) -> hybridation (ambre) -> élongation (vert), barre de progression
@@ -165,6 +170,42 @@ const BiomedicalCity: React.FC = () => {
         puffs.forEach((m,i)=>{const q=(t*.22+i/8)%1,a=i*2.4+t*.3,r=.5*(.3+q);m.position.set(Math.cos(a)*r,3.9+q*2.4,Math.sin(a)*r);m.scale.setScalar(.5+q*1.4);(m.material as THREE.MeshBasicMaterial).opacity=.38*Math.sin(Math.PI*q);});
         cyan.emissiveIntensity=5+Math.sin(t*1.1)*.7;
       };
+
+
+      // ====== Optimisation : fusionner tout ce qui ne bouge pas ======
+      // La scène contenait ~600 appels de dessin par image (un par pièce). Les pièces immobiles qui partagent
+      // le même matériau sont fusionnées en un seul objet ; les pièces animées restent séparées.
+      const dynamicRoots=new Set<THREE.Object3D>([labDoors.left,labDoors.right,surgeryDoors.left,surgeryDoors.right,entranceDoors.left,entranceDoors.right,carousel,pipette,nozzle,gantry,arm,ctGlow,helix,stationRing,scopeBeam,scanLine,pcrBar,carried,...seqBars,...joints,...tips,...layers,...puffs,...labTubes.map((x)=>x.g)]);
+      const inDynamic=(o:THREE.Object3D)=>{for(let q:THREE.Object3D|null=o;q;q=q.parent)if(dynamicRoots.has(q))return true;return false;};
+      scene.updateMatrixWorld(true);
+      {
+        const buckets=new Map<string,{material:THREE.Material;cast:boolean;recv:boolean;items:THREE.Mesh[]}>();
+        scene.traverse((o)=>{
+          const m=o as THREE.Mesh;
+          if(!m.isMesh||Array.isArray(m.material))return;
+          const mt=m.material as THREE.Material;
+          if(mt.transparent||inDynamic(m))return;
+          const key=mt.uuid+'|'+(m.castShadow?1:0)+(m.receiveShadow?1:0);
+          let b=buckets.get(key);
+          if(!b){b={material:mt,cast:m.castShadow,recv:m.receiveShadow,items:[]};buckets.set(key,b);}
+          b.items.push(m);
+        });
+        buckets.forEach((b)=>{
+          if(b.items.length<2)return;
+          const geos=b.items.map((m)=>m.geometry.clone().applyMatrix4(m.matrixWorld));
+          const merged=mergeGeometries(geos,false);
+          geos.forEach((g)=>g.dispose());
+          if(!merged)return;
+          b.items.forEach((m)=>{m.parent?.remove(m);m.geometry.dispose();});
+          const mesh=new THREE.Mesh(merged,b.material);mesh.castShadow=b.cast;mesh.receiveShadow=b.recv;scene.add(mesh);
+        });
+      }
+      // Les pièces mobiles ne projettent plus d'ombre (la carte d'ombres n'est calculée qu'une fois).
+      dynamicRoots.forEach((r)=>r.traverse((c)=>{(c as THREE.Mesh).castShadow=false;}));
+      renderer.shadowMap.needsUpdate=true;
+      // Ce qui ne bouge pas n'a plus besoin de recalculer sa matrice à chaque image.
+      scene.updateMatrixWorld(true);
+      scene.traverse((o)=>{if(o!==scene&&!inDynamic(o)){o.updateMatrix();o.matrixAutoUpdate=false;}});
 
       // Wider, slower camera tour: equipment stays readable instead of filling the frame.
       const shots:Shot[]=[
@@ -191,6 +232,7 @@ const BiomedicalCity: React.FC = () => {
       let simT=reducedMotion?12:0;
       let framesLeft=reducedMotion?90:Infinity;
       let running=false;
+      let frameAcc=0,frameCount=0,warmup=1;
       const look=new THREE.Vector3(...shots[0].l);
       const target=new THREE.Vector3(...shots[0].l);
       const desiredPosition=new THREE.Vector3(...shots[0].p);
@@ -204,6 +246,9 @@ const BiomedicalCity: React.FC = () => {
         const rawDelta=clock.getDelta();
         const delta=Math.min(rawDelta,.05);
         simT+=rawDelta*timeScale;
+        // Résolution adaptative : si la machine ne tient pas ~38 images/s, on baisse la définition du rendu
+        // (le premier cycle est ignoré : compilation des shaders).
+        if(!reducedMotion&&rawDelta<2){frameAcc+=rawDelta;frameCount++;if(frameCount>=45){const avg=frameAcc/frameCount;frameAcc=0;frameCount=0;if(warmup>0)warmup--;else if(avg>.026&&pixelRatio>.55){pixelRatio=Math.max(.55,pixelRatio*.8);renderer.setPixelRatio(pixelRatio);resize();}}}
         const t=simT;
         const total=shots.reduce((sum,s)=>sum+s.hold,0);
         let time=t%total;
@@ -257,9 +302,6 @@ const BiomedicalCity: React.FC = () => {
         entranceDoors.left.position.x=THREE.MathUtils.lerp(-1.9,-4.4,door);entranceDoors.right.position.x=THREE.MathUtils.lerp(1.9,4.4,door);
 
         labTick(t,delta);
-        scope.rotation.y=Math.sin(t*.28)*.022;
-        scope.rotation.x=Math.sin(t*.19)*.012;
-        pcr.rotation.y=Math.sin(t*.24)*.018;
         gantry.position.x=nozzle.position.x;
         gantry.position.z=nozzle.position.z;
         arm.position.x=-6+((Math.sin(t*.22)+1)*.5)*12;
