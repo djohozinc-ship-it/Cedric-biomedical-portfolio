@@ -30,7 +30,7 @@ function Main() {
           <h1>Cédric DJOHOZIN</h1>
 
           <p>
-            Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Biorobotique • Technologies embarquées
+            Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Robotique médicale • Technologies embarquées
           </p>
 
           <div className="mobile_social_icons">
