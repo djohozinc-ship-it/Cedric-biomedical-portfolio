@@ -2,13 +2,13 @@ import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import Main from "./components/Main";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import HeroVideo from './components/HeroVideo';
 import Project from "./components/Project";
 import FadeIn from './components/FadeIn';
 import './index.scss';
 import './components/SacruroImages.scss';
 import './assets/styles/MorEyesFixes.scss';
 
-const BiomedicalCity = lazy(() => import('./components/BiomedicalFutureScene'));
 const Expertise = lazy(() => import('./components/Expertise'));
 const Timeline = lazy(() => import('./components/Timeline'));
 const Gallery = lazy(() => import('./components/Gallery'));
@@ -45,31 +45,6 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
     }, []);
 
     return <div ref={ref} style={{ minHeight: shouldLoad ? undefined : minHeight }}>{shouldLoad && <Suspense fallback={null}>{children}</Suspense>}</div>;
-}
-
-function BiomedicalCityViewport() {
-    const viewportRef = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const [isReady, setIsReady] = useState(false);
-
-    useEffect(() => {
-        const timer = window.setTimeout(() => setIsReady(true), 1200);
-        return () => window.clearTimeout(timer);
-    }, []);
-
-    useEffect(() => {
-        if (!isReady) return;
-        const element = viewportRef.current;
-        if (!element || typeof IntersectionObserver === 'undefined') {
-            setIsVisible(true);
-            return;
-        }
-        const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { rootMargin: '100px 0px' });
-        observer.observe(element);
-        return () => observer.disconnect();
-    }, [isReady]);
-
-    return <div ref={viewportRef} className="biomedical-city-viewport">{isReady && isVisible && <Suspense fallback={null}><BiomedicalCity /></Suspense>}</div>;
 }
 
 function App() {
@@ -134,7 +109,7 @@ function App() {
                 </Suspense>
             ) : (
                 <FadeIn transitionDuration={700}>
-                    <BiomedicalCityViewport />
+                    <HeroVideo />
                     <Main/>
                     <DeferredSection minHeight={520}><Expertise /></DeferredSection>
                     <DeferredSection minHeight={620}><Timeline /></DeferredSection>
