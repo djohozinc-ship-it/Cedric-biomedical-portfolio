@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Chip from '@mui/material/Chip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faArrowLeft, faCodeBranch, faImages, faMicrochip, faLaptopCode, faLightbulb, faBullseye, faCogs, faChartLine, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PremiumMediaGallery from './PremiumMediaGallery';
 import '../assets/styles/ProjectDetails.scss';
@@ -70,7 +71,8 @@ export const projects: ProjectData[] = [
         context: 'Avant d’utiliser des images médicales pour la reconstruction 3D, la navigation ou la planification robotisée, il faut maîtriser à la fois leur géométrie et la gestion sécurisée des données. Ce projet est une première étape d’apprentissage dans cette direction.', problem: 'Comment exploiter les métadonnées DICOM d’une série de coupes CT, vérifier leur cohérence spatiale et automatiser une première anonymisation ?', solution: 'Quatre scripts complémentaires : lecture des métadonnées d’un fichier, vérification de la série (position Z de chaque coupe), affichage d’une coupe, puis anonymisation par lot vers un dossier de sortie.', architecture: 'Fichiers DICOM → lecture pydicom → vérification de la série → anonymisation → fichiers anonymisés', hardware: [], software: ['Python', 'pydicom', 'matplotlib', 'Scripts en ligne de commande'], results: ['Série de 24 coupes analysée : espacement régulier de 0,6 mm selon l’axe Z', 'Affichage d’une coupe CT de 512 × 512 pixels à partir du tableau de pixels', 'Anonymisation du nom, de la date de naissance et de l’identifiant, sans modifier les fichiers sources', 'Limites identifiées : tags privés, autres attributs et informations incrustées dans les pixels non traités'], role: 'Conception et développement des scripts, analyse de la série et rédaction de la documentation.', technologies: ['Python', 'pydicom', 'matplotlib', 'DICOM', 'Imagerie CT'], features: ['Lecture des métadonnées DICOM', 'Vérification de l’espacement des coupes', 'Affichage d’une coupe en niveaux de gris', 'Anonymisation par lot', 'Fichiers originaux préservés'], media: [
             { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/dicom/coupe-ct.png`, alt: 'Coupe CT affichée avec matplotlib à partir du tableau de pixels DICOM' },
             { type: 'image', src: `${process.env.PUBLIC_URL}/images/projects/dicom/verification-serie.png`, alt: 'Sortie du script de vérification : position Z des 24 coupes de la série' }
-        ]
+        ],
+        links: [{ label: 'Voir le code sur GitHub', url: 'https://github.com/djohozinc-ship-it/dicom-anonymizer' }]
     },
     {
         slug: 'thermostat-solidworks', title: 'Thermostat – conception CAO', category: 'Conception mécanique · CAO',
@@ -114,7 +116,7 @@ function ProjectDetails() {
         <main className="project-details-page">
             <button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</button>
             <section className="project-hero-premium">
-                <div className="project-hero-copy"><span className="project-category">{project.category}</span><h1>{project.title}</h1><p>{project.summary}</p><div className="project-hero-meta"><span><FontAwesomeIcon icon={faBullseye} /> Projet personnel / académique</span><span><FontAwesomeIcon icon={faCogs} /> Conception & prototypage</span></div></div>
+                <div className="project-hero-copy"><span className="project-category">{project.category}</span><h1>{project.title}</h1><p>{project.summary}</p><div className="project-hero-meta"><span><FontAwesomeIcon icon={faBullseye} /> Projet personnel / académique</span><span><FontAwesomeIcon icon={faCogs} /> Conception & prototypage</span>{project.links?.map((link) => <a key={link.url} className="project-hero-link" href={link.url} target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faGithub} /> {link.label}</a>)}</div></div>
                 <div className="project-hero-visual">{project.media?.find((media) => media.type === 'image') ? <img className="project-hero-image" src={project.media.find((media) => media.type === 'image')!.src} alt={project.media.find((media) => media.type === 'image')!.alt} /> : <><div className="hero-grid" /><div className="hero-orb"><FontAwesomeIcon icon={faMicrochip} /></div><span>PROJECT<br />CASE STUDY</span></>}</div>
             </section>
 

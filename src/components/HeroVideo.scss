@@ -1,7 +1,10 @@
 .hero-video {
   position: relative;
   width: 100%;
-  height: clamp(320px, 70vh, 760px);
+  // La vidéo garde son format 16:9 : jamais rognée, quelle que soit la taille de la fenêtre.
+  // Sur un écran très large, elle est limitée à 85 % de la hauteur de l'écran (bandes noires sur les côtés).
+  height: min(56.25vw, 85vh);
+  min-height: 200px;
   background: #000;
   overflow: hidden;
 
@@ -9,7 +12,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     pointer-events: none; // aucun contrôle natif, aucune barre de lecture
   }
 }
@@ -43,7 +46,6 @@
 }
 
 @media (max-width: 700px) {
-  .hero-video { height: clamp(240px, 56vh, 480px); }
   .hero-video-sound { right: 12px; bottom: 12px; }
 }
 

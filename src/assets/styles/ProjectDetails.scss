@@ -19,6 +19,8 @@
 .project-hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
 .project-hero-meta span { color: rgba(255,255,255,.76); padding: 9px 13px; border-radius: 9px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.09); font-size: .82rem; backdrop-filter: blur(10px); }
 .project-hero-meta svg { margin-right: 7px; }
+.project-hero-link { color: #fff !important; text-decoration: none; padding: 9px 13px; border-radius: 9px; background: rgba(156,124,255,.16); border: 1px solid rgba(156,124,255,.45); font-size: .82rem; transition: background .25s ease, transform .25s ease; }
+.project-hero-link:hover { background: rgba(156,124,255,.3); transform: translateY(-2px); }
 .project-hero-visual { min-height: 440px; position: relative; overflow: hidden; border-radius: 32px; border: 1px solid rgba(255,255,255,.14); background: linear-gradient(145deg, rgba(80,0,202,.27), rgba(15,22,31,.92)); box-shadow: 0 35px 100px rgba(0,0,0,.38), inset 0 0 80px rgba(80,0,202,.07); display: flex; align-items: center; justify-content: center; isolation: isolate; }
 .project-hero-visual::before { content: ''; position: absolute; width: 260px; height: 260px; border-radius: 50%; background: rgba(80,0,202,.18); filter: blur(35px); animation: sacruroPulse 4s ease-in-out infinite; }
 .project-hero-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.07) 50%, transparent 70%); transform: translateX(-120%); animation: sacruroScan 5s ease-in-out infinite; pointer-events: none; }
