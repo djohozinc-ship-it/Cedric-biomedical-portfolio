@@ -66,6 +66,7 @@ const featuredProjects: FeaturedProject[] = [
 ];
 
 const shortProjects: ShortProject[] = [
+    { slug: 'dicom-anonymizer', title: 'DICOM Anonymizer', summary: 'Exploration, contrôle et anonymisation d’une série d’images CT au format DICOM.', tags: 'Python, pydicom' },
     { slug: 'medura', title: 'Medura', summary: 'Prototype numérique pour organiser l’information et assister dans le domaine de la santé.', tags: 'React, TypeScript' },
 ];
 
@@ -116,7 +117,7 @@ function Project() {
         <div className="projects-container" id="projects">
             <header className="projects-heading">
                 <h1>Projets</h1>
-                <p>Trois projets présentés en détail, puis une réalisation plus courte.</p>
+                <p>Trois projets présentés en détail, puis des réalisations plus courtes.</p>
             </header>
 
             {renderFeatured(featuredProjects[0], 'pj-feature')}
