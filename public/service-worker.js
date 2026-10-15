@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cedric-biomedical-portfolio-v1';
+const CACHE_NAME = 'cedric-biomedical-portfolio-v2';
 const BASE_PATH = '/Cedric-biomedical-portfolio/';
 const APP_SHELL = [
   BASE_PATH,
@@ -32,11 +32,18 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  // Vidéos / audio : on laisse le navigateur gérer directement (requêtes partielles « Range »).
+  // Les passer par le cache casse la lecture et alourdit inutilement le stockage.
+  const url = new URL(event.request.url);
+  if (event.request.headers.has('range') || /\.(mp4|webm|mp3|ogg)$/i.test(url.pathname)) return;
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        if (response.ok && response.status === 200) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+        }
         return response;
       })
       .catch(() => caches.match(event.request).then((cached) => cached || caches.match(`${BASE_PATH}index.html`)))
