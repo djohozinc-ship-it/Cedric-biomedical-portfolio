@@ -6,8 +6,8 @@ import HeroVideo from './components/HeroVideo';
 import Project from "./components/Project";
 import FadeIn from './components/FadeIn';
 import './index.scss';
-import './components/SacruroImages.scss';
 import './assets/styles/MorEyesFixes.scss';
+import './assets/styles/FichesPropres.scss';
 
 const Expertise = lazy(() => import('./components/Expertise'));
 const Timeline = lazy(() => import('./components/Timeline'));

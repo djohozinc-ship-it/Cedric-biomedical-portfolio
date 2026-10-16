@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faImages, faFlask } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faFlask } from '@fortawesome/free-solid-svg-icons';
 import './SacruroDetails.scss';
 import osmoseurImg from '../assets/images/sacruro/chd-zou-osmoseur.jpg';
 import tdsImg from '../assets/images/sacruro/mesure-tds.jpg';
@@ -11,30 +11,34 @@ import historyImg from '../assets/images/sacruro/app-historique.jpg';
 import hydraulicImg from '../assets/images/sacruro/schema-hydraulique.png';
 import architectureImg from '../assets/images/sacruro/architecture-electronique.jpg';
 import electricalImg from '../assets/images/sacruro/schema-electrique.png';
+import prototypeImg from '../assets/images/sacruro/prototype-electronique.jpg';
 
 
 
-const imagePlaceholders = [
-  { title: 'Mesure du TDS sur le terrain', file: 'sacruro-mesure-tds.webp', image: tdsImg, text: 'Photographie du TDS-mètre utilisé directement sur le terrain.' },
-  { title: 'Rapport d’analyses de laboratoire', file: 'sacruro-rapport-laboratoire.webp', image: labImg, text: 'Photographie du rapport présentant les analyses physico-chimiques réalisées au laboratoire.' },
-  { title: 'Application mobile', file: 'sacruro-app-tableau-de-bord.webp', image: dashboardImg, text: 'Capture du tableau de bord de supervision.' },
-  { title: 'Application mobile — synoptique', file: 'sacruro-app-synoptique.webp', image: synopticImg, text: 'Capture du synoptique hydraulique.' },
-  { title: 'Application mobile — historique', file: 'sacruro-app-historique.webp', image: historyImg, text: 'Capture de l’historique des mesures.' },
-];
+const figures = {
+  tds: { src: tdsImg, title: 'Mesure du TDS sur le terrain', text: 'TDS-mètre utilisé directement sur le terrain.', variant: 'portrait' as const, ratio: '1800 / 2400' },
+  lab: { src: labImg, title: 'Rapport d’analyses de laboratoire', text: 'Analyses physico-chimiques réalisées au laboratoire.', ratio: '1418 / 928' },
+  dashboard: { src: dashboardImg, title: 'Application mobile — tableau de bord', text: 'Supervision en temps réel.', variant: 'portrait' as const, ratio: '1080 / 2280' },
+  history: { src: historyImg, title: 'Application mobile — historique', text: 'Historique des mesures.', variant: 'portrait' as const, ratio: '1080 / 2280' },
+  synoptic: { src: synopticImg, title: 'Application mobile — synoptique', text: 'Synoptique hydraulique.', ratio: '1800 / 888' },
+};
 
-const MediaPlaceholder = ({ title, file, image, text }: { title: string; file: string; image: string; text: string }) => (
-  <button type="button" className="sacruro-media-placeholder" data-file={file} onClick={() => window.open(image, '_blank', 'noopener,noreferrer')} aria-label={`Ouvrir l’image en grand : ${title}`} title="Cliquer pour afficher l’image en grand">
-    <FontAwesomeIcon icon={faImages} />
-    <strong>{title}</strong>
-    <span>{text}</span>
-    <small>{file}</small>
-  </button>
+type FigureProps = { src: string; title: string; text?: string; variant?: 'wide' | 'portrait'; ratio?: string };
+
+// Vraie image (balise <img>) avec légende : plus de fond CSS ni de cadre vide.
+const Figure = ({ src, title, text, variant = 'wide', ratio }: FigureProps) => (
+  <figure className={`sacruro-figure sacruro-figure--${variant}`}>
+    <button type="button" onClick={() => window.open(src, '_blank', 'noopener,noreferrer')} aria-label={`Ouvrir en grand : ${title}`} title="Cliquer pour afficher en grand">
+      <img src={src} alt={text ? `${title} — ${text}` : title} loading="lazy" decoding="async" style={ratio ? { aspectRatio: ratio } : undefined} />
+    </button>
+    <figcaption><strong>{title}</strong>{text ? <span>{text}</span> : null}</figcaption>
+  </figure>
 );
 
 const Section = ({ number, title, icon, children, className = '' }: { number: string; title: string; icon: any; children: React.ReactNode; className?: string }) => (
   <section className={`sacruro-section ${className}`}>
     <div className="sacruro-section-heading">
-      <span>{number}</span>
+      <span aria-hidden="true">{number}</span>
       <h2><FontAwesomeIcon icon={icon} /> {title}</h2>
     </div>
     <div className="sacruro-section-content">{children}</div>
@@ -58,7 +62,7 @@ export default function SacruroDetails() {
             <div className="sacruro-meta"><span>Génie biomédical</span><span>Automatisation</span><span>Électronique</span><span>IoT</span><span>Gestion de l’eau</span><span>Protection de l'environnement</span></div>
             <div className="sacruro-authors"><strong>DJOHOZIN Cédric</strong><span>·</span><strong>SOSSOUNON Médessè Géraldine</strong><br/><small>Licence Professionnelle — Maintenance Biomédicale et Hospitalière · Département de Génie Biomédical · EPAC/UAC</small></div>
           </div>
-          <button type="button" className="sacruro-hero-card" onClick={() => window.open(osmoseurImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir la photo de l’osmoseur en grand" title="Cliquer pour afficher la photo en grand">
+          <button type="button" className="sacruro-hero-card" style={{ backgroundImage: `linear-gradient(180deg, rgba(5,10,18,.2), rgba(5,10,18,.78)), url(${osmoseurImg})` }} onClick={() => window.open(osmoseurImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir la photo de l’osmoseur en grand" title="Cliquer pour afficher la photo en grand">
             <div className="sacruro-orbit"><FontAwesomeIcon icon={faDroplet} /></div>
             <div className="sacruro-hero-card-label">ÉTUDE DE CONCEPTION & PRÉVALIDATION</div>
             <div className="sacruro-stat"><strong>5 850 L/j</strong><span>rejet estimé sur la base des observations de terrain</span></div>
@@ -87,30 +91,29 @@ export default function SacruroDetails() {
         <Section number="06" title="Mesures réalisées sur le terrain" icon={faChartLine}>
           <p>Les observations de terrain ont permis d’estimer le rejet à partir des cycles de fonctionnement. Une observation expérimentale a relevé 9 L en 3 s, soit 3 L/s. Le 19 juin 2026, 13 événements de débit d’environ 15 s par heure ont été observés, soit 195 s/h et un débit moyen estimé à 585 L/h ; sur une durée de fonctionnement de 10 h/jour, cela correspond à environ 5 850 L/jour.</p>
           <p>Par ailleurs, le débitmètre intégré à l’osmoseur a indiqué 1 500 L/h côté perméat et 650 L/h côté concentrat, avec un taux de récupération de 70 %. Ces deux valeurs de débit de rejet sont conservées séparément, car elles proviennent de méthodes de mesure différentes.</p>
-          <div className="sacruro-media-single"><MediaPlaceholder {...imagePlaceholders[0]} /></div>
+          <Figure {...figures.tds} />
         </Section>
         <Section number="07" title="Caractérisation physico-chimique" icon={faFlask}>
           <p>La caractérisation combine les mesures réalisées directement sur le terrain et les analyses effectuées au laboratoire. Le TDS du concentrat a notamment été mesuré sur place avec un TDS-mètre, tandis que plusieurs autres paramètres ont été déterminés à partir d’analyses de laboratoire.</p>
           <div className="sacruro-table-wrap"><table><thead><tr><th>Paramètre</th><th>Valeur</th><th>Origine</th></tr></thead><tbody><tr><td>Turbidité</td><td>0,713 NTU</td><td>Laboratoire</td></tr><tr><td>Calcium</td><td>Pas de trace</td><td>Laboratoire</td></tr><tr><td>Magnésium</td><td>Pas de trace</td><td>Laboratoire</td></tr><tr><td>Chlorures</td><td>2,1 mg/L</td><td>Laboratoire</td></tr><tr><td>Nitrates</td><td>5,75 mg/L</td><td>Laboratoire</td></tr><tr><td>TDS</td><td>39 ppm</td><td>Terrain</td></tr><tr><td>Conductivité</td><td>47,9 µS/cm</td><td>Laboratoire</td></tr><tr><td>pH</td><td>6,67</td><td>Laboratoire</td></tr></tbody></table></div>
           <p>Le TDS-mètre TDS-3 a été utilisé le 21 mai 2026 à 14 h 09 : eau SONEB 25 ppm, perméat 3 ppm et concentrat 39 ppm. Les résultats d’analyses de laboratoire complètent cette mesure de terrain avec la turbidité, le calcium, le magnésium, les chlorures et les nitrates, ainsi que les autres paramètres disponibles dans le rapport.</p>
           <p>Le pH mesuré à 6,67 se situe dans la plage de surveillance retenue de 6,5 à 8,5, mais reste proche de la limite basse. Le sodium n’a pas pu être analysé en raison des contraintes du laboratoire et la microbiologie n’a pas été réalisée.</p>
-          <div className="sacruro-media-single"><MediaPlaceholder {...imagePlaceholders[1]} /></div>
+          <Figure {...figures.lab} />
           <p>Ces résultats permettent d’appuyer l’étude de valorisation, mais ils ne constituent pas une validation sanitaire définitive pour un usage direct.</p>
         </Section>
         <Section number="08" title="Usages envisagés" icon={faDroplet}>
           <div className="sacruro-use-grid"><span>Chasse d’eau des toilettes</span><span>Arrosage des plantes et espaces verts</span><span>Nettoyage des sols</span><span>Lavage des véhicules de service</span></div>
         </Section>
-        <Section number="09" title="Architecture hydraulique" icon={faDroplet} className="diagram-section">
-          <button type="button" className="diagram-only sacruro-zoomable-diagram" onClick={() => window.open(hydraulicImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma hydraulique en grand" title="Cliquer pour afficher le schéma en grand"><span>Schéma hydraulique complet du système SACRURO</span><small>Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations</small></button>
+        <Section number="09" title="Architecture hydraulique" icon={faDroplet}>
+          <Figure ratio="2020 / 842" src={hydraulicImg} title="Schéma hydraulique complet du système SACRURO" text="Récupération · préfiltration · stockage tampon · ultrafiltration · rétrolavage · stockage · distribution · dérivations." />
         </Section>
         <Section number="10" title="Instrumentation" icon={faGaugeHigh}>
           <div className="sacruro-grid"><div><strong>Niveau</strong><p>JSN-SR04T ultrasonique étanche, utilisé pour suivre le niveau des réservoirs.</p></div><div><strong>Débit</strong><p>YF-B10 à effet Hall, placé à la sortie du réservoir de stockage.</p></div><div><strong>TDS / conductivité</strong><p>SEN0244 DFRobot pour le suivi de la qualité physico-chimique.</p></div><div><strong>pH</strong><p>SEN0161-V2 pour la mesure du pH.</p></div><div><strong>Température</strong><p>DS18B20 pour la surveillance thermique.</p></div></div>
         </Section>
-        <Section number="11" title="Architecture électronique" icon={faMicrochip} className="diagram-section">
-          <div className="diagram-only sacruro-electronics-zoom-wrap">
-            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--architecture" onClick={() => window.open(architectureImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir l’architecture électronique en grand" title="Cliquer pour afficher en grand" />
-            <button type="button" className="sacruro-diagram-click-area sacruro-diagram-click-area--schema" onClick={() => window.open(electricalImg, '_blank', 'noopener,noreferrer')} aria-label="Ouvrir le schéma électronique en grand" title="Cliquer pour afficher en grand" />
-            <span>Architecture électronique et schéma électronique complet</span><small>ESP32 · acquisition · extension E/S · watchdog · commande de puissance · alimentation · interfaces locales</small>
+        <Section number="11" title="Architecture électronique" icon={faMicrochip}>
+          <div className="sacruro-figure-pair">
+            <Figure ratio="1006 / 571" src={architectureImg} title="Architecture électronique" text="ESP32 · acquisition · extension E/S · watchdog · commande de puissance." />
+            <Figure ratio="1322 / 915" src={electricalImg} title="Schéma électronique complet" text="Alimentation · interfaces locales · commande des actionneurs." />
           </div>
         </Section>
         <Section number="12" title="Acquisition analogique" icon={faMicrochip}>
@@ -122,6 +125,7 @@ export default function SacruroDetails() {
         <Section number="14" title="Commande de puissance" icon={faMicrochip}>
           <p>Les actionneurs sont commandés par relais et interfaces de commutation adaptées. L’ESP32 ne pilote pas directement les bobines des relais. L’alimentation est organisée sur quatre niveaux : 5 V continu pour les capteurs et l’afficheur, 3,3 V continu pour l’ESP32 et la logique, 24 V continu pour les électrovannes et 220 V alternatif pour les pompes P0, P1 et P2.</p>
           <div className="sacruro-chips"><span>E1 · NF · 24 V</span><span>E2 · NF · 24 V</span><span>E3 · NO · 24 V</span><span>E4 · NO · 24 V</span><span>E5 · NO · 24 V</span><span>E6 · NF · 24 V</span></div>
+          <Figure ratio="1800 / 2400" src={prototypeImg} title="Prototype électronique" text="Carte de commande et interfaces du prototype." variant="portrait" />
         </Section>
         <Section number="15" title="Interface locale" icon={faMobileScreenButton}>
           <p>L’interface locale associe un avertisseur sonore, des voyants d’état et un afficheur LCD 16×2 via I²C. Le vert indique un fonctionnement normal, le jaune une situation de vigilance et le rouge une situation critique. Un voyant vert dédié signale l’appairage qui constitue une mesure de sécurité. Cinq boutons permettent les commandes <strong>Valider</strong>, <strong>Haut</strong>, <strong>Bas</strong>, <strong>Retour</strong> et <strong>Appairage</strong>.</p>
@@ -143,7 +147,8 @@ export default function SacruroDetails() {
         </Section>
         <Section number="20" title="Application mobile" icon={faMobileScreenButton}>
           <p>Développée avec React Native et Expo, l’application regroupe les fonctions d’<strong>Appairage</strong>, de <strong>Tableau de bord</strong>, de <strong>Synoptique hydraulique</strong>, d’<strong>Historique</strong>, d’<strong>Assistant conversationnel</strong> et de <strong>Configuration</strong>. Le tableau de bord présente en temps réel le pH, la conductivité, le TDS, le débit, la température, les niveaux et les alarmes. L’historique conserve les 50 dernières valeurs de pH, TDS et débit. L’assistant accepte notamment les commandes <strong>Rapport</strong>, <strong>Alarmes</strong> et <strong>Exporter en PDF</strong>.</p>
-          <div className="sacruro-media-grid">{imagePlaceholders.slice(2).map((item) => <MediaPlaceholder key={item.file} {...item} />)}</div>
+          <div className="sacruro-media-grid"><Figure {...figures.dashboard} /><Figure {...figures.history} /></div>
+          <div className="sacruro-figure-limit"><Figure {...figures.synoptic} /></div>
         </Section>
         <Section number="21" title="Continuité de fonctionnement" icon={faShieldHalved}>
           <p>La surveillance de la communication considère l’absence de message pendant 30 secondes comme une perte de connexion et déclenche le passage automatique vers le mode local. Cette continuité de communication complète l’automatisation hydraulique, qui est conçue pour fonctionner indépendamment de la présence permanente de l’application mobile.</p>

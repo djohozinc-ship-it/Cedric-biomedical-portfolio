@@ -2,19 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './HeroVideo.scss';
 
 const publicUrl = process.env.PUBLIC_URL || '';
-const VIDEO_DESKTOP = { src: `${publicUrl}/videos/presentation.mp4`, poster: `${publicUrl}/videos/presentation-poster.jpg` };
-// Version plus légère (480p, ~3 Mo) pour les téléphones et les connexions économes en données.
-const VIDEO_MOBILE = { src: `${publicUrl}/videos/presentation-mobile.mp4`, poster: `${publicUrl}/videos/presentation-poster-mobile.jpg` };
-
-function pickVideo() {
-    try {
-        const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-        const small = window.matchMedia('(max-width: 700px)').matches;
-        return small || connection?.saveData ? VIDEO_MOBILE : VIDEO_DESKTOP;
-    } catch {
-        return VIDEO_DESKTOP;
-    }
-}
+const VIDEO_SRC = `${publicUrl}/videos/presentation.mp4`;
+const VIDEO_POSTER = `${publicUrl}/videos/presentation-poster.jpg`;
 
 // Seuls ces gestes comptent pour le navigateur comme une « vraie » interaction qui autorise le son.
 // (pointerdown tactile, scroll, survol… ne comptent PAS.)
@@ -24,7 +13,6 @@ function HeroVideo() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const visibleRef = useRef(false);
     const [muted, setMuted] = useState(true);
-    const [source] = useState(pickVideo);
 
     const startMuted = useCallback(() => {
         const video = videoRef.current;
@@ -91,8 +79,8 @@ function HeroVideo() {
         <div className="hero-video">
             <video
                 ref={videoRef}
-                src={source.src}
-                poster={source.poster}
+                src={VIDEO_SRC}
+                poster={VIDEO_POSTER}
                 muted
                 loop
                 playsInline

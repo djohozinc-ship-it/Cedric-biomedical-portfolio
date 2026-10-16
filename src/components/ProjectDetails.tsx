@@ -121,19 +121,32 @@ function ProjectDetails() {
             </section>
 
             <div className="project-story">
-                <section className="project-story-section intro-section"><div className="section-kicker">01 · CONTEXTE</div><div><h2><FontAwesomeIcon icon={faLightbulb} /> Pourquoi ce projet ?</h2><p>{project.context}</p></div></section>
-                <section className="project-story-section description-section"><div className="section-kicker">02 · DESCRIPTION & RÉALISATION</div><h2><FontAwesomeIcon icon={faCogs} /> Comment les technologies ont été exploitées</h2><p>{project.description}</p></section>
-                <section className="project-story-section split-section"><div><div className="section-kicker">03 · PROBLÈME</div><h2>Le défi technique</h2></div><div className="story-highlight"><p>{project.problem}</p></div></section>
-                <section className="project-story-section"><div className="section-kicker">04 · SOLUTION</div><h2>Une réponse pensée comme un système</h2><p>{project.solution}</p></section>
-                <section className="project-story-section architecture-section"><div className="section-kicker">05 · ARCHITECTURE</div><h2><FontAwesomeIcon icon={faCodeBranch} /> Architecture du système</h2><div className="architecture-card"><div className="architecture-flow">{project.architecture.split(' → ').map((step, index, steps) => <React.Fragment key={`${step}-${index}`}><span>{step}</span>{index < steps.length - 1 && <b>→</b>}</React.Fragment>)}</div></div></section>
-                <section className="project-story-section"><div className="section-kicker">06 · HARDWARE</div><h2><FontAwesomeIcon icon={faMicrochip} /> Matériel & électronique</h2>{project.hardware.length ? <div className="technical-grid">{project.hardware.map(item => <div className="technical-card" key={item}><FontAwesomeIcon icon={faMicrochip} /><span>{item}</span></div>)}</div> : <div className="empty-technical">Aucun élément matériel spécifique pour ce projet.</div>}</section>
-                <section className="project-story-section"><div className="section-kicker">07 · SOFTWARE</div><h2><FontAwesomeIcon icon={faLaptopCode} /> Logiciel & programmation</h2><div className="software-list">{project.software.map(item => <div key={item}><span className="number-dot">✓</span>{item}</div>)}</div></section>
-                <section className="project-story-section results-section"><div className="section-kicker">08 · RÉSULTATS</div><h2><FontAwesomeIcon icon={faChartLine} /> Résultats & avancées</h2><div className="results-grid">{project.results.map((item, index) => <div className="result-card" key={item}><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></div>)}</div></section>
-                <section className="project-story-section"><div className="section-kicker">09 · MON RÔLE</div><h2>Contribution au projet</h2><p>{project.role}</p></section>
-                <section className="project-story-section"><div className="section-kicker">10 · TECHNOLOGIES</div><h2>Technologies utilisées</h2><div className="project-chips">{project.technologies.map(tech => <Chip key={tech} label={tech} />)}</div></section>
-                <section className="project-story-section"><div className="section-kicker">11 · FONCTIONNALITÉS</div><h2>Points clés</h2><div className="software-list">{project.features.map(item => <div key={item}><span className="number-dot">✓</span>{item}</div>)}</div></section>
-                {project.youtubeVideoId ? <section className="project-story-section video-section"><div className="section-kicker">12 · DÉMONSTRATION</div><h2><FontAwesomeIcon icon={faPlay} /> Démonstration vidéo du système SACRURO</h2><div style={{ width: '100%', aspectRatio: '16 / 9', borderRadius: '24px', overflow: 'hidden', border: '1px solid rgba(255,255,255,.12)', background: '#070a0f', boxShadow: '0 30px 80px rgba(0,0,0,.3)' }}><iframe src={`https://www.youtube-nocookie.com/embed/${project.youtubeVideoId}?rel=0&modestbranding=1`} title="Démonstration vidéo du système SACRURO" loading="eager" style={{ width: '100%', height: '100%', border: 0, display: 'block' }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div></section> : null}
-                {project.media?.length ? <section className="project-story-section media-section"><div className="section-kicker">13 · MÉDIAS</div><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><PremiumMediaGallery media={project.media} /></section> : null}
+                <div className="project-overview">
+                    <article><span className="section-kicker">Contexte</span><p>{project.context}</p></article>
+                    <article><span className="section-kicker">Problème</span><p>{project.problem}</p></article>
+                    <article><span className="section-kicker">Solution</span><p>{project.solution}</p></article>
+                </div>
+
+                <section className="project-story-section"><span className="section-kicker">Description & réalisation</span><h2><FontAwesomeIcon icon={faLightbulb} /> Comment les technologies ont été exploitées</h2><p>{project.description}</p></section>
+
+                <section className="project-story-section"><span className="section-kicker">Architecture</span><h2><FontAwesomeIcon icon={faCodeBranch} /> Architecture du système</h2><div className="architecture-card"><div className="architecture-flow">{project.architecture.split(' → ').map((step, index, steps) => <React.Fragment key={`${step}-${index}`}><span>{step}</span>{index < steps.length - 1 && <b>→</b>}</React.Fragment>)}</div></div></section>
+
+                <div className={`project-columns${project.hardware.length ? '' : ' project-columns--single'}`}>
+                    {project.hardware.length ? <section className="project-story-section"><span className="section-kicker">Matériel</span><h2><FontAwesomeIcon icon={faMicrochip} /> Matériel & électronique</h2><ul className="project-list">{project.hardware.map((item) => <li key={item}>{item}</li>)}</ul></section> : null}
+                    <section className="project-story-section"><span className="section-kicker">Logiciel</span><h2><FontAwesomeIcon icon={faLaptopCode} /> Logiciel & programmation</h2><ul className="project-list">{project.software.map((item) => <li key={item}>{item}</li>)}</ul></section>
+                </div>
+
+                <section className="project-story-section"><span className="section-kicker">Résultats</span><h2><FontAwesomeIcon icon={faChartLine} /> Résultats & avancées</h2><div className="results-grid">{project.results.map((item, index) => <div className="result-card" key={item}><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></div>)}</div></section>
+
+                <div className="project-columns">
+                    <section className="project-story-section"><span className="section-kicker">Mon rôle</span><h2>Contribution au projet</h2><p>{project.role}</p></section>
+                    <section className="project-story-section"><span className="section-kicker">Technologies</span><h2>Technologies utilisées</h2><div className="project-chips">{project.technologies.map((tech) => <Chip key={tech} label={tech} />)}</div></section>
+                </div>
+
+                <section className="project-story-section"><span className="section-kicker">Fonctionnalités</span><h2>Points clés</h2><ul className="project-list project-list--grid">{project.features.map((item) => <li key={item}>{item}</li>)}</ul></section>
+
+                {project.youtubeVideoId ? <section className="project-story-section video-section"><span className="section-kicker">Démonstration</span><h2><FontAwesomeIcon icon={faPlay} /> Démonstration vidéo du système</h2><div className="project-video-frame"><iframe src={`https://www.youtube-nocookie.com/embed/${project.youtubeVideoId}?rel=0&modestbranding=1`} title={`Démonstration vidéo : ${project.title}`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div></section> : null}
+                {project.media?.length ? <section className="project-story-section media-section"><span className="section-kicker">Médias</span><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><PremiumMediaGallery media={project.media} /></section> : null}
             </div>
         </main>
     );
