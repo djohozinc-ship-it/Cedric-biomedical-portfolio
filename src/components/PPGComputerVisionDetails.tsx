@@ -7,8 +7,8 @@ import '../assets/styles/PPGPremiumAnimations.scss';
 const publicUrl = process.env.PUBLIC_URL || '';
 
 const mediaItems = [
-    { src: `${publicUrl}/images/projects/ppg/roi.png`, title: 'Région d’intérêt (ROI)', caption: 'Zone du visage sélectionnée pour l’extraction des variations photométriques.' },
-    { src: `${publicUrl}/images/projects/ppg/signal-ppg-brut.png`, title: 'Signal PPG temporel brut', caption: 'Signal extrait avant les étapes ultérieures de traitement et de détection des pics.' },
+    { src: `${publicUrl}/images/projects/ppg/roi.jpg`, title: 'Région d’intérêt (ROI)', caption: 'Zone du visage sélectionnée pour l’extraction des variations photométriques.' },
+    { src: `${publicUrl}/images/projects/ppg/signal-ppg-brut.jpg`, title: 'Signal PPG temporel brut', caption: 'Signal extrait avant les étapes ultérieures de traitement et de détection des pics.' },
 ];
 
 const pipeline = [

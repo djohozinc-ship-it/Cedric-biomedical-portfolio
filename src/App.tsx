@@ -47,6 +47,19 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
     return <div ref={ref} style={{ minHeight: shouldLoad ? undefined : minHeight }}>{shouldLoad && <Suspense fallback={null}>{children}</Suspense>}</div>;
 }
 
+const SITE_TITLE = 'Cédric Djohozin | Génie biomédical';
+const PROJECT_TITLES: Record<string, string> = {
+    'sacruro': 'SACRURO',
+    'mor-eyes': 'MOR-EYES COM V1.0',
+    'ppg-computer-vision': 'Rythme cardiaque par PPG et vision par ordinateur',
+    'dicom-anonymizer': 'DICOM Anonymizer',
+    'carte-donnees-biomedicales': 'Carte universelle de données biomédicales',
+    'moyes-pro': 'Moyes Pro',
+    'gmao-hospitaliere': 'GMAO hospitalière open source',
+    'medura': 'Medura',
+    'thermostat-solidworks': 'Thermostat – conception CAO'
+};
+
 function App() {
     const [mode, setMode] = useState<string>(() => {
         try {
@@ -60,6 +73,13 @@ function App() {
     const isSacruroPage = hash === '#/project/sacruro';
     const isPPGPage = hash === '#/project/ppg-computer-vision';
     const isMorEyesPage = hash === '#/project/mor-eyes';
+
+    // Le titre de l'onglet suit la page affichée (historique, favoris, lecteurs d'écran).
+    useEffect(() => {
+        const slug = hash.startsWith('#/project/') ? hash.replace('#/project/', '').split('?')[0] : '';
+        const name = PROJECT_TITLES[slug];
+        document.title = name ? `${name} | Cédric Djohozin` : SITE_TITLE;
+    }, [hash]);
 
     const handleModeChange = () => {
         const next = mode === 'dark' ? 'light' : 'dark';

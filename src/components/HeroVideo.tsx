@@ -9,6 +9,11 @@ const VIDEO_POSTER = `${publicUrl}/videos/presentation-poster.jpg`;
 // (pointerdown tactile, scroll, survol… ne comptent PAS.)
 const ACTIVATION_EVENTS = ['click', 'keydown', 'touchend', 'mousedown', 'pointerup'] as const;
 
+// Certains navigateurs anciens (et les environnements de test) renvoient undefined au lieu d'une promesse.
+const safePlay = (video: HTMLVideoElement): Promise<void> | undefined => {
+    try { return video.play() as Promise<void> | undefined; } catch { return undefined; }
+};
+
 function HeroVideo() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const visibleRef = useRef(false);
@@ -18,7 +23,7 @@ function HeroVideo() {
         const video = videoRef.current;
         if (!video || !visibleRef.current) return;
         video.muted = true;
-        video.play().catch(() => { /* lecture impossible pour l'instant */ });
+        safePlay(video)?.catch(() => { /* lecture impossible pour l'instant */ });
     }, []);
 
     // Tente d'activer le son. Ne réussit que pendant un vrai geste de la personne.
@@ -27,7 +32,7 @@ function HeroVideo() {
         if (!video) return Promise.resolve(false);
         video.muted = false;
         video.volume = 1;
-        return video.play().then(() => true).catch(() => {
+        return (safePlay(video) ?? Promise.resolve()).then(() => true).catch(() => {
             // Refusé : on repasse en muet pour que l'image continue de jouer.
             startMuted();
             return false;
@@ -51,7 +56,7 @@ function HeroVideo() {
             visibleRef.current = isVisible;
             if (!isVisible) { video.pause(); return; }
             // Si le son est déjà débloqué on le garde, sinon on démarre en muet.
-            video.play().catch(startMuted);
+            (safePlay(video) ?? Promise.resolve()).catch(startMuted);
         };
         if (typeof IntersectionObserver === 'undefined') {
             onVisibility(true);

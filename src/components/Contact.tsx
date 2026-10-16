@@ -89,7 +89,7 @@ function Contact() {
     <div id="contact">
       <div className="items-container">
         <div className="contact_wrapper">
-          <h1>Me contacter</h1>
+          <h1 aria-level={2}>Me contacter</h1>
           <p>
             Vous avez un projet à concrétiser ?
             <br />

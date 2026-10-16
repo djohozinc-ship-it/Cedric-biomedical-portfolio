@@ -53,7 +53,7 @@ const featuredProjects: FeaturedProject[] = [
         slug: 'ppg-computer-vision',
         title: 'Rythme cardiaque par PPG et vision par ordinateur',
         summary: 'Une méthode sans contact pour estimer le rythme cardiaque à partir d’une vidéo du visage.',
-        image: `${publicUrl}/images/projects/ppg/signal-ppg-brut.png`,
+        image: `${publicUrl}/images/projects/ppg/signal-ppg-brut.jpg`,
         alt: 'Capture de l’expérimentation : zone du visage analysée et signal PPG brut',
         width: 1920,
         height: 1080,
@@ -116,7 +116,7 @@ function Project() {
     return (
         <div className="projects-container" id="projects">
             <header className="projects-heading">
-                <h1>Projets</h1>
+                <h1 aria-level={2}>Projets</h1>
                 <p>Trois projets présentés en détail, puis des réalisations plus courtes.</p>
             </header>
 

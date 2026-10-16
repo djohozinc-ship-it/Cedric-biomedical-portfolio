@@ -1,5 +1,4 @@
 import React from 'react';
-import '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
@@ -10,7 +9,7 @@ function Timeline() {
   return (
     <div id="history">
       <div className="items-container">
-        <h1>Parcours</h1>
+        <h1 aria-level={2}>Parcours</h1>
         <VerticalTimeline>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"

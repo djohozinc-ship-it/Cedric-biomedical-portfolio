@@ -9,7 +9,7 @@ function Main() {
       <div className="about-section">
         <div className="image-wrapper">
           <img
-            src={`${process.env.PUBLIC_URL}/images/cedric.png`}
+            src={`${process.env.PUBLIC_URL}/images/cedric.jpg`}
             alt="Cédric Djohozin"
             width="150"
             height="150"

@@ -175,7 +175,7 @@ function Gallery() {
     return (
         <div className="gallery-container" id="gallery">
             <header className="gl-heading">
-                <h1>Galerie</h1>
+                <h1 aria-level={2}>Galerie</h1>
                 <p>Des images du terrain, de l’atelier et de l’écran : ce que le travail donne à voir.</p>
             </header>
 

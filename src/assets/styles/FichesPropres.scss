@@ -135,3 +135,39 @@ $space-section-sm: 40px;   // idem sur téléphone
   .main-container .project-details-page .project-story-section { padding: 24px 0; }
   .main-container .premium-gallery-main { aspect-ratio: 4 / 3; border-radius: 20px; }
 }
+
+/* -------------------------------------------------------------- MODE CLAIR */
+// Plusieurs textes restaient blancs sur fond clair (illisibles) sur les fiches SACRURO et génériques.
+.light-mode .sacruro-page,
+.light-mode .sacruro-page h1,
+.light-mode .sacruro-page h2,
+.light-mode .sacruro-hero h3,
+.light-mode .sacruro-authors,
+.light-mode .sacruro-authors strong,
+.light-mode .sacruro-highlight p,
+.light-mode .sacruro-home-summary { color: #0d1116 !important; }
+.light-mode .sacruro-eyebrow { color: #5000ca; }
+.light-mode .sacruro-lead,
+.light-mode .sacruro-section p,
+.light-mode .sacruro-list,
+.light-mode .sacruro-list li { color: rgba(13,17,22,.74); }
+.light-mode .sacruro-meta span,
+.light-mode .sacruro-techs span,
+.light-mode .sacruro-chips span { color: rgba(13,17,22,.8); border-color: rgba(0,0,0,.14); background: rgba(0,0,0,.04); }
+.light-mode .sacruro-authors small,
+.light-mode .sacruro-section-heading > span,
+.light-mode .sacruro-note { color: rgba(13,17,22,.55) !important; }
+.light-mode .sacruro-grid strong,
+.light-mode .sacruro-flow span,
+.light-mode .sacruro-use-grid span { color: #0d1116; }
+.light-mode .sacruro-flow span { background: #fff; }
+.light-mode .sacruro-memoire-text h2 { color: #0d1116 !important; }
+// La carte photo garde son texte blanc : elle est posée sur une image sombre.
+.light-mode .sacruro-hero-card .sacruro-stat strong,
+.light-mode .sacruro-hero-card .sacruro-stat span,
+.light-mode .sacruro-hero-card .sacruro-hero-card-label { color: #fff; }
+
+.light-mode .project-hero-meta span,
+.light-mode .project-hero-link { color: rgba(13,17,22,.82) !important; }
+.light-mode .project-hero-link { background: rgba(80,0,202,.1); border-color: rgba(80,0,202,.4); }
+.light-mode .project-hero-link:hover { background: rgba(80,0,202,.2); }
