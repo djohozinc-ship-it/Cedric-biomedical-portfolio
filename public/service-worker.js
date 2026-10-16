@@ -32,10 +32,10 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  // Vidéos / audio : on laisse le navigateur gérer directement (requêtes partielles « Range »).
+  // Vidéos / audio / PDF : on laisse le navigateur gérer directement (requêtes partielles « Range »).
   // Les passer par le cache casse la lecture et alourdit inutilement le stockage.
   const url = new URL(event.request.url);
-  if (event.request.headers.has('range') || /\.(mp4|webm|mp3|ogg)$/i.test(url.pathname)) return;
+  if (event.request.headers.has('range') || /\.(mp4|webm|mp3|ogg|pdf)$/i.test(url.pathname)) return;
 
   event.respondWith(
     fetch(event.request)

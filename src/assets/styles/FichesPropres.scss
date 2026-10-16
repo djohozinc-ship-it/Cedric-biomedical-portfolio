@@ -47,9 +47,33 @@ $space-section-sm: 40px;   // idem sur téléphone
   .main-container .sacruro-media-grid .sacruro-figure { flex: 0 1 calc(50% - 9px); width: auto; }
 }
 
+// Bloc « Mémoire complet » (lecture en ligne + téléchargement)
+.main-container .sacruro-memoire { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin: 8px 0 8px; padding: 18px 22px; border: 1px solid rgba(156,124,255,.35); border-radius: 18px; background: linear-gradient(90deg, rgba(80,0,202,.2), rgba(255,255,255,.03)); }
+.main-container .sacruro-memoire-icon { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; background: rgba(156,124,255,.22); color: #cdbdff; font-size: 1.3rem; }
+.main-container .sacruro-memoire-text { flex: 1 1 260px; min-width: 0; }
+.main-container .sacruro-memoire-text h2 { margin: 0 0 2px; font-size: 1.15rem; }
+.main-container .sacruro-memoire-text p { margin: 0; font-size: .88rem; line-height: 1.5; color: rgba(255,255,255,.66); }
+.main-container .sacruro-memoire-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.main-container .sacruro-memoire-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); color: #fff !important; text-decoration: none; font-size: .88rem; font-weight: 600; transition: transform .2s ease, background .2s ease; }
+.main-container .sacruro-memoire-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.08); }
+.main-container .sacruro-memoire-btn--primary { background: #5000ca; border-color: #7a3df0; }
+.main-container .sacruro-memoire-btn--primary:hover { background: #6410f0; }
+.light-mode .sacruro-memoire { background: linear-gradient(90deg, rgba(80,0,202,.1), rgba(0,0,0,.02)); }
+.light-mode .sacruro-memoire-text p { color: rgba(13,17,22,.65); }
+.light-mode .sacruro-memoire-btn { color: #0d1116 !important; border-color: rgba(0,0,0,.2); }
+.light-mode .sacruro-memoire-btn--primary { color: #fff !important; }
+@media (max-width: 800px) {
+  .main-container .sacruro-memoire { padding: 16px; }
+  .main-container .sacruro-memoire-actions { width: 100%; }
+  .main-container .sacruro-memoire-btn { flex: 1 1 140px; justify-content: center; }
+}
+
 /* -------------------------------------------------------------- MOR-EYES */
+// Le bouton « Retour aux projets » était masqué sous la barre de navigation fixe : on décale le contenu du héros.
+.main-container .mor-eyes-hero-inner { padding-top: 92px; }
+.main-container .mor-eyes-back { position: relative; z-index: 5; }
 .main-container .mor-eyes-hero { min-height: min(720px, calc(100svh - 56px)); }
-.main-container .mor-eyes-hero-inner { min-height: min(720px, calc(100svh - 56px)); padding: 24px 32px 32px; }
+.main-container .mor-eyes-hero-inner { min-height: min(720px, calc(100svh - 56px)); padding: 92px 32px 32px; }
 .main-container .mor-eyes-hero-visual { height: 460px; }
 .main-container .mor-eyes-section { padding: $space-section 24px 0; }
 .main-container .mor-eyes-section:last-child,
@@ -67,7 +91,7 @@ $space-section-sm: 40px;   // idem sur téléphone
 @media (max-width: 800px) {
   .main-container .mor-eyes-hero,
   .main-container .mor-eyes-hero-inner { min-height: 0; }
-  .main-container .mor-eyes-hero-inner { padding: 16px 18px 28px; }
+  .main-container .mor-eyes-hero-inner { padding: 84px 18px 28px; }
   .main-container .mor-eyes-hero-visual { height: 300px; }
   .main-container .mor-eyes-section { padding: $space-section-sm 18px 0; }
   .main-container .mor-eyes-section:last-child,

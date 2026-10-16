@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faFlask } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faFlask, faFilePdf, faDownload, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import './SacruroDetails.scss';
 import osmoseurImg from '../assets/images/sacruro/chd-zou-osmoseur.jpg';
 import tdsImg from '../assets/images/sacruro/mesure-tds.jpg';
@@ -14,6 +14,28 @@ import electricalImg from '../assets/images/sacruro/schema-electrique.png';
 import prototypeImg from '../assets/images/sacruro/prototype-electronique.jpg';
 
 
+
+// Mémoire complet : le PDF est déposé dans public/documents/. Le bloc n'apparaît que si le fichier existe,
+// ce qui évite un lien de téléchargement cassé.
+const MEMOIRE_URL = `${process.env.PUBLIC_URL || ''}/documents/memoire-sacruro.pdf`;
+const MEMOIRE_FILENAME = 'Memoire-SACRURO-Djohozin-Sossounon.pdf';
+
+function useMemoire(): { size: string } | null {
+  const [info, setInfo] = useState<{ size: string } | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(MEMOIRE_URL, { method: 'HEAD' })
+      .then((response) => {
+        if (cancelled || !response.ok) return;
+        if (!(response.headers.get('content-type') || '').includes('pdf')) return; // page 404 renvoyée en HTML
+        const bytes = Number(response.headers.get('content-length'));
+        setInfo({ size: bytes > 0 ? `${(bytes / 1048576).toFixed(1).replace('.', ',')} Mo` : '' });
+      })
+      .catch(() => { /* hors ligne ou fichier absent : on n'affiche rien */ });
+    return () => { cancelled = true; };
+  }, []);
+  return info;
+}
 
 const figures = {
   tds: { src: tdsImg, title: 'Mesure du TDS sur le terrain', text: 'TDS-mètre utilisé directement sur le terrain.', variant: 'portrait' as const, ratio: '1800 / 2400' },
@@ -46,6 +68,7 @@ const Section = ({ number, title, icon, children, className = '' }: { number: st
 );
 
 export default function SacruroDetails() {
+  const memoire = useMemoire();
   return (
     <main className="sacruro-page">
       <div className="sacruro-container">
@@ -69,6 +92,20 @@ export default function SacruroDetails() {
             <div className="sacruro-stat"><strong>10 000 L</strong><span>capacité du réservoir de stockage étudié</span></div>
           </button>
         </header>
+
+        {memoire ? (
+          <aside className="sacruro-memoire" aria-labelledby="sacruro-memoire-title">
+            <div className="sacruro-memoire-icon" aria-hidden="true"><FontAwesomeIcon icon={faFilePdf} /></div>
+            <div className="sacruro-memoire-text">
+              <h2 id="sacruro-memoire-title">Mémoire complet</h2>
+              <p>Rapport de stage de fin de formation, soutenu le 22 juillet 2026 · EPAC / UAC{memoire.size ? ` · PDF, ${memoire.size}` : ' · PDF'}</p>
+            </div>
+            <div className="sacruro-memoire-actions">
+              <a className="sacruro-memoire-btn" href={MEMOIRE_URL} target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faBookOpen} /> Lire en ligne</a>
+              <a className="sacruro-memoire-btn sacruro-memoire-btn--primary" href={MEMOIRE_URL} download={MEMOIRE_FILENAME}><FontAwesomeIcon icon={faDownload} /> Télécharger</a>
+            </div>
+          </aside>
+        ) : null}
 
         <Section number="01" title="Contexte" icon={faDroplet}>
           <p>Dans l’unité de dialyse du CHD-Zou, l’osmoseur permettant de produire de l'eau adéquat pour la dialyse produit une eau traitée destinée au fonctionnement des générateurs de dialyse et un concentrat rejeté. Ce rejet est évacué alors qu’il représente un volume d’eau potentiellement valorisable pour des usages non médicaux. L’étude SACRURO part de ce constat afin de proposer une solution automatique de récupération, de surveillance et de distribution.</p>
