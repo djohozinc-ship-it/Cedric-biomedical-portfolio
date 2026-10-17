@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrochip, faStethoscope, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons';
+import { faMicrochip, faStethoscope, faScrewdriverWrench, faRobot } from '@fortawesome/free-solid-svg-icons';
 import Chip from '@mui/material/Chip';
 import '../assets/styles/Expertise.scss';
 
@@ -24,6 +24,16 @@ const electronicsSkills = [
     "Moteurs électriques",
     "Systèmes photovoltaïques",
     "Programmation des API (Grafcet)"
+];
+
+const roboticsSkills = [
+    "Robotique médicale",
+    "Systèmes embarqués",
+    "Vision artificielle",
+    "Capteurs et actionneurs",
+    "Automatisation",
+    "IoT biomédical",
+    "Assistance aux patients"
 ];
 
 const tools = [
@@ -68,6 +78,21 @@ function Expertise() {
                     <div className="flex-chips">
                         <span className="chip-title">Compétences :</span>
                         {electronicsSkills.map((label, index) => (
+                            <Chip key={index} className='chip' label={label} />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="skill">
+                    <FontAwesomeIcon icon={faRobot} size="3x"/>
+                    <h3>Robotique médicale</h3>
+                    <p>
+                        Conception de systèmes intelligents au service du soin et de l'assistance aux patients, associant
+                        capteurs, actionneurs, vision artificielle et systèmes embarqués (projets MOR-EYES et assistance médicale).
+                    </p>
+                    <div className="flex-chips">
+                        <span className="chip-title">Compétences :</span>
+                        {roboticsSkills.map((label, index) => (
                             <Chip key={index} className='chip' label={label} />
                         ))}
                     </div>
