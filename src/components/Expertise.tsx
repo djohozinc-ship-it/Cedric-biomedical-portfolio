@@ -38,6 +38,7 @@ const roboticsSkills = [
 
 const tools = [
     "KiCad",
+    "Proteus",
     "SolidWorks",
     "Arduino IDE",
     "VS Code",
