@@ -46,7 +46,7 @@ const tools = [
     "VS Code",
     "Fusion",
     "MATLAB",
-    "Kate",
+    "Octave",
     "github"
 ];
 
