@@ -28,11 +28,14 @@ const electronicsSkills = [
 
 const roboticsSkills = [
     "Robotique médicale",
-    "Systèmes embarqués",
+    "ROS / ROS 2",
+    "Gazebo et RViz",
+    "Python & C++",
+    "OpenCV",
     "Vision artificielle",
+    "Systèmes embarqués",
     "Capteurs et actionneurs",
-    "Automatisation",
-    "IoT biomédical",
+    "Cinématique et commande de moteurs",
     "Assistance aux patients"
 ];
 
@@ -88,7 +91,7 @@ function Expertise() {
                     <h3>Robotique médicale</h3>
                     <p>
                         Conception de systèmes intelligents au service du soin et de l'assistance aux patients, associant
-                        capteurs, actionneurs, vision artificielle et systèmes embarqués (projets MOR-EYES et assistance médicale).
+                        capteurs, actionneurs, ROS, vision artificielle et systèmes embarqués (projets MOR-EYES et assistance médicale).
                     </p>
                     <div className="flex-chips">
                         <span className="chip-title">Compétences :</span>
