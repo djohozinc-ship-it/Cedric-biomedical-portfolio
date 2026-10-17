@@ -22,8 +22,7 @@ const electronicsSkills = [
     "Conception de schémas électroniques et électrique",
     "Réalisation de PCB",
     "Moteurs électriques",
-    "Systèmes photovoltaïques",
-    "Programmation des API (Grafcet)"
+    "Systèmes photovoltaïques"
 ];
 
 const roboticsSkills = [
@@ -32,9 +31,7 @@ const roboticsSkills = [
     "Gazebo et RViz",
     "Python & C++",
     "OpenCV",
-    "Vision artificielle",
     "Systèmes embarqués",
-    "Capteurs et actionneurs",
     "Cinématique et commande de moteurs",
     "Assistance aux patients"
 ];
