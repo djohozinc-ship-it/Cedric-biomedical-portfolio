@@ -32,6 +32,8 @@ function HeroVideo() {
         if (!video) return Promise.resolve(false);
         video.muted = false;
         video.volume = 1;
+        // Hors de l'écran : on débloque seulement le son, sans relancer la lecture.
+        if (!visibleRef.current) { video.pause(); return Promise.resolve(true); }
         return (safePlay(video) ?? Promise.resolve()).then(() => true).catch(() => {
             // Refusé : on repasse en muet pour que l'image continue de jouer.
             startMuted();
@@ -65,7 +67,15 @@ function HeroVideo() {
             observer.observe(video);
         }
 
+        // Onglet masqué : pause ; retour sur l'onglet : reprise seulement si la vidéo est à l'écran.
+        const onTabChange = () => {
+            if (document.hidden) video.pause();
+            else if (visibleRef.current) (safePlay(video) ?? Promise.resolve()).catch(startMuted);
+        };
+        document.addEventListener('visibilitychange', onTabChange);
+
         return () => {
+            document.removeEventListener('visibilitychange', onTabChange);
             observer?.disconnect();
             ACTIVATION_EVENTS.forEach((e) => window.removeEventListener(e, onGesture));
             video.pause();

@@ -27,4 +27,6 @@ export const galleryItems: GalleryItem[] = [
     { file: 'mor-eyes-servomoteurs.jpg', title: 'Servomoteurs du banc de test', category: 'Électronique', alt: 'Gros plan sur les servomoteurs du banc de test MOR-EYES', width: 1080, height: 1331 },
     { file: 'mor-eyes-prototype.jpg', title: 'MOR-EYES devant son interface', category: 'Logiciel', alt: 'Prototype MOR-EYES devant l’interface du logiciel de communication', width: 1080, height: 789 },
     { file: 'ppg-signal-brut.jpg', title: 'Signal PPG issu de la vidéo du visage', category: 'Logiciel', alt: 'Capture de l’expérimentation PPG : zone du visage analysée et signal brut', width: 1600, height: 900 },
+    { file: 'dicom-coupe-ct.jpg', title: 'DICOM Anonymizer : coupe CT anonymisée', category: 'Logiciel', alt: 'Coupe de scanner CT affichée après anonymisation par DICOM Anonymizer', width: 640, height: 477 },
+    { file: 'dicom-verification-serie.jpg', title: 'DICOM Anonymizer : vérification de la série', category: 'Logiciel', alt: 'Résultat de la vérification d’une série DICOM anonymisée', width: 940, height: 380 },
 ];
