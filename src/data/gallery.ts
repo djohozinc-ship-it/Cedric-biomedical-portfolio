@@ -39,4 +39,8 @@ export const galleryItems: GalleryItem[] = [
     { file: 'detection-main-mediapipe.jpg', title: 'Détection de la main avec OpenCV et MediaPipe', category: 'Logiciel', alt: 'Suivi des points de la main en temps réel avec Python, OpenCV et MediaPipe dans Spyder', width: 1600, height: 858 },
     { file: 'matlab-emg.jpg', title: 'Filtrage et spectre d’un signal EMG (MATLAB)', category: 'Logiciel', alt: 'Signal EMG filtré en passe-bande et spectres en fréquence sous MATLAB', width: 1600, height: 859 },
     { file: 'mor-eyes-pro-banc.jpg', title: 'MOR-EYES PRO : interface et maquette', category: 'Électronique', alt: 'Interface MOR-EYES PRO devant la maquette avec servomoteurs', width: 1600, height: 1205 },
+    { file: 'kicad-carte-esp32.jpg', title: 'Carte ESP32 conçue sous KiCad', category: 'Électronique', alt: 'Schéma, placement des composants et vue 3D d’une carte à base d’ESP32 dans KiCad', width: 1600, height: 900 },
+    { file: 'blender-phare.jpg', title: 'Phare modélisé sous Blender', category: 'Modélisation 3D', alt: 'Rendu Blender d’un phare à rayures rouges et blanches', width: 1600, height: 900 },
+    { file: 'medora-solidworks.jpg', title: 'MEDORA : assistant médical vocal (SolidWorks)', category: 'Modélisation 3D', alt: 'Modèle 3D du boîtier de l’assistant médical vocal MEDORA avec écran, haut-parleur et micro', width: 1404, height: 735 },
+    { file: 'bras-servomoteurs.jpg', title: 'Bras articulé à servomoteurs', category: 'Électronique', alt: 'Maquette de bras articulé réalisée avec deux servomoteurs commandés par Arduino', width: 1205, height: 1600 },
 ];
