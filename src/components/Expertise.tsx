@@ -45,6 +45,7 @@ const tools = [
     "Fusion",
     "MATLAB",
     "Octave",
+    "Blender",
     "github"
 ];
 
