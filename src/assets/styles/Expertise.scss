@@ -139,3 +139,18 @@
         font-size: .74rem !important;
     }
 }
+
+/* Étiquettes : on laisse le texte passer à la ligne au lieu de le couper par « … » */
+.skills-container .chip {
+    height: auto !important;
+    min-height: 28px;
+
+    .MuiChip-label {
+        white-space: normal;
+        text-overflow: clip;
+        overflow: visible;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        line-height: 1.3;
+    }
+}

@@ -7,6 +7,7 @@ import '../assets/styles/Gallery.scss';
 
 const publicUrl = process.env.PUBLIC_URL || '';
 const ALL = 'Tous';
+const PAGE_SIZE = 9;
 const srcOf = (item: GalleryItem) => `${publicUrl}/images/gallery/${item.file}`;
 
 /* ---------- Vignette : apparaît en douceur quand elle entre à l’écran ---------- */
@@ -170,6 +171,10 @@ function Gallery() {
     const categories = useMemo(() => [ALL, ...Array.from(new Set(galleryItems.map((item) => item.category)))], []);
     const items = useMemo(() => (filter === ALL ? galleryItems : galleryItems.filter((item) => item.category === filter)), [filter]);
 
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    useEffect(() => { setVisibleCount(PAGE_SIZE); }, [filter]);
+    const shown = items.slice(0, visibleCount);
+
     const closeLightbox = useCallback(() => setOpenIndex(null), []);
 
     return (
@@ -199,13 +204,22 @@ function Gallery() {
             )}
 
             <ul className="gl-grid" key={filter}>
-                {items.map((item, index) => (
+                {shown.map((item, index) => (
                     <Tile key={item.file} item={item} index={index} onOpen={() => setOpenIndex(index)} />
                 ))}
             </ul>
 
+            {items.length > visibleCount && (
+                <div className="gl-more">
+                    <button type="button" className="gl-chip" onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}>
+                        Voir plus de photos
+                        <span className="gl-chip-count">{items.length - visibleCount}</span>
+                    </button>
+                </div>
+            )}
+
             {openIndex !== null && (
-                <Lightbox items={items} index={openIndex} onClose={closeLightbox} onChange={setOpenIndex} />
+                <Lightbox items={shown} index={openIndex} onClose={closeLightbox} onChange={setOpenIndex} />
             )}
         </div>
     );

@@ -325,3 +325,9 @@
     .gallery-container .gl-tile:hover img { transform: none; }
     .gl-lightbox, .gl-lightbox-stage img { animation: none; }
 }
+
+.gallery-container .gl-more {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(24px, 4vw, 44px);
+}
