@@ -11,8 +11,8 @@ import '../assets/styles/MorEyesDetails.scss';
 const publicUrl = process.env.PUBLIC_URL || '';
 
 const gallery = [
-  { file: 'hero.jpg', alt: 'Vue d’ensemble du système MOR-EYES COM V1.0', caption: 'Vue d’ensemble du système' },
-  { file: 'prototype.jpg', alt: 'Prototype du système MOR-EYES COM V1.0', caption: 'Le prototype assemblé' },
+  { file: 'hero.jpg', alt: 'Vue d’ensemble du système MorEyesCommunicator (MEC) V1.0', caption: 'Vue d’ensemble du système' },
+  { file: 'prototype.jpg', alt: 'Prototype du système MorEyesCommunicator (MEC) V1.0', caption: 'Le prototype assemblé' },
   { file: 'electronique.jpg', alt: 'Montage électronique LED et LDR du projet MOR-EYES', caption: 'Montage électronique LED / LDR' },
   { file: 'camera.jpg', alt: 'Caméra utilisée pour l’acquisition du regard', caption: 'Acquisition par caméra' },
   { file: 'utilisation.jpg', alt: 'Utilisation du système MOR-EYES par un utilisateur', caption: 'Mise en situation d’usage' },
@@ -47,10 +47,10 @@ function MorEyesDetails() {
           </button>
           <div className="mor-eyes-hero-layout">
             <div className="mor-eyes-hero-content">
-              <div className="mor-eyes-kicker"><span>MOR-EYES COM</span><b>01</b> · VERSION 1.0 · SECTEUR BIOMÉDICAL</div>
+              <div className="mor-eyes-kicker"><span>MorEyesCommunicator (MEC)</span><b>01</b> · VERSION 1.0 · SECTEUR BIOMÉDICAL</div>
               <h1>Redonner une voix<br /><em>au regard.</em></h1>
               <p className="mor-eyes-tagline">Système de suppléance oratoire assisté par vision artificielle, conçu pour transformer des mouvements oculaires volontaires en commandes puis en parole.</p>
-              <p className="mor-eyes-naming">Le système complet s’appelle <b>MorEyesCommunicator (MEC)</b> ; son logiciel se nomme <b>MorEyes Pro</b>.</p>
+              <p className="mor-eyes-naming">MEC est le nom du système complet ; son logiciel de communication se nomme <b>MorEyes Pro</b>.</p>
               <div className="mor-eyes-authors"><span>Projet réalisé par</span> Cédric DJOHOZIN · Caleb HOUNYO · Smiss Dossou LAWISSA</div>
               <div className="mor-eyes-actions">
                 <a href="#mor-eyes-pipeline"><FontAwesomeIcon icon={faWaveSquare} /> Comprendre le fonctionnement</a>
@@ -92,7 +92,7 @@ function MorEyesDetails() {
           <div className="mor-eyes-rich-copy">
             <p>L’aphasie est un trouble qui peut priver une personne de sa capacité à communiquer oralement, notamment à la suite d’un accident vasculaire cérébral. Dans les situations de paralysie sévère, le patient peut rester conscient de son environnement et conserver le besoin de communiquer alors que ses moyens d’expression sont fortement réduits.</p>
             <p>La présentation de la V1.0 met en avant une situation particulièrement critique : la communication rompue avec le personnel soignant peut accentuer la détresse psychologique et représenter un enjeu important pour la prise en charge.</p>
-            <p>Le projet MOR-EYES COM part alors d’une possibilité fonctionnelle : exploiter les mouvements oculaires et palpébraux lorsqu’ils restent disponibles afin de créer un canal de communication alternatif.</p>
+            <p>Le projet MorEyesCommunicator (MEC) part alors d’une possibilité fonctionnelle : exploiter les mouvements oculaires et palpébraux lorsqu’ils restent disponibles afin de créer un canal de communication alternatif.</p>
           </div>
           <aside className="mor-eyes-problem-card">
             <div className="problem-icon"><FontAwesomeIcon icon={faPersonCircleQuestion} /></div><span>QUESTION DE CONCEPTION</span><strong>Comment permettre à une personne sévèrement privée de parole de transmettre un message à son entourage uniquement à partir de mouvements oculaires volontaires ?</strong>
@@ -137,7 +137,7 @@ function MorEyesDetails() {
 
       <section className="mor-eyes-section mor-eyes-interface">
         <div className="mor-eyes-section-heading"><span>06</span><div><small>INTERACTION HOMME–MACHINE</small><h2>Usage de l’interface</h2></div></div>
-        <div className="interface-layout"><div className="interface-text"><p>L’interface MOR-EYES COM V1.0 a été pensée pour rester accessible après une courte formation préalable. Elle regroupe les fonctions nécessaires à l’interaction avec le patient et à la sélection ou à la construction d’un message.</p><div className="interface-features"><div><FontAwesomeIcon icon={faCode} /><span><b>Mode Morse</b>Interprétation des séquences de clignements.</span></div><div><FontAwesomeIcon icon={faMessage} /><span><b>Phrases rapides</b>Accès à des messages préenregistrés.</span></div><div><FontAwesomeIcon icon={faDatabase} /><span><b>Historique</b>Conservation locale des messages.</span></div><div><FontAwesomeIcon icon={faGear} /><span><b>Paramètres</b>Configuration et adaptation de l’outil.</span></div></div></div><div className="interface-quote"><FontAwesomeIcon icon={faEye} /><span>Une interaction pensée autour d’un canal de communication encore accessible.</span></div></div>
+        <div className="interface-layout"><div className="interface-text"><p>L’interface MorEyesCommunicator (MEC) V1.0 a été pensée pour rester accessible après une courte formation préalable. Elle regroupe les fonctions nécessaires à l’interaction avec le patient et à la sélection ou à la construction d’un message.</p><div className="interface-features"><div><FontAwesomeIcon icon={faCode} /><span><b>Mode Morse</b>Interprétation des séquences de clignements.</span></div><div><FontAwesomeIcon icon={faMessage} /><span><b>Phrases rapides</b>Accès à des messages préenregistrés.</span></div><div><FontAwesomeIcon icon={faDatabase} /><span><b>Historique</b>Conservation locale des messages.</span></div><div><FontAwesomeIcon icon={faGear} /><span><b>Paramètres</b>Configuration et adaptation de l’outil.</span></div></div></div><div className="interface-quote"><FontAwesomeIcon icon={faEye} /><span>Une interaction pensée autour d’un canal de communication encore accessible.</span></div></div>
       </section>
 
       <section id="mor-eyes-gallery" className="mor-eyes-section mor-eyes-gallery-section">
@@ -150,9 +150,9 @@ function MorEyesDetails() {
 
       <section className="mor-eyes-section mor-eyes-conclusion">
         <div className="mor-eyes-section-heading"><span>08</span><div><small>EN SYNTHÈSE</small><h2>Une chaîne biomédicale complète</h2></div></div>
-        <p>MOR-EYES COM V1.0 réunit dans un même prototype la vision par ordinateur, le traitement vidéo, l’analyse des mouvements des paupières, l’interprétation de commandes, l’interface homme-machine, le stockage local et la synthèse vocale. Le projet explore ainsi une solution de communication alternative fondée sur un canal volontaire qui peut rester disponible chez certaines personnes sévèrement privées de parole.</p>
+        <p>MorEyesCommunicator (MEC) V1.0 réunit dans un même prototype la vision par ordinateur, le traitement vidéo, l’analyse des mouvements des paupières, l’interprétation de commandes, l’interface homme-machine, le stockage local et la synthèse vocale. Le projet explore ainsi une solution de communication alternative fondée sur un canal volontaire qui peut rester disponible chez certaines personnes sévèrement privées de parole.</p>
         <div className="mor-eyes-conclusion-points"><div><FontAwesomeIcon icon={faCircleCheck} /><span>Acquisition vidéo en temps réel</span></div><div><FontAwesomeIcon icon={faCircleCheck} /><span>Détection des clignements</span></div><div><FontAwesomeIcon icon={faCircleCheck} /><span>Interprétation des commandes</span></div><div><FontAwesomeIcon icon={faCircleCheck} /><span>Restitution vocale hors ligne</span></div></div>
-        <div className="mor-eyes-credits"><span>PROJET MOR-EYES COM · V1.0</span><strong>Cédric DJOHOZIN · Caleb HOUNYO · Smiss Dossou LAWISSA</strong></div>
+        <div className="mor-eyes-credits"><span>PROJET MorEyesCommunicator (MEC) · V1.0</span><strong>Cédric DJOHOZIN · Caleb HOUNYO · Smiss Dossou LAWISSA</strong></div>
       </section>
     </main>
   );

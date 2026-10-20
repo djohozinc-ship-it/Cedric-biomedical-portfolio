@@ -50,7 +50,7 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
 const SITE_TITLE = 'Cédric Djohozin | Génie biomédical';
 const PROJECT_TITLES: Record<string, string> = {
     'sacruro': 'SACRURO',
-    'mor-eyes': 'MOR-EYES COM V1.0',
+    'mor-eyes': 'MorEyesCommunicator (MEC) V1.0',
     'ppg-computer-vision': 'Rythme cardiaque par PPG et vision par ordinateur',
     'dicom-anonymizer': 'DICOM Anonymizer',
     'carte-donnees-biomedicales': 'Carte universelle de données biomédicales',

@@ -37,7 +37,7 @@ const featuredProjects: FeaturedProject[] = [
     },
     {
         slug: 'mor-eyes',
-        title: 'MOR-EYES COM V1.0',
+        title: 'MorEyesCommunicator (MEC) V1.0',
         summary: 'Un système de suppléance oratoire : la vision artificielle transforme des clignements volontaires en commandes, puis en parole.',
         image: `${publicUrl}/images/projects/mor-eyes/hero.jpg`,
         alt: 'Prototype MOR-EYES devant l’interface du logiciel de communication',
