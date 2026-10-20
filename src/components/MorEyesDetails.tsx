@@ -50,6 +50,7 @@ function MorEyesDetails() {
               <div className="mor-eyes-kicker"><span>MOR-EYES COM</span><b>01</b> · VERSION 1.0 · SECTEUR BIOMÉDICAL</div>
               <h1>Redonner une voix<br /><em>au regard.</em></h1>
               <p className="mor-eyes-tagline">Système de suppléance oratoire assisté par vision artificielle, conçu pour transformer des mouvements oculaires volontaires en commandes puis en parole.</p>
+              <p className="mor-eyes-naming">Le système complet s’appelle <b>MorEyesCommunicator (MEC)</b> ; son logiciel se nomme <b>MorEyes Pro</b>.</p>
               <div className="mor-eyes-authors"><span>Projet réalisé par</span> Cédric DJOHOZIN · Caleb HOUNYO · Smiss Dossou LAWISSA</div>
               <div className="mor-eyes-actions">
                 <a href="#mor-eyes-pipeline"><FontAwesomeIcon icon={faWaveSquare} /> Comprendre le fonctionnement</a>
@@ -141,9 +142,10 @@ function MorEyesDetails() {
 
       <section id="mor-eyes-gallery" className="mor-eyes-section mor-eyes-gallery-section">
         <div className="mor-eyes-section-heading"><span>07</span><div><small>PREUVES VISUELLES</small><h2>Prototype & démonstration</h2></div></div>
-        <p className="mor-eyes-section-lead">La galerie est prête à recevoir les six photographies du projet. La vidéo YouTube ci-dessous présente directement le prototype MOR-EYES COM V1.0 en fonctionnement.</p>
+        <p className="mor-eyes-section-lead">Photographies du prototype, puis deux vidéos : une présentation complète du projet, et une démonstration qui montre concrètement le fonctionnement de MorEyesCommunicator (MEC) avec son logiciel MorEyes Pro.</p>
         <div className="mor-eyes-gallery-grid">{gallery.map((item, index) => <figure key={item.src}><img src={item.src} alt={item.alt} loading="lazy" /><figcaption><b>{String(index + 1).padStart(2, '0')}</b><span>{item.caption}</span></figcaption></figure>)}</div>
-        <div className="mor-eyes-video-card"><div className="video-heading"><div><span>DÉMONSTRATION</span><h3>MOR-EYES COM V1.0 en fonctionnement</h3></div><FontAwesomeIcon icon={faPlayCircle} /></div><div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:'inherit'}}><iframe src="https://www.youtube.com/embed/qimwWCac6hs" title="Démonstration MOR-EYES COM V1.0" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:0}} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div></div>
+        <div className="mor-eyes-video-card"><div className="video-heading"><div><span>PRÉSENTATION</span><h3>Présentation du projet MorEyesCommunicator</h3></div><FontAwesomeIcon icon={faPlayCircle} /></div><div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:'inherit'}}><iframe src="https://www.youtube-nocookie.com/embed/qimwWCac6hs?rel=0&modestbranding=1" title="Présentation du projet MorEyesCommunicator" loading="lazy" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:0}} allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div></div>
+        <div className="mor-eyes-video-card"><div className="video-heading"><div><span>DÉMONSTRATION</span><h3>Démonstration : comment ça marche vraiment</h3></div><FontAwesomeIcon icon={faPlayCircle} /></div><div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,overflow:'hidden',borderRadius:'inherit'}}><iframe src="https://www.youtube-nocookie.com/embed/O3Fx02_vQ4U?rel=0&modestbranding=1" title="Démonstration du fonctionnement de MorEyesCommunicator" loading="lazy" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:0}} allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /></div></div>
       </section>
 
       <section className="mor-eyes-section mor-eyes-conclusion">
