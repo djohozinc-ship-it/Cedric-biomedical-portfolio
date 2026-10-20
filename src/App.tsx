@@ -56,7 +56,7 @@ const PROJECT_TITLES: Record<string, string> = {
     'carte-donnees-biomedicales': 'Carte universelle de données biomédicales',
     'moyes-pro': 'Moyes Pro',
     'gmao-hospitaliere': 'GMAO hospitalière open source',
-    'medura': 'Medura',
+    'medura': 'MEDORA, assistant médical vocal',
     'thermostat-solidworks': 'Thermostat – conception CAO'
 };
 
