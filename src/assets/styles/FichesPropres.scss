@@ -171,3 +171,17 @@ $space-section-sm: 40px;   // idem sur téléphone
 .light-mode .project-hero-link { color: rgba(13,17,22,.82) !important; }
 .light-mode .project-hero-link { background: rgba(80,0,202,.1); border-color: rgba(80,0,202,.4); }
 .light-mode .project-hero-link:hover { background: rgba(80,0,202,.2); }
+
+/* Plusieurs vidéos dans une même fiche */
+.main-container .project-details-page .project-video-block + .project-video-block { margin-top: 28px; }
+.main-container .project-details-page .project-video-title { margin: 0 0 12px; font-size: 1.05rem; font-weight: 600; }
+
+/* Titres longs (ex. MorEyesCommunicator) : plus petits pour ne pas couper un mot en deux */
+.main-container .project-details-page .project-hero-copy h1.is-long-title {
+    font-size: clamp(2rem, 4.6vw, 3.6rem);
+    overflow-wrap: normal;
+    word-break: normal;
+}
+@media (max-width: 480px) {
+    .main-container .project-details-page .project-hero-copy h1.is-long-title { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+}

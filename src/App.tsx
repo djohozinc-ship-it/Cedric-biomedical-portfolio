@@ -6,7 +6,6 @@ import HeroVideo from './components/HeroVideo';
 import Project from "./components/Project";
 import FadeIn from './components/FadeIn';
 import './index.scss';
-import './assets/styles/MorEyesFixes.scss';
 import './assets/styles/FichesPropres.scss';
 
 const Expertise = lazy(() => import('./components/Expertise'));
@@ -16,7 +15,6 @@ const Contact = lazy(() => import('./components/Contact'));
 const ProjectDetails = lazy(() => import('./components/ProjectDetails'));
 const SacruroDetails = lazy(() => import('./components/SacruroDetails'));
 const PPGComputerVisionDetails = lazy(() => import('./components/PPGComputerVisionDetails'));
-const MorEyesDetails = lazy(() => import('./components/MorEyesDetails'));
 
 function DeferredSection({ children, minHeight = 320 }: { children: React.ReactNode; minHeight?: number }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -50,7 +48,7 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
 const SITE_TITLE = 'Cédric Djohozin | Génie biomédical';
 const PROJECT_TITLES: Record<string, string> = {
     'sacruro': 'SACRURO',
-    'mor-eyes': 'MorEyesCommunicator (MEC) V1.0',
+    'mor-eyes': 'MorEyesCommunicator (MEC)',
     'ppg-computer-vision': 'Rythme cardiaque par PPG et vision par ordinateur',
     'dicom-anonymizer': 'DICOM Anonymizer',
     'carte-donnees-biomedicales': 'Carte universelle de données biomédicales',
@@ -72,7 +70,6 @@ function App() {
     const isProjectPage = hash.startsWith('#/project/');
     const isSacruroPage = hash === '#/project/sacruro';
     const isPPGPage = hash === '#/project/ppg-computer-vision';
-    const isMorEyesPage = hash === '#/project/mor-eyes';
 
     // Le titre de l'onglet suit la page affichée (historique, favoris, lecteurs d'écran).
     useEffect(() => {
@@ -96,36 +93,12 @@ function App() {
         return () => window.removeEventListener('hashchange', onHashChange);
     }, []);
 
-    // Les ancres internes de MOR-EYES ne doivent pas être interprétées comme des routes React.
-    // Elles font défiler la page sans quitter la fiche projet.
-    useEffect(() => {
-        if (!isMorEyesPage) return;
-
-        const handleMorEyesAnchors = (event: MouseEvent) => {
-            const target = event.target as HTMLElement | null;
-            const link = target?.closest<HTMLAnchorElement>('.mor-eyes-actions a[href^="#mor-eyes-"]');
-            if (!link) return;
-
-            const id = link.getAttribute('href')?.slice(1);
-            if (!id) return;
-
-            const destination = document.getElementById(id);
-            if (!destination) return;
-
-            event.preventDefault();
-            destination.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        };
-
-        document.addEventListener('click', handleMorEyesAnchors);
-        return () => document.removeEventListener('click', handleMorEyesAnchors);
-    }, [isMorEyesPage]);
-
     return (
         <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
             <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
             {isProjectPage ? (
                 <Suspense fallback={null}>
-                    {isSacruroPage ? <SacruroDetails /> : isPPGPage ? <PPGComputerVisionDetails /> : isMorEyesPage ? <MorEyesDetails /> : <ProjectDetails />}
+                    {isSacruroPage ? <SacruroDetails /> : isPPGPage ? <PPGComputerVisionDetails /> : <ProjectDetails />}
                 </Suspense>
             ) : (
                 <FadeIn transitionDuration={700}>
