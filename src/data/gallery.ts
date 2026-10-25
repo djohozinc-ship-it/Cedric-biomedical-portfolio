@@ -43,4 +43,5 @@ export const galleryItems: GalleryItem[] = [
     { file: 'blender-phare.jpg', title: 'Phare modélisé sous Blender', category: 'Modélisation 3D', alt: 'Rendu Blender d’un phare à rayures rouges et blanches', width: 1600, height: 900 },
     { file: 'medora-solidworks.jpg', title: 'MEDORA : assistant médical vocal (SolidWorks)', category: 'Modélisation 3D', alt: 'Modèle 3D du boîtier de l’assistant médical vocal MEDORA avec écran, haut-parleur et micro', width: 1404, height: 735 },
     { file: 'bras-servomoteurs.jpg', title: 'Bras articulé à servomoteurs', category: 'Électronique', alt: 'Maquette de bras articulé réalisée avec deux servomoteurs commandés par Arduino', width: 1205, height: 1600 },
+    { file: 'regression-fonction-cout.jpg', title: 'Régression linéaire : fonction de coût J(w, b)', category: 'Logiciel', alt: 'Droite de prédiction des prix de logements, courbes de niveau et surface 3D de la fonction de coût en fonction de w et b', width: 979, height: 810 },
 ];
