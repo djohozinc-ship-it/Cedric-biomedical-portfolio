@@ -68,6 +68,7 @@ const featuredProjects: FeaturedProject[] = [
 const shortProjects: ShortProject[] = [
     { slug: 'dicom-anonymizer', title: 'DICOM Anonymizer', summary: 'Exploration, contrôle et anonymisation d’une série d’images CT au format DICOM.', tags: 'Python, pydicom' },
     { slug: 'medura', title: 'MEDORA : assistant médical vocal', summary: 'Assistant vocal : interface web, voix Piper locale, ESP32 et casque Bluetooth.', tags: 'Python, ESP32, Piper' },
+    { slug: 'emg-neuropathie-matlab', title: 'Analyse EMG de la neuropathie', summary: 'Filtrage et analyse spectrale de signaux EMG normal et pathologique sous MATLAB.', tags: 'MATLAB, EMG, FFT' },
 ];
 
 function Project() {

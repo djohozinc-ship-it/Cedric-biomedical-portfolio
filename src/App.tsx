@@ -55,6 +55,7 @@ const PROJECT_TITLES: Record<string, string> = {
     'moyes-pro': 'Moyes Pro',
     'gmao-hospitaliere': 'GMAO hospitalière open source',
     'medura': 'MEDORA, assistant médical vocal',
+    'emg-neuropathie-matlab': 'Analyse EMG de la neuropathie périphérique',
     'thermostat-solidworks': 'Thermostat – conception CAO'
 };
 
