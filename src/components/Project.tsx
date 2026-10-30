@@ -59,8 +59,8 @@ const featuredProjects: FeaturedProject[] = [
         height: 1080,
         facts: [
             { label: 'Domaine', value: 'Traitement du signal, santé' },
-            { label: 'Statut', value: 'Expérimentation' },
-            { label: 'Technologies', value: 'Python, OpenCV, MediaPipe' }
+            { label: 'Statut', value: 'Prototype expérimental' },
+            { label: 'Technologies', value: 'Python, OpenCV, MediaPipe, SciPy' }
         ]
     }
 ];

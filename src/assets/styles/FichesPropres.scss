@@ -106,17 +106,12 @@ $space-section-sm: 40px;   // idem sur téléphone
 }
 
 /* ------------------------------------------------------------------- PPG */
-.main-container .ppg-page { padding: 24px 5vw 48px; }
-.main-container .ppg-hero { padding: 24px 0 40px; gap: 40px; }
+.main-container .ppg-page { padding: 96px 5vw 48px; }
 .main-container .ppg-section { padding: 44px 0; }
-.main-container .ppg-video-box { margin-top: 24px; min-height: 0; }
-.main-container .ppg-results-note { margin-top: 18px; padding: 20px; }
-.main-container .ppg-result-grid { margin-top: 24px; gap: 12px; }
 .main-container .ppg-footer-card { margin-top: 16px; padding: 26px; }
 
 @media (max-width: 800px) {
-  .main-container .ppg-page { padding: 16px 5vw 36px; }
-  .main-container .ppg-hero { padding: 16px 0 28px; gap: 28px; }
+  .main-container .ppg-page { padding: 88px 5vw 36px; }
   .main-container .ppg-section { padding: 32px 0; }
   .main-container .ppg-footer-card { padding: 22px; }
 }
