@@ -1,7 +1,7 @@
 # Portfolio de Cédric DJOHOZIN — Génie biomédical
 
 Portfolio personnel (React 18 + TypeScript + SCSS + Three.js) présentant le parcours, l'expertise et les projets
-de Cédric DJOHOZIN : maintenance biomédicale et hospitalière, électronique embarquée, IoT et robotique médicale.
+de Cédric DJOHOZIN : maintenance biomédicale et hospitalière, électronique embarquée, IoT et instrumentation biomédicale.
 
 **Site :** https://djohozinc-ship-it.github.io/Cedric-biomedical-portfolio
 
