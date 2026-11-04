@@ -219,7 +219,7 @@ function Gallery() {
             )}
 
             {openIndex !== null && (
-                <Lightbox items={shown} index={openIndex} onClose={closeLightbox} onChange={setOpenIndex} />
+                <Lightbox items={items} index={openIndex} onClose={closeLightbox} onChange={setOpenIndex} />
             )}
         </div>
     );
