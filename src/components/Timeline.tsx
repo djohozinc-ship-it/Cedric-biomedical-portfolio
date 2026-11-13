@@ -11,6 +11,23 @@ function Timeline() {
       <div className="items-container">
         <h1 aria-level={2}>Parcours</h1>
         <VerticalTimeline>
+
+          <VerticalTimelineElement
+            className="vertical-timeline-element--work"
+            contentStyle={{ background: 'white', color: 'rgb(39, 40, 34)' }}
+            contentArrowStyle={{ borderRight: '7px solid white' }}
+            date="28/09/2026 - En cours"
+            iconStyle={{ background: '#5000ca', color: 'rgb(39, 40, 34)' }}
+            icon={<FontAwesomeIcon icon={faBriefcase} />}
+          >
+            <h3 className="vertical-timeline-element-title">Bénévolat — Centre Hospitalier Départemental du Zou</h3>
+            <h4 className="vertical-timeline-element-subtitle">Direction des Équipements et de la Maintenance</h4>
+            <p>
+              Réalisation d’activités de maintenance préventive et corrective des dispositifs médicaux, Installation et mise en service de dispositifs médicaux, Mise en place de dispositif complet de sécurité patient au CHD-Zou
+            </p>
+          </VerticalTimelineElement>
+
+          
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
             contentStyle={{ background: 'white', color: 'rgb(39, 40, 34)' }}
