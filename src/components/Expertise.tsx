@@ -12,6 +12,7 @@ const biomedicalSkills = [
     "Mise en service",
     "Suivi des équipements hospitaliers",
     "Formation Utilisateur",
+    "Maitrise des outils GMAO",
     "Inventaire et réalisation de l'audit d'un service de maintenance"
 ];
 
