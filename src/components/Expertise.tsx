@@ -29,7 +29,6 @@ const electronicsSkills = [
 const roboticsSkills = [
     "Instrumentation biomédicale",
     "ROS / ROS 2",
-    "Gazebo et RViz",
     "Python & C++",
     "OpenCV",
     "Systèmes embarqués",
