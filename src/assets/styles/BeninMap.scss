@@ -157,10 +157,16 @@
     transform: translate(calc(-100% + 9px), -50%);
 }
 
+/* Libellé au-dessus : il flotte, seul le point compte pour la zone cliquable (repères voisins). */
 .benin-map-container .bm-marker--top {
-    flex-direction: column-reverse;
-    gap: 5px;
-    transform: translate(-50%, calc(-100% + 9px));
+    transform: translate(-50%, -50%);
+}
+
+.benin-map-container .bm-marker--top .bm-marker-label {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .benin-map-container .bm-dot {
@@ -353,7 +359,7 @@
     }
 
     .benin-map-container .bm-marker--top {
-        transform: translate(-50%, calc(-100% + 8px));
+        transform: translate(-50%, -50%);
     }
 
     .benin-map-container .bm-marker-label {

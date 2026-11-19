@@ -38,13 +38,11 @@ const DEM: Tr = {
 // Ordre = ordre d'affichage des lieux ; à l'intérieur d'un lieu, du plus ancien au plus récent.
 export const places: Place[] = [
     {
-        id: 'zou',
-        name: { fr: 'Département du Zou', en: 'Zou Department', tr: 'Zou Bölgesi', zh: '祖省', ru: 'Департамент Зу' },
-        short: { fr: 'Zou', en: 'Zou', tr: 'Zou', zh: '祖省', ru: 'Зу' },
-        // Entre Bohicon et Abomey : le point représente le département, pas une adresse précise.
-        lat: 7.18,
-        lon: 2.03,
-        labelSide: 'left',
+        id: 'bohicon',
+        name: { fr: 'Bohicon', en: 'Bohicon', tr: 'Bohicon', zh: '博希孔', ru: 'Бохикон' },
+        lat: 7.1783,
+        lon: 2.0667,
+        labelSide: 'top',
         entries: [
             {
                 kind: 'study',
@@ -59,60 +57,15 @@ export const places: Place[] = [
             },
             {
                 kind: 'work',
-                period: { fr: '11/08/2025 – 05/09/2025' },
-                title: {
-                    fr: 'Stage — Centre Hospitalier Départemental du Zou',
-                    en: 'Internship — Zou Departmental Hospital Centre (CHD-Zou)',
-                    tr: 'Staj — Zou Bölge Hastane Merkezi (CHD-Zou)',
-                    zh: '实习 — 祖省省级医院中心（CHD-Zou）',
-                    ru: 'Стажировка — Департаментский больничный центр Зу (CHD-Zou)',
+                period: { fr: '25/07/2022 – 01/09/2022' },
+                title: { fr: 'Stage — SERIB', en: 'Internship — SERIB', tr: 'Staj — SERIB', zh: '实习 — SERIB', ru: 'Стажировка — SERIB' },
+                detail: {
+                    fr: 'Service de Rembobinage Industriel et de Bâtiment',
+                    en: 'Industrial and Building Rewinding Service',
+                    tr: 'Endüstriyel ve Yapı Sarım Hizmeti',
+                    zh: '工业与建筑电机重绕服务部',
+                    ru: 'Служба промышленной и строительной перемотки электродвигателей',
                 },
-                detail: DEM,
-            },
-            {
-                kind: 'work',
-                period: { fr: '23/03/2026 – 12/06/2026' },
-                title: {
-                    fr: 'Stage — Centre Hospitalier Départemental du Zou',
-                    en: 'Internship — Zou Departmental Hospital Centre (CHD-Zou)',
-                    tr: 'Staj — Zou Bölge Hastane Merkezi (CHD-Zou)',
-                    zh: '实习 — 祖省省级医院中心（CHD-Zou）',
-                    ru: 'Стажировка — Департаментский больничный центр Зу (CHD-Zou)',
-                },
-                detail: DEM,
-            },
-            {
-                kind: 'work',
-                period: { fr: 'Depuis le 28/09/2026', en: 'Since 28/09/2026', tr: '28/09/2026’dan beri', zh: '自 2026年9月28日起', ru: 'С 28/09/2026' },
-                title: {
-                    fr: 'Bénévolat — Centre Hospitalier Départemental du Zou',
-                    en: 'Volunteer — Zou Departmental Hospital Centre (CHD-Zou)',
-                    tr: 'Gönüllü — Zou Bölge Hastane Merkezi (CHD-Zou)',
-                    zh: '志愿者 — 祖省省级医院中心（CHD-Zou）',
-                    ru: 'Волонтёр — Департаментский больничный центр Зу (CHD-Zou)',
-                },
-                detail: DEM,
-            },
-        ],
-    },
-    {
-        id: 'cove',
-        name: { fr: 'Covè', en: 'Covè', tr: 'Covè', zh: '科韦', ru: 'Ковэ' },
-        lat: 7.2167,
-        lon: 2.3333,
-        labelSide: 'right',
-        entries: [
-            {
-                kind: 'work',
-                period: { fr: '12/08/2024 – 06/09/2024' },
-                title: {
-                    fr: 'Stage — Hôpital de Zone de Covè',
-                    en: 'Internship — Covè Zone Hospital',
-                    tr: 'Staj — Covè Bölge Hastanesi',
-                    zh: '实习 — 科韦区域医院',
-                    ru: 'Стажировка — Зональная больница Ковэ',
-                },
-                detail: { fr: 'Service Biomédical', en: 'Biomedical Department', tr: 'Biyomedikal Birimi', zh: '生物医学部门', ru: 'Биомедицинская служба' },
             },
         ],
     },
@@ -152,6 +105,72 @@ export const places: Place[] = [
                     zh: '业士学位：成绩良好（Bien）· DTI：成绩优异（Très Bien）',
                     ru: 'Бакалавриат: с хорошей оценкой (Bien) · DTI: с отличием (Très Bien)',
                 },
+            },
+        ],
+    },
+    {
+        id: 'cove',
+        name: { fr: 'Covè', en: 'Covè', tr: 'Covè', zh: '科韦', ru: 'Ковэ' },
+        lat: 7.2167,
+        lon: 2.3333,
+        labelSide: 'right',
+        entries: [
+            {
+                kind: 'work',
+                period: { fr: '12/08/2024 – 06/09/2024' },
+                title: {
+                    fr: 'Stage — Hôpital de Zone de Covè',
+                    en: 'Internship — Covè Zone Hospital',
+                    tr: 'Staj — Covè Bölge Hastanesi',
+                    zh: '实习 — 科韦区域医院',
+                    ru: 'Стажировка — Зональная больница Ковэ',
+                },
+                detail: { fr: 'Service Biomédical', en: 'Biomedical Department', tr: 'Biyomedikal Birimi', zh: '生物医学部门', ru: 'Биомедицинская служба' },
+            },
+        ],
+    },
+    {
+        id: 'abomey',
+        name: { fr: 'Abomey', en: 'Abomey', tr: 'Abomey', zh: '阿波美', ru: 'Абомей' },
+        lat: 7.1829,
+        lon: 1.9912,
+        labelSide: 'left',
+        entries: [
+            {
+                kind: 'work',
+                period: { fr: '11/08/2025 – 05/09/2025' },
+                title: {
+                    fr: 'Stage — Centre Hospitalier Départemental du Zou',
+                    en: 'Internship — Zou Departmental Hospital Centre (CHD-Zou)',
+                    tr: 'Staj — Zou Bölge Hastane Merkezi (CHD-Zou)',
+                    zh: '实习 — 祖省省级医院中心（CHD-Zou）',
+                    ru: 'Стажировка — Департаментский больничный центр Зу (CHD-Zou)',
+                },
+                detail: DEM,
+            },
+            {
+                kind: 'work',
+                period: { fr: '23/03/2026 – 12/06/2026' },
+                title: {
+                    fr: 'Stage — Centre Hospitalier Départemental du Zou',
+                    en: 'Internship — Zou Departmental Hospital Centre (CHD-Zou)',
+                    tr: 'Staj — Zou Bölge Hastane Merkezi (CHD-Zou)',
+                    zh: '实习 — 祖省省级医院中心（CHD-Zou）',
+                    ru: 'Стажировка — Департаментский больничный центр Зу (CHD-Zou)',
+                },
+                detail: DEM,
+            },
+            {
+                kind: 'work',
+                period: { fr: 'Depuis le 28/09/2026', en: 'Since 28/09/2026', tr: '28/09/2026’dan beri', zh: '自 2026年9月28日起', ru: 'С 28/09/2026' },
+                title: {
+                    fr: 'Bénévolat — Centre Hospitalier Départemental du Zou',
+                    en: 'Volunteer — Zou Departmental Hospital Centre (CHD-Zou)',
+                    tr: 'Gönüllü — Zou Bölge Hastane Merkezi (CHD-Zou)',
+                    zh: '志愿者 — 祖省省级医院中心（CHD-Zou）',
+                    ru: 'Волонтёр — Департаментский больничный центр Зу (CHD-Zou)',
+                },
+                detail: DEM,
             },
         ],
     },
