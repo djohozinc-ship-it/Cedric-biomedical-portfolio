@@ -4,15 +4,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { galleryItems, GalleryItem } from '../data/gallery';
 import '../assets/styles/Gallery.scss';
+import { Lang, Tr, useLanguage } from '../i18n/LanguageContext';
+import { galleryCategories, galleryTitles } from '../i18n/galleryTranslations';
 
 const publicUrl = process.env.PUBLIC_URL || '';
 const ALL = 'Tous';
 const PAGE_SIZE = 9;
 const srcOf = (item: GalleryItem) => `${publicUrl}/images/gallery/${item.file}`;
 
+// Titre et description d'une photo dans la langue choisie (repli : français).
+// Hors français, la description pour lecteurs d'écran reprend le titre traduit.
+const titleOf = (item: GalleryItem, lang: Lang) => (lang === 'fr' ? item.title : galleryTitles[item.file]?.[lang as Exclude<Lang, 'fr'>] ?? item.title);
+const altOf = (item: GalleryItem, lang: Lang) => {
+    const translated = titleOf(item, lang);
+    return lang === 'fr' || translated === item.title ? item.alt || item.title : translated;
+};
+const ALL_LABEL: Tr = { fr: 'Tous', en: 'All', tr: 'Tümü', zh: '全部', ru: 'Все' };
+const categoryLabel = (category: string, t: <T = string>(text: Tr<T>) => T) =>
+    category === ALL ? t(ALL_LABEL) : galleryCategories[category] ? t(galleryCategories[category]) : category;
+
 /* ---------- Vignette : apparaît en douceur quand elle entre à l’écran ---------- */
 
 function Tile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpen: () => void }) {
+    const { t, lang } = useLanguage();
+    const title = titleOf(item, lang);
     const ref = useRef<HTMLLIElement>(null);
     const [visible, setVisible] = useState(false);
 
@@ -36,10 +51,10 @@ function Tile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpe
 
     return (
         <li ref={ref} className={`gl-item${visible ? ' is-visible' : ''}`} style={{ transitionDelay: `${(index % 3) * 90}ms` }}>
-            <button type="button" className="gl-tile" onClick={onOpen} aria-label={`Agrandir la photo : ${item.title}`}>
+            <button type="button" className="gl-tile" onClick={onOpen} aria-label={`${t({ fr: 'Agrandir la photo', en: 'Enlarge photo', tr: 'Fotoğrafı büyüt', zh: '放大照片', ru: 'Увеличить фото' })} : ${title}`}>
                 <img
                     src={srcOf(item)}
-                    alt={item.alt || item.title}
+                    alt={altOf(item, lang)}
                     width={item.width}
                     height={item.height}
                     style={ratio ? { aspectRatio: ratio } : undefined}
@@ -47,8 +62,8 @@ function Tile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpe
                     decoding="async"
                 />
                 <span className="gl-caption">
-                    <span className="gl-caption-category">{item.category}</span>
-                    <span className="gl-caption-title">{item.title}</span>
+                    <span className="gl-caption-category">{categoryLabel(item.category, t)}</span>
+                    <span className="gl-caption-title">{title}</span>
                 </span>
             </button>
         </li>
@@ -65,6 +80,7 @@ type LightboxProps = {
 };
 
 function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
+    const { t, lang } = useLanguage();
     const dialogRef = useRef<HTMLDivElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
     const touchStartX = useRef<number | null>(null);
@@ -126,34 +142,34 @@ function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
             className="gl-lightbox"
             role="dialog"
             aria-modal="true"
-            aria-label="Visionneuse de photos"
+            aria-label={t({ fr: 'Visionneuse de photos', en: 'Photo viewer', tr: 'Fotoğraf görüntüleyici', zh: '照片查看器', ru: 'Просмотр фотографий' })}
             onClick={onClose}
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
         >
             <div className="gl-lightbox-top" onClick={(event) => event.stopPropagation()}>
                 <span className="gl-lightbox-count" aria-live="polite">{index + 1} / {total}</span>
-                <button ref={closeRef} type="button" className="gl-lightbox-btn" onClick={onClose} aria-label="Fermer">
+                <button ref={closeRef} type="button" className="gl-lightbox-btn" onClick={onClose} aria-label={t({ fr: 'Fermer', en: 'Close', tr: 'Kapat', zh: '关闭', ru: 'Закрыть' })}>
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
             </div>
 
             {total > 1 && (
-                <button type="button" className="gl-lightbox-btn gl-prev" onClick={(event) => { event.stopPropagation(); go(-1); }} aria-label="Photo précédente">
+                <button type="button" className="gl-lightbox-btn gl-prev" onClick={(event) => { event.stopPropagation(); go(-1); }} aria-label={t({ fr: 'Photo précédente', en: 'Previous photo', tr: 'Önceki fotoğraf', zh: '上一张', ru: 'Предыдущее фото' })}>
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
             )}
 
             <figure className="gl-lightbox-stage" onClick={(event) => event.stopPropagation()}>
-                <img key={item.file} src={srcOf(item)} alt={item.alt || item.title} />
+                <img key={item.file} src={srcOf(item)} alt={altOf(item, lang)} />
                 <figcaption>
-                    <span className="gl-caption-category">{item.category}</span>
-                    <span className="gl-lightbox-title">{item.title}</span>
+                    <span className="gl-caption-category">{categoryLabel(item.category, t)}</span>
+                    <span className="gl-lightbox-title">{titleOf(item, lang)}</span>
                 </figcaption>
             </figure>
 
             {total > 1 && (
-                <button type="button" className="gl-lightbox-btn gl-next" onClick={(event) => { event.stopPropagation(); go(1); }} aria-label="Photo suivante">
+                <button type="button" className="gl-lightbox-btn gl-next" onClick={(event) => { event.stopPropagation(); go(1); }} aria-label={t({ fr: 'Photo suivante', en: 'Next photo', tr: 'Sonraki fotoğraf', zh: '下一张', ru: 'Следующее фото' })}>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
             )}
@@ -165,6 +181,7 @@ function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
 /* ---------- Section ---------- */
 
 function Gallery() {
+    const { t } = useLanguage();
     const [filter, setFilter] = useState<string>(ALL);
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -180,12 +197,12 @@ function Gallery() {
     return (
         <div className="gallery-container" id="gallery">
             <header className="gl-heading">
-                <h1 aria-level={2}>Galerie</h1>
-                <p>Des images du terrain, de l’atelier et de l’écran : ce que le travail donne à voir.</p>
+                <h1 aria-level={2}>{t({ fr: 'Galerie', en: 'Gallery', tr: 'Galeri', zh: '图库', ru: 'Галерея' })}</h1>
+                <p>{t({ fr: 'Des images du terrain, de l’atelier et de l’écran : ce que le travail donne à voir.', en: 'Images from the field, the workshop and the screen: what the work gives to see.', tr: 'Sahadan, atölyeden ve ekrandan görüntüler: çalışmanın gözle görülen yüzü.', zh: '来自现场、工作坊和屏幕的画面：工作的可见成果。', ru: 'Кадры с объекта, из мастерской и с экрана — то, что можно увидеть в работе.' })}</p>
             </header>
 
             {categories.length > 2 && (
-                <div className="gl-filters" role="group" aria-label="Filtrer les photos par catégorie">
+                <div className="gl-filters" role="group" aria-label={t({ fr: 'Filtrer les photos par catégorie', en: 'Filter photos by category', tr: 'Fotoğrafları kategoriye göre filtrele', zh: '按类别筛选照片', ru: 'Фильтр фотографий по категории' })}>
                     {categories.map((category) => (
                         <button
                             key={category}
@@ -194,7 +211,7 @@ function Gallery() {
                             aria-pressed={filter === category}
                             onClick={() => setFilter(category)}
                         >
-                            {category}
+                            {categoryLabel(category, t)}
                             <span className="gl-chip-count">
                                 {category === ALL ? galleryItems.length : galleryItems.filter((item) => item.category === category).length}
                             </span>
@@ -212,7 +229,7 @@ function Gallery() {
             {items.length > visibleCount && (
                 <div className="gl-more">
                     <button type="button" className="gl-chip" onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}>
-                        Voir plus de photos
+                        {t({ fr: 'Voir plus de photos', en: 'See more photos', tr: 'Daha fazla fotoğraf', zh: '查看更多照片', ru: 'Показать больше фото' })}
                         <span className="gl-chip-count">{items.length - visibleCount}</span>
                     </button>
                 </div>

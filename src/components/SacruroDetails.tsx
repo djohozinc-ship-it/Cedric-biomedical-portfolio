@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faDroplet, faMicrochip, faMobileScreenButton, faShieldHalved, faChartLine, faScrewdriverWrench, faLeaf, faTriangleExclamation, faCircleCheck, faGaugeHigh, faNetworkWired, faVideo, faFlask, faFilePdf, faDownload, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import './SacruroDetails.scss';
+import { useLanguage } from '../i18n/LanguageContext';
 import osmoseurImg from '../assets/images/sacruro/chd-zou-osmoseur.jpg';
 import tdsImg from '../assets/images/sacruro/mesure-tds.jpg';
 import labImg from '../assets/images/sacruro/rapport-laboratoire.jpg';
@@ -68,12 +69,13 @@ const Section = ({ number, title, icon, children, className = '' }: { number: st
 );
 
 export default function SacruroDetails() {
+  const { t } = useLanguage();
   const memoire = useMemoire();
   return (
     <main className="sacruro-page">
       <div className="sacruro-container">
         <button className="sacruro-back" onClick={() => { window.location.hash = ''; window.scrollTo(0, 0); }}>
-          <FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets
+          <FontAwesomeIcon icon={faArrowLeft} /> {t({ fr: 'Retour aux projets', en: 'Back to projects', tr: 'Projelere dön', zh: '返回项目列表', ru: 'Назад к проектам' })}
         </button>
 
         <header className="sacruro-hero">
@@ -97,12 +99,12 @@ export default function SacruroDetails() {
           <aside className="sacruro-memoire" aria-labelledby="sacruro-memoire-title">
             <div className="sacruro-memoire-icon" aria-hidden="true"><FontAwesomeIcon icon={faFilePdf} /></div>
             <div className="sacruro-memoire-text">
-              <h2 id="sacruro-memoire-title">Mémoire complet</h2>
+              <h2 id="sacruro-memoire-title">{t({ fr: 'Mémoire complet', en: 'Full thesis', tr: 'Tezin tamamı', zh: '完整论文', ru: 'Полный текст работы' })}</h2>
               <p>Rapport de stage de fin de formation, soutenu le 22 juillet 2026 · EPAC / UAC{memoire.size ? ` · PDF, ${memoire.size}` : ' · PDF'}</p>
             </div>
             <div className="sacruro-memoire-actions">
-              <a className="sacruro-memoire-btn" href={MEMOIRE_URL} target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faBookOpen} /> Lire en ligne</a>
-              <a className="sacruro-memoire-btn sacruro-memoire-btn--primary" href={MEMOIRE_URL} download={MEMOIRE_FILENAME}><FontAwesomeIcon icon={faDownload} /> Télécharger</a>
+              <a className="sacruro-memoire-btn" href={MEMOIRE_URL} target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faBookOpen} /> {t({ fr: 'Lire en ligne', en: 'Read online', tr: 'Çevrimiçi oku', zh: '在线阅读', ru: 'Читать онлайн' })}</a>
+              <a className="sacruro-memoire-btn sacruro-memoire-btn--primary" href={MEMOIRE_URL} download={MEMOIRE_FILENAME}><FontAwesomeIcon icon={faDownload} /> {t({ fr: 'Télécharger', en: 'Download', tr: 'İndir', zh: '下载', ru: 'Скачать' })}</a>
             </div>
           </aside>
         ) : null}

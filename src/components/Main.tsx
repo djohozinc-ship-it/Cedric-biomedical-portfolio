@@ -2,8 +2,10 @@ import React from "react";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import '../assets/styles/Main.scss';
+import { useLanguage } from '../i18n/LanguageContext';
 
 function Main() {
+  const { t } = useLanguage();
   return (
     <div className="container">
       <div className="about-section">
@@ -30,7 +32,13 @@ function Main() {
           <h1>Cédric DJOHOZIN</h1>
 
           <p>
-            Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Instrumentation Biomédicale • Technologies embarquées
+            {t({
+              fr: 'Technicien en Maintenance Biomédicale et Hospitalière • Systèmes biomédicaux intelligents • Instrumentation Biomédicale • Technologies embarquées',
+              en: 'Biomedical and Hospital Maintenance Technician • Intelligent Biomedical Systems • Biomedical Instrumentation • Embedded Technologies',
+              tr: 'Biyomedikal ve Hastane Bakım Teknisyeni • Akıllı Biyomedikal Sistemler • Biyomedikal Enstrümantasyon • Gömülü Teknolojiler',
+              zh: '生物医学与医院设备维护技术员 • 智能生物医学系统 • 生物医学仪器 • 嵌入式技术',
+              ru: 'Техник по биомедицинскому и больничному обслуживанию • Интеллектуальные биомедицинские системы • Биомедицинское приборостроение • Встраиваемые технологии'
+            })}
           </p>
 
           <div className="mobile_social_icons">

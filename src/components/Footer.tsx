@@ -3,8 +3,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import '../assets/styles/Footer.scss'
+import { useLanguage } from '../i18n/LanguageContext';
 
 function Footer() {
+  const { t } = useLanguage();
   return (
     <footer>
       <div>
@@ -28,7 +30,7 @@ function Footer() {
 
         <a 
           href="mailto:djohozinc@gmail.com"
-          aria-label="Email"
+          aria-label={t({ fr: 'E-mail', en: 'Email', tr: 'E-posta', zh: '电子邮件', ru: 'Эл. почта' })}
         >
           <EmailIcon />
         </a>

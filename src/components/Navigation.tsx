@@ -15,12 +15,21 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
+import LanguageSwitcher from '../i18n/LanguageSwitcher';
+import { Tr, useLanguage } from '../i18n/LanguageContext';
 
 const drawerWidth = 240;
-const navItems = [['Expertise', 'expertise'], ['Parcours', 'history'], ['Projets', 'projects'], ['Galerie', 'gallery'], ['Contact', 'contact']];
+const navItems: [Tr, string][] = [
+  [{ fr: 'Expertise', en: 'Expertise', tr: 'Uzmanlık', zh: '专业能力', ru: 'Экспертиза' }, 'expertise'],
+  [{ fr: 'Parcours', en: 'Background', tr: 'Özgeçmiş', zh: '履历', ru: 'Путь' }, 'history'],
+  [{ fr: 'Projets', en: 'Projects', tr: 'Projeler', zh: '项目', ru: 'Проекты' }, 'projects'],
+  [{ fr: 'Galerie', en: 'Gallery', tr: 'Galeri', zh: '图库', ru: 'Галерея' }, 'gallery'],
+  [{ fr: 'Contact', en: 'Contact', tr: 'İletişim', zh: '联系', ru: 'Контакты' }, 'contact'],
+];
 
 function Navigation({parentToChild, modeChange}: any) {
   const {mode} = parentToChild;
+  const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
 
@@ -94,9 +103,9 @@ function Navigation({parentToChild, modeChange}: any) {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item[0]} disablePadding>
+          <ListItem key={item[1]} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }} onClick={() => scrollToSection(item[1])}>
-              <ListItemText primary={item[0]} />
+              <ListItemText primary={t(item[0])} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -111,25 +120,32 @@ function Navigation({parentToChild, modeChange}: any) {
         <Toolbar className='navigation-bar'>
           <IconButton
             color="inherit"
-            aria-label="Ouvrir le menu"
+            aria-label={t({ fr: 'Ouvrir le menu', en: 'Open the menu', tr: 'Menüyü aç', zh: '打开菜单', ru: 'Открыть меню' })}
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <IconButton
             color="inherit"
             onClick={() => modeChange()}
-            aria-label={mode === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'}
-            title={mode === 'dark' ? 'Mode clair' : 'Mode sombre'}
+            aria-label={mode === 'dark'
+              ? t({ fr: 'Activer le mode clair', en: 'Switch to light mode', tr: 'Açık moda geç', zh: '切换到浅色模式', ru: 'Включить светлую тему' })
+              : t({ fr: 'Activer le mode sombre', en: 'Switch to dark mode', tr: 'Koyu moda geç', zh: '切换到深色模式', ru: 'Включить тёмную тему' })}
+            title={mode === 'dark'
+              ? t({ fr: 'Mode clair', en: 'Light mode', tr: 'Açık mod', zh: '浅色模式', ru: 'Светлая тема' })
+              : t({ fr: 'Mode sombre', en: 'Dark mode', tr: 'Koyu mod', zh: '深色模式', ru: 'Тёмная тема' })}
           >
             {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
+          <LanguageSwitcher />
+          </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Button key={item[0]} onClick={() => scrollToSection(item[1])} sx={{ color: '#fff' }}>
-                {item[0]}
+              <Button key={item[1]} onClick={() => scrollToSection(item[1])} sx={{ color: '#fff' }}>
+                {t(item[0])}
               </Button>
             ))}
           </Box>

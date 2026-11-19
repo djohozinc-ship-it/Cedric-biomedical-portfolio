@@ -5,6 +5,42 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faArrowLeft, faCodeBranch, faImages, faMicrochip, faLaptopCode, faLightbulb, faBullseye, faCogs, faChartLine, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PremiumMediaGallery from './PremiumMediaGallery';
 import '../assets/styles/ProjectDetails.scss';
+import { Tr, useLanguage } from '../i18n/LanguageContext';
+
+// Libellés de l'interface des fiches projet (le contenu des projets reste en français tant qu'il n'est pas traduit).
+const L: Record<string, Tr> = {
+    back: { fr: 'Retour aux projets', en: 'Back to projects', tr: 'Projelere dön', zh: '返回项目列表', ru: 'Назад к проектам' },
+    notFound: { fr: 'Projet introuvable', en: 'Project not found', tr: 'Proje bulunamadı', zh: '未找到该项目', ru: 'Проект не найден' },
+    notFoundText: { fr: 'Ce projet n’existe pas ou son identifiant a changé.', en: 'This project does not exist or its identifier has changed.', tr: 'Bu proje mevcut değil veya kimliği değişti.', zh: '该项目不存在，或其标识已更改。', ru: 'Такого проекта нет или его идентификатор изменился.' },
+    personal: { fr: 'Projet personnel / académique', en: 'Personal / academic project', tr: 'Kişisel / akademik proje', zh: '个人／学术项目', ru: 'Личный / учебный проект' },
+    design: { fr: 'Conception & prototypage', en: 'Design & prototyping', tr: 'Tasarım ve prototipleme', zh: '设计与原型制作', ru: 'Проектирование и прототипирование' },
+    context: { fr: 'Contexte', en: 'Context', tr: 'Bağlam', zh: '背景', ru: 'Контекст' },
+    problem: { fr: 'Problème', en: 'Problem', tr: 'Sorun', zh: '问题', ru: 'Проблема' },
+    solution: { fr: 'Solution', en: 'Solution', tr: 'Çözüm', zh: '解决方案', ru: 'Решение' },
+    descKicker: { fr: 'Description & réalisation', en: 'Description & implementation', tr: 'Açıklama ve uygulama', zh: '说明与实现', ru: 'Описание и реализация' },
+    descTitle: { fr: 'Comment les technologies ont été exploitées', en: 'How the technologies were used', tr: 'Teknolojiler nasıl kullanıldı', zh: '技术是如何应用的', ru: 'Как использовались технологии' },
+    archKicker: { fr: 'Architecture', en: 'Architecture', tr: 'Mimari', zh: '架构', ru: 'Архитектура' },
+    archTitle: { fr: 'Architecture du système', en: 'System architecture', tr: 'Sistem mimarisi', zh: '系统架构', ru: 'Архитектура системы' },
+    hwKicker: { fr: 'Matériel', en: 'Hardware', tr: 'Donanım', zh: '硬件', ru: 'Оборудование' },
+    hwTitle: { fr: 'Matériel & électronique', en: 'Hardware & electronics', tr: 'Donanım ve elektronik', zh: '硬件与电子', ru: 'Оборудование и электроника' },
+    swKicker: { fr: 'Logiciel', en: 'Software', tr: 'Yazılım', zh: '软件', ru: 'Программное обеспечение' },
+    swTitle: { fr: 'Logiciel & programmation', en: 'Software & programming', tr: 'Yazılım ve programlama', zh: '软件与编程', ru: 'ПО и программирование' },
+    resKicker: { fr: 'Résultats', en: 'Results', tr: 'Sonuçlar', zh: '成果', ru: 'Результаты' },
+    resTitle: { fr: 'Résultats & avancées', en: 'Results & progress', tr: 'Sonuçlar ve ilerleme', zh: '成果与进展', ru: 'Результаты и прогресс' },
+    roleKicker: { fr: 'Mon rôle', en: 'My role', tr: 'Rolüm', zh: '我的角色', ru: 'Моя роль' },
+    roleTitle: { fr: 'Contribution au projet', en: 'Contribution to the project', tr: 'Projeye katkım', zh: '对项目的贡献', ru: 'Вклад в проект' },
+    techKicker: { fr: 'Technologies', en: 'Technologies', tr: 'Teknolojiler', zh: '技术', ru: 'Технологии' },
+    techTitle: { fr: 'Technologies utilisées', en: 'Technologies used', tr: 'Kullanılan teknolojiler', zh: '所用技术', ru: 'Используемые технологии' },
+    featKicker: { fr: 'Fonctionnalités', en: 'Features', tr: 'Özellikler', zh: '功能', ru: 'Функции' },
+    featTitle: { fr: 'Points clés', en: 'Key points', tr: 'Öne çıkanlar', zh: '要点', ru: 'Ключевые моменты' },
+    mediaKicker: { fr: 'Médias', en: 'Media', tr: 'Medya', zh: '媒体', ru: 'Медиа' },
+    mediaTitle: { fr: 'Documentation du projet', en: 'Project documentation', tr: 'Proje belgeleri', zh: '项目资料', ru: 'Документация проекта' },
+    demoKicker: { fr: 'Démonstration', en: 'Demonstration', tr: 'Gösterim', zh: '演示', ru: 'Демонстрация' },
+    demoTitle: { fr: 'Démonstration vidéo du système', en: 'Video demonstration of the system', tr: 'Sistemin video gösterimi', zh: '系统视频演示', ru: 'Видеодемонстрация системы' },
+    demoPrefix: { fr: 'Démonstration vidéo', en: 'Video demonstration', tr: 'Video gösterimi', zh: '视频演示', ru: 'Видеодемонстрация' },
+    videosKicker: { fr: 'Vidéos', en: 'Videos', tr: 'Videolar', zh: '视频', ru: 'Видео' },
+    videosTitle: { fr: 'Présentation et démonstration', en: 'Presentation and demonstration', tr: 'Sunum ve gösterim', zh: '介绍与演示', ru: 'Презентация и демонстрация' },
+};
 
 type ProjectData = {
     slug: string;
@@ -117,6 +153,7 @@ export const projects: ProjectData[] = [
 ];
 
 function ProjectDetails() {
+    const { t } = useLanguage();
     const [hash, setHash] = useState(window.location.hash);
 
     useEffect(() => {
@@ -130,45 +167,45 @@ function ProjectDetails() {
     const project = useMemo(() => projects.find((item) => item.slug === slug), [slug]);
 
     if (!project) {
-        return <main className="project-details-page"><button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</button><div className="project-not-found"><h1>Projet introuvable</h1><p>Ce projet n’existe pas ou son identifiant a changé.</p></div></main>;
+        return <main className="project-details-page"><button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> {t(L.back)}</button><div className="project-not-found"><h1>{t(L.notFound)}</h1><p>{t(L.notFoundText)}</p></div></main>;
     }
 
     return (
         <main className="project-details-page">
-            <button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> Retour aux projets</button>
+            <button className="project-back" onClick={() => { window.location.hash = '#projects'; }}><FontAwesomeIcon icon={faArrowLeft} /> {t(L.back)}</button>
             <section className="project-hero-premium">
-                <div className="project-hero-copy"><span className="project-category">{project.category}</span><h1 className={project.title.length > 22 ? 'is-long-title' : undefined}>{project.title}</h1><p>{project.summary}</p><div className="project-hero-meta"><span><FontAwesomeIcon icon={faBullseye} /> Projet personnel / académique</span><span><FontAwesomeIcon icon={faCogs} /> Conception & prototypage</span>{project.links?.map((link) => <a key={link.url} className="project-hero-link" href={link.url} target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faGithub} /> {link.label}</a>)}</div></div>
+                <div className="project-hero-copy"><span className="project-category">{project.category}</span><h1 className={project.title.length > 22 ? 'is-long-title' : undefined}>{project.title}</h1><p>{project.summary}</p><div className="project-hero-meta"><span><FontAwesomeIcon icon={faBullseye} /> {t(L.personal)}</span><span><FontAwesomeIcon icon={faCogs} /> {t(L.design)}</span>{project.links?.map((link) => <a key={link.url} className="project-hero-link" href={link.url} target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faGithub} /> {link.label}</a>)}</div></div>
                 <div className="project-hero-visual">{project.media?.find((media) => media.type === 'image') ? <img className="project-hero-image" src={project.media.find((media) => media.type === 'image')!.src} alt={project.media.find((media) => media.type === 'image')!.alt} /> : <><div className="hero-grid" /><div className="hero-orb"><FontAwesomeIcon icon={faMicrochip} /></div><span>PROJECT<br />CASE STUDY</span></>}</div>
             </section>
 
             <div className="project-story">
                 <div className="project-overview">
-                    <article><span className="section-kicker">Contexte</span><p>{project.context}</p></article>
-                    <article><span className="section-kicker">Problème</span><p>{project.problem}</p></article>
-                    <article><span className="section-kicker">Solution</span><p>{project.solution}</p></article>
+                    <article><span className="section-kicker">{t(L.context)}</span><p>{project.context}</p></article>
+                    <article><span className="section-kicker">{t(L.problem)}</span><p>{project.problem}</p></article>
+                    <article><span className="section-kicker">{t(L.solution)}</span><p>{project.solution}</p></article>
                 </div>
 
-                <section className="project-story-section"><span className="section-kicker">Description & réalisation</span><h2><FontAwesomeIcon icon={faLightbulb} /> Comment les technologies ont été exploitées</h2><p>{project.description}</p></section>
+                <section className="project-story-section"><span className="section-kicker">{t(L.descKicker)}</span><h2><FontAwesomeIcon icon={faLightbulb} /> {t(L.descTitle)}</h2><p>{project.description}</p></section>
 
-                <section className="project-story-section"><span className="section-kicker">Architecture</span><h2><FontAwesomeIcon icon={faCodeBranch} /> Architecture du système</h2><div className="architecture-card"><div className="architecture-flow">{project.architecture.split(' → ').map((step, index, steps) => <React.Fragment key={`${step}-${index}`}><span>{step}</span>{index < steps.length - 1 && <b>→</b>}</React.Fragment>)}</div></div></section>
+                <section className="project-story-section"><span className="section-kicker">{t(L.archKicker)}</span><h2><FontAwesomeIcon icon={faCodeBranch} /> {t(L.archTitle)}</h2><div className="architecture-card"><div className="architecture-flow">{project.architecture.split(' → ').map((step, index, steps) => <React.Fragment key={`${step}-${index}`}><span>{step}</span>{index < steps.length - 1 && <b>→</b>}</React.Fragment>)}</div></div></section>
 
                 <div className={`project-columns${project.hardware.length ? '' : ' project-columns--single'}`}>
-                    {project.hardware.length ? <section className="project-story-section"><span className="section-kicker">Matériel</span><h2><FontAwesomeIcon icon={faMicrochip} /> Matériel & électronique</h2><ul className="project-list">{project.hardware.map((item) => <li key={item}>{item}</li>)}</ul></section> : null}
-                    <section className="project-story-section"><span className="section-kicker">Logiciel</span><h2><FontAwesomeIcon icon={faLaptopCode} /> Logiciel & programmation</h2><ul className="project-list">{project.software.map((item) => <li key={item}>{item}</li>)}</ul></section>
+                    {project.hardware.length ? <section className="project-story-section"><span className="section-kicker">{t(L.hwKicker)}</span><h2><FontAwesomeIcon icon={faMicrochip} /> {t(L.hwTitle)}</h2><ul className="project-list">{project.hardware.map((item) => <li key={item}>{item}</li>)}</ul></section> : null}
+                    <section className="project-story-section"><span className="section-kicker">{t(L.swKicker)}</span><h2><FontAwesomeIcon icon={faLaptopCode} /> {t(L.swTitle)}</h2><ul className="project-list">{project.software.map((item) => <li key={item}>{item}</li>)}</ul></section>
                 </div>
 
-                <section className="project-story-section"><span className="section-kicker">Résultats</span><h2><FontAwesomeIcon icon={faChartLine} /> Résultats & avancées</h2><div className="results-grid">{project.results.map((item, index) => <div className="result-card" key={item}><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></div>)}</div></section>
+                <section className="project-story-section"><span className="section-kicker">{t(L.resKicker)}</span><h2><FontAwesomeIcon icon={faChartLine} /> {t(L.resTitle)}</h2><div className="results-grid">{project.results.map((item, index) => <div className="result-card" key={item}><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></div>)}</div></section>
 
                 <div className="project-columns">
-                    <section className="project-story-section"><span className="section-kicker">Mon rôle</span><h2>Contribution au projet</h2><p>{project.role}</p></section>
-                    <section className="project-story-section"><span className="section-kicker">Technologies</span><h2>Technologies utilisées</h2><div className="project-chips">{project.technologies.map((tech) => <Chip key={tech} label={tech} />)}</div></section>
+                    <section className="project-story-section"><span className="section-kicker">{t(L.roleKicker)}</span><h2>{t(L.roleTitle)}</h2><p>{project.role}</p></section>
+                    <section className="project-story-section"><span className="section-kicker">{t(L.techKicker)}</span><h2>{t(L.techTitle)}</h2><div className="project-chips">{project.technologies.map((tech) => <Chip key={tech} label={tech} />)}</div></section>
                 </div>
 
-                <section className="project-story-section"><span className="section-kicker">Fonctionnalités</span><h2>Points clés</h2><ul className="project-list project-list--grid">{project.features.map((item) => <li key={item}>{item}</li>)}</ul></section>
+                <section className="project-story-section"><span className="section-kicker">{t(L.featKicker)}</span><h2>{t(L.featTitle)}</h2><ul className="project-list project-list--grid">{project.features.map((item) => <li key={item}>{item}</li>)}</ul></section>
 
-                {project.media?.length ? <section className="project-story-section media-section"><span className="section-kicker">Médias</span><h2><FontAwesomeIcon icon={faImages} /> Documentation du projet</h2><PremiumMediaGallery media={project.media} /></section> : null}
-                {project.youtubeVideoId ? <section className="project-story-section video-section"><span className="section-kicker">Démonstration</span><h2><FontAwesomeIcon icon={faPlay} /> Démonstration vidéo du système</h2><div className="project-video-frame"><iframe src={`https://www.youtube-nocookie.com/embed/${project.youtubeVideoId}?rel=0&modestbranding=1`} title={`Démonstration vidéo : ${project.title}`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div></section> : null}
-                {project.videos?.length ? <section className="project-story-section video-section"><span className="section-kicker">Vidéos</span><h2><FontAwesomeIcon icon={faPlay} /> Présentation et démonstration</h2>{project.videos.map((video) => <div key={video.id} className="project-video-block"><h3 className="project-video-title">{video.title}</h3><div className="project-video-frame"><iframe src={`https://www.youtube-nocookie.com/embed/${video.id}?rel=0&modestbranding=1`} title={video.title} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div></div>)}</section> : null}
+                {project.media?.length ? <section className="project-story-section media-section"><span className="section-kicker">{t(L.mediaKicker)}</span><h2><FontAwesomeIcon icon={faImages} /> {t(L.mediaTitle)}</h2><PremiumMediaGallery media={project.media} /></section> : null}
+                {project.youtubeVideoId ? <section className="project-story-section video-section"><span className="section-kicker">{t(L.demoKicker)}</span><h2><FontAwesomeIcon icon={faPlay} /> {t(L.demoTitle)}</h2><div className="project-video-frame"><iframe src={`https://www.youtube-nocookie.com/embed/${project.youtubeVideoId}?rel=0&modestbranding=1`} title={`${t(L.demoPrefix)} : ${project.title}`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div></section> : null}
+                {project.videos?.length ? <section className="project-story-section video-section"><span className="section-kicker">{t(L.videosKicker)}</span><h2><FontAwesomeIcon icon={faPlay} /> {t(L.videosTitle)}</h2>{project.videos.map((video) => <div key={video.id} className="project-video-block"><h3 className="project-video-title">{video.title}</h3><div className="project-video-frame"><iframe src={`https://www.youtube-nocookie.com/embed/${video.id}?rel=0&modestbranding=1`} title={video.title} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div></div>)}</section> : null}
             </div>
         </main>
     );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCircleCheck, faImages, faTriangleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/PPGComputerVisionDetails.scss';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const publicUrl = process.env.PUBLIC_URL || '';
 
@@ -82,6 +83,7 @@ const scrollToSection = (id: string) => {
 };
 
 export default function PPGComputerVisionDetails() {
+    const { t } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<Capture | null>(null);
 
     useEffect(() => {
@@ -102,15 +104,15 @@ export default function PPGComputerVisionDetails() {
             <section className="ppg-hero">
                 <div className="ppg-hero-copy">
                     <button type="button" className="ppg-back" onClick={() => { window.location.hash = ''; }}>
-                        <FontAwesomeIcon icon={faArrowLeft} /> Retour au portfolio
+                        <FontAwesomeIcon icon={faArrowLeft} /> {t({ fr: 'Retour au portfolio', en: 'Back to portfolio', tr: 'Portfolyoya dön', zh: '返回作品集', ru: 'Назад к портфолио' })}
                     </button>
                     <span className="ppg-kicker">Prototype expérimental · vision par ordinateur · traitement du signal</span>
                     <h1>Estimation du rythme cardiaque par <span>PPG</span> et vision par ordinateur</h1>
                     <p className="ppg-lead">Prototype de photopléthysmographie à distance (rPPG) : à partir du flux d’une webcam, il extrait un signal de la couleur de la peau du visage, le filtre, détecte les pics et en déduit une estimation du rythme cardiaque.</p>
                     <div className="ppg-tags"><span>Python</span><span>OpenCV</span><span>MediaPipe</span><span>NumPy</span><span>SciPy</span><span>rPPG</span></div>
                     <div className="ppg-hero-actions">
-                        <button type="button" onClick={() => scrollToSection('ppg-etat')}>État d’avancement</button>
-                        <button type="button" onClick={() => scrollToSection('ppg-captures')}>Captures</button>
+                        <button type="button" onClick={() => scrollToSection('ppg-etat')}>{t({ fr: 'État d’avancement', en: 'Progress status', tr: 'İlerleme durumu', zh: '进展情况', ru: 'Статус работ' })}</button>
+                        <button type="button" onClick={() => scrollToSection('ppg-captures')}>{t({ fr: 'Captures', en: 'Screenshots', tr: 'Ekran görüntüleri', zh: '截图', ru: 'Снимки' })}</button>
                     </div>
                 </div>
                 <figure className="ppg-hero-figure">
@@ -165,7 +167,7 @@ export default function PPGComputerVisionDetails() {
                     <figure key={item.src} className="ppg-media-card">
                         <button type="button" className="ppg-zoom" onClick={() => setSelectedImage(item)} aria-label={`Agrandir : ${item.title}`}>
                             <img src={item.src} alt={item.alt} />
-                            <span className="ppg-zoom-hint"><FontAwesomeIcon icon={faImages} /> Agrandir</span>
+                            <span className="ppg-zoom-hint"><FontAwesomeIcon icon={faImages} /> {t({ fr: 'Agrandir', en: 'Enlarge', tr: 'Büyüt', zh: '放大', ru: 'Увеличить' })}</span>
                         </button>
                         <figcaption><strong>{item.title}</strong><small>{item.caption}</small></figcaption>
                     </figure>
@@ -185,13 +187,13 @@ export default function PPGComputerVisionDetails() {
             <section className="ppg-footer-card">
                 <div><span>Projet personnel</span><h2>Photopléthysmographie à distance : une chaîne fonctionnelle, à fiabiliser.</h2></div>
                 <div className="ppg-footer-links">
-                    <button type="button" onClick={() => scrollToSection('top')}><FontAwesomeIcon icon={faArrowLeft} /> Retour en haut</button>
+                    <button type="button" onClick={() => scrollToSection('top')}><FontAwesomeIcon icon={faArrowLeft} /> {t({ fr: 'Retour en haut', en: 'Back to top', tr: 'Başa dön', zh: '回到顶部', ru: 'Наверх' })}</button>
                 </div>
             </section>
 
             {selectedImage && (
                 <div className="ppg-lightbox" role="dialog" aria-modal="true" aria-label={selectedImage.title} onClick={() => setSelectedImage(null)}>
-                    <button type="button" className="ppg-lightbox-close" onClick={() => setSelectedImage(null)} aria-label="Fermer l’image agrandie">
+                    <button type="button" className="ppg-lightbox-close" onClick={() => setSelectedImage(null)} aria-label={t({ fr: 'Fermer l’image agrandie', en: 'Close enlarged image', tr: 'Büyütülmüş görseli kapat', zh: '关闭放大图片', ru: 'Закрыть увеличенное изображение' })}>
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
                     <div className="ppg-lightbox-content" onClick={(event) => event.stopPropagation()}>

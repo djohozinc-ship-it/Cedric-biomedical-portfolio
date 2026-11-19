@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './HeroVideo.scss';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const publicUrl = process.env.PUBLIC_URL || '';
 const VIDEO_SRC = `${publicUrl}/videos/presentation.mp4`;
@@ -15,6 +16,7 @@ const safePlay = (video: HTMLVideoElement): Promise<void> | undefined => {
 };
 
 function HeroVideo() {
+    const { t } = useLanguage();
     const videoRef = useRef<HTMLVideoElement>(null);
     const visibleRef = useRef(false);
     const [muted, setMuted] = useState(true);
@@ -108,7 +110,9 @@ function HeroVideo() {
                 type="button"
                 className={`hero-video-sound${muted ? ' is-muted' : ''}`}
                 onClick={toggleSound}
-                aria-label={muted ? 'Activer le son' : 'Couper le son'}
+                aria-label={muted
+                    ? t({ fr: 'Activer le son', en: 'Turn sound on', tr: 'Sesi aç', zh: '开启声音', ru: 'Включить звук' })
+                    : t({ fr: 'Couper le son', en: 'Mute sound', tr: 'Sesi kapat', zh: '关闭声音', ru: 'Выключить звук' })}
                 aria-pressed={!muted}
             >
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">

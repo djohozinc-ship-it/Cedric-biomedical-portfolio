@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import HeroVideo from './components/HeroVideo';
 import Project from "./components/Project";
 import FadeIn from './components/FadeIn';
+import { LanguageProvider, Tr, useLanguage } from './i18n/LanguageContext';
 import './index.scss';
 import './assets/styles/FichesPropres.scss';
 
@@ -45,21 +46,64 @@ function DeferredSection({ children, minHeight = 320 }: { children: React.ReactN
     return <div ref={ref} style={{ minHeight: shouldLoad ? undefined : minHeight }}>{shouldLoad && <Suspense fallback={null}>{children}</Suspense>}</div>;
 }
 
-const SITE_TITLE = 'Cédric Djohozin | Génie biomédical';
-const PROJECT_TITLES: Record<string, string> = {
-    'sacruro': 'SACRURO',
-    'mor-eyes': 'MorEyesCommunicator (MEC)',
-    'ppg-computer-vision': 'Rythme cardiaque par PPG et vision par ordinateur',
-    'dicom-anonymizer': 'DICOM Anonymizer',
-    'carte-donnees-biomedicales': 'Carte universelle de données biomédicales',
-    'moyes-pro': 'Moyes Pro',
-    'gmao-hospitaliere': 'GMAO hospitalière open source',
-    'medura': 'MEDORA, assistant médical vocal',
-    'emg-neuropathie-matlab': 'Analyse EMG de la neuropathie périphérique',
-    'thermostat-solidworks': 'Thermostat – conception CAO'
+const SITE_TITLE: Tr = {
+    fr: 'Cédric Djohozin | Génie biomédical',
+    en: 'Cédric Djohozin | Biomedical Engineering',
+    tr: 'Cédric Djohozin | Biyomedikal Mühendisliği',
+    zh: 'Cédric Djohozin | 生物医学工程',
+    ru: 'Cédric Djohozin | Биомедицинская инженерия'
+};
+const PROJECT_TITLES: Record<string, Tr> = {
+    'sacruro': { fr: 'SACRURO' },
+    'mor-eyes': { fr: 'MorEyesCommunicator (MEC)' },
+    'ppg-computer-vision': {
+        fr: 'Rythme cardiaque par PPG et vision par ordinateur',
+        en: 'Heart rate from PPG and computer vision',
+        tr: 'PPG ve bilgisayarlı görü ile kalp atış hızı',
+        zh: '基于PPG与计算机视觉的心率检测',
+        ru: 'Измерение пульса по PPG и компьютерное зрение'
+    },
+    'dicom-anonymizer': { fr: 'DICOM Anonymizer' },
+    'carte-donnees-biomedicales': {
+        fr: 'Carte universelle de données biomédicales',
+        en: 'Universal biomedical data card',
+        tr: 'Evrensel biyomedikal veri kartı',
+        zh: '通用生物医学数据卡',
+        ru: 'Универсальная карта биомедицинских данных'
+    },
+    'moyes-pro': { fr: 'Moyes Pro' },
+    'gmao-hospitaliere': {
+        fr: 'GMAO hospitalière open source',
+        en: 'Open-source hospital CMMS',
+        tr: 'Açık kaynaklı hastane bakım yönetim yazılımı (CMMS)',
+        zh: '开源医院设备维护管理系统（CMMS）',
+        ru: 'Открытая система управления обслуживанием (CMMS) для больниц'
+    },
+    'medura': {
+        fr: 'MEDORA, assistant médical vocal',
+        en: 'MEDORA, voice medical assistant',
+        tr: 'MEDORA, sesli tıbbi asistan',
+        zh: 'MEDORA：语音医疗助手',
+        ru: 'MEDORA — голосовой медицинский помощник'
+    },
+    'emg-neuropathie-matlab': {
+        fr: 'Analyse EMG de la neuropathie périphérique',
+        en: 'EMG analysis of peripheral neuropathy',
+        tr: 'Periferik nöropatinin EMG analizi',
+        zh: '周围神经病变的肌电图（EMG）分析',
+        ru: 'ЭМГ-анализ периферической нейропатии'
+    },
+    'thermostat-solidworks': {
+        fr: 'Thermostat – conception CAO',
+        en: 'Thermostat – CAD design',
+        tr: 'Termostat – CAD tasarımı',
+        zh: '恒温器——CAD设计',
+        ru: 'Термостат — САПР-проектирование'
+    }
 };
 
-function App() {
+function AppContent() {
+    const { t } = useLanguage();
     const [mode, setMode] = useState<string>(() => {
         try {
             return window.localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
@@ -76,8 +120,8 @@ function App() {
     useEffect(() => {
         const slug = hash.startsWith('#/project/') ? hash.replace('#/project/', '').split('?')[0] : '';
         const name = PROJECT_TITLES[slug];
-        document.title = name ? `${name} | Cédric Djohozin` : SITE_TITLE;
-    }, [hash]);
+        document.title = name ? `${t(name)} | Cédric Djohozin` : t(SITE_TITLE);
+    }, [hash, t]);
 
     const handleModeChange = () => {
         const next = mode === 'dark' ? 'light' : 'dark';
@@ -114,6 +158,14 @@ function App() {
             )}
             <Footer />
         </div>
+    );
+}
+
+function App() {
+    return (
+        <LanguageProvider>
+            <AppContent />
+        </LanguageProvider>
     );
 }
 
