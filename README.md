@@ -29,6 +29,7 @@ npm run build    # version de production dans /build
 | Cartes de la section Projets | `src/components/Project.tsx` |
 | Fiches projets simples (Medura…) | `src/components/ProjectDetails.tsx` |
 | Fiches détaillées | `SacruroDetails.tsx`, `MorEyesDetails.tsx`, `PPGComputerVisionDetails.tsx` |
+| Carte du parcours au Bénin (lieux, dates) | `src/data/beninPlaces.ts` (latitude / longitude + textes dans les 5 langues) |
 | Photos de la galerie | `public/images/gallery/` + `src/data/gallery.ts` |
 | Images de projets (MOR-EYES, PPG) | `public/images/projects/…` |
 | Images SACRURO (intégrées au build) | `src/assets/images/sacruro/` |

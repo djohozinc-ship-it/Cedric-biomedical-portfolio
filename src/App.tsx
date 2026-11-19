@@ -11,6 +11,7 @@ import './assets/styles/FichesPropres.scss';
 
 const Expertise = lazy(() => import('./components/Expertise'));
 const Timeline = lazy(() => import('./components/Timeline'));
+const BeninMap = lazy(() => import('./components/BeninMap'));
 const Gallery = lazy(() => import('./components/Gallery'));
 const Contact = lazy(() => import('./components/Contact'));
 const ProjectDetails = lazy(() => import('./components/ProjectDetails'));
@@ -151,6 +152,7 @@ function AppContent() {
                     <Main/>
                     <DeferredSection minHeight={520}><Expertise /></DeferredSection>
                     <DeferredSection minHeight={620}><Timeline /></DeferredSection>
+                    <DeferredSection minHeight={640}><BeninMap /></DeferredSection>
                     <Project/>
                     <DeferredSection minHeight={640}><Gallery /></DeferredSection>
                     <DeferredSection minHeight={520}><Contact /></DeferredSection>
